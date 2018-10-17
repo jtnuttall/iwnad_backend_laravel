@@ -1,4 +1,9 @@
 FILE=iwnad-backend-api.zip;
-rm -f ../$FILE;
-zip ../$FILE -r * .[^.]* -x "vendor/*";
+
+git checkout staging
+
+rm -f $FILE;
+zip $FILE -r * .[^.]* -x "vendor/*";
 echo "Done.";
+
+git checkout master
