@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 FRONTEND="../testing_iwand_website/FrontEnd";
+BACKEND=".";
 
 # PUBLISH STAGING
 
@@ -16,15 +17,15 @@ git merge master
 # build the Ember application
 cd $FRONTEND && ember build --environment staging && cd ..;
 # clear public
-rm -Rf backend/public/assets;
-rm -Rf backend/public/fonts;
-rm -Rf backend/public/index.html;
-rm -Rf backend/public/crossdomain.xml;
+rm -Rf $BACKEND/public/assets;
+rm -Rf $BACKEND/public/fonts;
+rm -Rf $BACKEND/public/index.html;
+rm -Rf $BACKEND/public/crossdomain.xml;
 # copy the new Ember build into the Laravel application
-cp -R frontend/dist/assets backend/public
-cp -R frontend/dist/fonts backend/public
-cp -R frontend/dist/index.html backend/resources/views/index.blade.php
-cp -R frontend/dist/crossdomain.xml backend/public
+cp -R $FORNTEND/dist/assets $BACKEND/public
+cp -R $FRONTEND/dist/fonts $BACKEND/public
+cp -R $FRONTEND/dist/index.html $BACKEND/resources/views/index.blade.php
+cp -R $FRONTEND/dist/crossdomain.xml $BACKEND/public
 # git commit
 git add .
 git commit -a -m "Fresh Staging build"
