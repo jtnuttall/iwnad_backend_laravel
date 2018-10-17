@@ -17,15 +17,15 @@ git merge master
 # build the Ember application
 cd $FRONTEND && ember build --environment staging && cd -;
 # clear public
-rm -Rf $BACKEND/public/assets;
-rm -Rf $BACKEND/public/fonts;
-rm -Rf $BACKEND/public/index.html;
-rm -Rf $BACKEND/public/crossdomain.xml;
+# rm -Rf $BACKEND/public/assets;
+# rm -Rf $BACKEND/public/fonts;
+# rm -Rf $BACKEND/public/index.html;
+# rm -Rf $BACKEND/public/crossdomain.xml;
 # copy the new Ember build into the Laravel application
-cp -R $FRONTEND/dist/assets $BACKEND/public
-cp -R $FRONTEND/dist/fonts $BACKEND/public
-cp -R $FRONTEND/dist/index.html $BACKEND/resources/views/index.blade.php
-cp -R $FRONTEND/dist/crossdomain.xml $BACKEND/public
+cp -Rvf $FRONTEND/dist/assets $BACKEND/public
+cp -Rvf $FRONTEND/dist/fonts $BACKEND/public
+cp -Rvf $FRONTEND/dist/index.html $BACKEND/resources/views/index.blade.php
+cp -Rvf $FRONTEND/dist/crossdomain.xml $BACKEND/public
 # git commit
 git add .
 git commit -a -m "Fresh Staging build"
