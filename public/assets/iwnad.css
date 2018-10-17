@@ -1,0 +1,283 @@
+body {
+  font-family: 'Muli', serif;
+}
+
+.header {
+  background-color: #1B2932;
+  color: white;
+}
+
+.nav-link {
+  color: white !important;
+}
+
+.navbar-brand {
+  margin-right: 10px;
+}
+
+.welcome {
+  padding-left: 10%;
+  padding-right: 10%;
+  padding-top: 100px;
+  padding-bottom: 100px;
+  width: 100%;
+  background-color: #F9F6F6;
+}
+
+.component-padding {
+  padding-left: 10%;
+  padding-right: 10%;
+  padding-top: 100px;
+  padding-bottom: 100px;
+  width: 100%;
+}
+
+.large-text {
+  color: #E36364;
+}
+
+.large-blue-text {
+  color: #1B2932;
+}
+
+.medium-text {
+  color: #1B2932;
+}
+
+.small-text {
+  color: #5E666D;
+}
+
+.extra-large-blue-text {
+  color: #1B2932;
+  font-size: 55pt;
+  font-weight: 650;
+}
+
+.login-text {
+  padding-right: 10%;
+  padding-left: 10%;
+}
+
+input {
+  width: 90%;
+  background-color: #F2F2F2;
+  border: none;
+  height: 50px;
+}
+
+::placeholder {
+    color: gray;
+    opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+   color: gray;
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+   color: gray;
+}
+
+.submit-button {
+  background-color: #1B2932;
+  border: none;
+  color: white;
+  height: 50px;
+  width: 100px;
+}
+
+.button-div {
+  margin-top: 25px;
+  margin-bottom: 25px;
+  text-align: right;
+  width: 90%;
+}
+
+.greeting {
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  padding-bottom: 25px;
+}
+
+.greeting-message {
+  float: left;
+}
+
+.greeting-pic {
+  margin-right: 20px;
+  float: left;
+}
+
+.add-an-admin {
+  padding-left: 10%;
+  padding-right: 10%;
+  padding-top: 100px;
+  padding-bottom: 100px;
+}
+
+.add-mentorship-pairs {
+  padding-left: 10%;
+  padding-right: 10%;
+  padding-bottom: 100px;
+}
+
+.upload-csv-button {
+  background-color: #1B2932;
+  border: none;
+  color: white;
+  height: 50px;
+  width: 200px;
+}
+
+.footer {
+  background-color: #1B2932;
+  padding-right: 8%;
+  padding-top: 15px;
+  width: 100%;
+  height: 50px;
+  color: #BBBEC1;
+  text-align: right;
+  font-weight: 700;
+}
+
+.dashboard-module {
+  width: 80%;
+  margin: auto;
+}
+
+.status {
+  text-align: right;
+}
+
+.module-active-header {
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  margin: auto;
+  background-color: #FAEEEE;
+}
+
+.module-active {
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  margin: auto;
+  background-color: #F9F7F7;
+  margin-bottom: 40px;
+}
+
+.module-active-right-bar {
+  border-right: 1px solid #1B2932;
+}
+
+.module-inactive {
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border: 5px solid #FAEEEE;
+  margin-bottom: 40px;
+}
+
+.button-text {
+  color: #EA9C9C;
+  font-weight: 600;
+  text-align: right;
+}
+
+.request-feedback-button {
+  background-color: #FF583E;
+  height: 50px;
+  width: 100%;
+  border: none;
+  color: white;
+}
+
+.link-button {
+  background-color: #FAE8E8;
+  height: 40px;
+  width: 100%;
+  margin-left: 2%;
+  margin-right: 2%;
+  border: none;
+}
+
+.link-input {
+  background-color: white;
+  height: 40px;
+  width: 95%;
+  padding: 2.5%;
+}
+
+.profileHeader {
+  background-color: #F7F2F3;
+}
+
+.content-editable-location {
+  border: none;
+  height: 50px;
+  line-height: 50px;
+  padding-right: 7px;
+  padding-left: 0 !important;
+  font-size: 32pt;
+  color: #FF7474 !important;
+}
+
+.content-editable-role {
+  border: none;
+  height: 50px;
+  line-height: 50px;
+  padding-left: 7px;
+  padding-right: 0 !important;
+  font-size: 32pt;
+  color: #FF7474 !important;
+  text-align: right;
+}
+
+.content-editable {
+  background-color: #F2F2F2;
+  border: none;
+  height: 50px;
+  line-height: 50px;
+  padding-left: 7px;
+  padding-right: 7px;
+}
+
+.update-button-div {
+  margin-top: 25px;
+  margin-bottom: 25px;
+  text-align: right;
+}
+
+.at-role {
+  font-size: 32pt;
+  color: #FF7474 !important;
+  max-width: 45px !important;
+  height: 50px;
+  line-height: 50px;
+  text-align: center !important;
+  padding: 0 !important;
+}
+
+.dashboard-background {
+  height: 600px;
+    background-image:
+    linear-gradient(
+      #FAEEEE,
+      #FAEEEE 35%,
+      #ffffff 15%,
+      #ffffff 85%,
+      #ffffff 35%
+    );
+}
+
+.match-card {
+  border: 10px solid #FAEEEE;
+  margin: 5px;
+  padding: 20px;
+  background-color: white;
+}
