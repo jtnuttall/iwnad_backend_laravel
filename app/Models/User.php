@@ -14,6 +14,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**
  * Class User
+ * TODO: Docs say all Eloquent models must extend Eloquent.
+ *       Cannot figure out how to mesh this with Authenticatable.
+ *       May cause issues, so revisit.
  * 
  * @property int $userid
  * @property string $email
