@@ -1,0 +1,1 @@
+sudo -- timedatectl set-ntp off && timedatectl set-ntp on

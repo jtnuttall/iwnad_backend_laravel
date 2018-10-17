@@ -11,6 +11,12 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//Route::get('/', function () {
+//    return view('welcome');
+//});
+
+
+// Catchall - Displays Ember app
+Route::any('{catchall}',function(){
+    return view('index');
+})->where('catchall', '(.*)');
