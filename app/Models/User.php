@@ -43,17 +43,19 @@ class User extends Authenticatable
 	];
 
 	protected $hidden = [
-		'password'
+		'password',
+		'remember_token',
 	];
 
 	protected $fillable = [
 		'email',
 		'permissions',
 		'password',
+		'name',
 		'profilepic',
 		'occupation',
 		'organization',
-		'phone'
+		'phone',
 	];
 
 	public function pairings()

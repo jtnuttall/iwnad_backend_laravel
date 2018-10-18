@@ -19,6 +19,7 @@ class CreateUsersTable extends Migration {
 			$table->string('email', 64)->unique('email_UNIQUE');
 			$table->integer('permissions');
 			$table->string('password', 60);
+			$table->string('name', 64)->nullable();
 			$table->string('profilepic')->nullable();
 			$table->string('occupation', 64)->nullable();
 			$table->string('organization', 45)->nullable();
@@ -33,6 +34,7 @@ class CreateUsersTable extends Migration {
 				'email' => $zeroemail,
 				'password' => $zeropass,
 				'permissions' => 0,
+				'name' => "Avni - Admin"
 			)
 		);
 	}
