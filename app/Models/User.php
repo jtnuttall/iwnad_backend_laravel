@@ -8,9 +8,9 @@
 namespace App\Models;
 
 use Reliese\Database\Eloquent\Model as Eloquent;
-use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
 /**
  * Class User
@@ -31,9 +31,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  *
  * @package App\Models
  */
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
-	use HasApiTokens, Notifiable;
+	use Notifiable;
 
 	protected $primaryKey = 'userid';
 	public $timestamps = false;
@@ -62,4 +62,14 @@ class User extends Authenticatable
 	{
 		return $this->hasMany(\App\Models\Pairing::class, 'menteeid');
 	}
+
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+    
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
 }

@@ -17,17 +17,20 @@ class CreateUsersTable extends Migration {
 		{
 			$table->integer('userid', true);
 			$table->string('email', 64)->unique('email_UNIQUE');
+			$table->timestamp('email_verified_at')->nullable();
 			$table->integer('permissions');
-			$table->string('password', 60);
+			$table->string('password', 255);
 			$table->string('name', 64)->nullable();
 			$table->string('profilepic')->nullable();
 			$table->string('occupation', 64)->nullable();
 			$table->string('organization', 45)->nullable();
 			$table->string('phone', 20)->nullable();
+			$table->rememberToken();
+			$table->timestamps();
 		});
 
 		$zeroemail = env('ADMIN_EMAIL', "abarman@usc.edu");
-		$zeropass = password_hash(env('ADMIN_PASSWORD', "iwnadCS401"), PASSWORD_BCRYPT);
+		$zeropass = Hash::make(env('ADMIN_PASSWORD', "iwnadCS401"));
 
 		DB::table('users')->insert(
 			array(

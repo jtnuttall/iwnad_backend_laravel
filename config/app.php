@@ -173,16 +173,11 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-        Reliese\Coders\CodersServiceProvider::class,
-
-        /*
-         * Passport
-         */
-        Laravel\Passport\PassportServiceProvider::class,
+        // Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
 
     ],
 
-    /*gene
+    /*
     |--------------------------------------------------------------------------
     | Class Aliases
     |--------------------------------------------------------------------------

@@ -25,9 +25,7 @@ class RegisterController extends Controller
 
     /**
      * Where to redirect users after registration.
-     * 
-     * TODO determine redirect page
-     * 
+     *
      * @var string
      */
     protected $redirectTo = '/home';
@@ -51,9 +49,9 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
-            'permissions' => 'required|int',
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:6', 'confirmed'],
         ]);
     }
 
@@ -66,20 +64,9 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         return User::create([
+            'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'permissions' => $data['permissions'],
-            'name' => $data['name'],
         ]);
-    }
-
-    /**
-     * Create magic code
-     * @param email
-     * @return string
-     */
-    private function generateMagicCode(string $email)
-    {
-        /// TODO
     }
 }
