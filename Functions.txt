@@ -1,0 +1,71 @@
+All the admin functionality:
+
+Add Pair:
+//Extract mentor_name and email and mentee_name and email
+//search for them in the users table
+	//if it already exists, get the userID
+	//if it doesn't exist, add them to the users database then ask for last insert id
+//then add an entry into the pairings table with both userIDs
+//return entire pairings table again so that the frontend can show them the updated table
+
+
+Add User:
+//for everytime you add someone to the user database
+	// add name, email and a randomaly gethenerated password(hashed)
+	// send an email to the email address with the password(unhased)
+
+Add Pair:
+//check if the both users exist and get their userIDs
+	//then make an entry in the pairings table
+	//then make a new dashboard and add all the phases to it
+
+Delete Pair:
+//for 
+
+
+Delete User:
+//can't delete them if they have a pair
+//if they don't have a pair
+
+//might possibly want a firstLogin boolean for every user so that on the first login front end knows to show them a page to set their personal information
+
+All the mentee functionality:
+//if first login then give chance to make a new password and call update User in my API
+
+//updateUser(){
+	change anything the user wants in their personal stuff
+}
+
+//upload link(){
+	//find pairingID to dashboardID to docLinkID and then update document link
+}
+
+//deleteLink(){
+	//change link to null
+}
+
+//changePhase(){
+	//only change phase when mentor clicks on approve message
+}
+
+if whoRequested  == 0
+	//requesttimes(){
+		//add an array of dateTimes to the dashboard table
+	}
+
+else if (whoRequested != you)
+//approveTimes(){
+	//timeApproved  = true
+	//dateTime array should now only have one value
+}
+
+else if( whoRequested == you)
+//changeTimes(){
+}
+
+//add a details column to the dashboard table
+//add a time approved column to the dashboard table
+//add a variable whoRequested Time
+	== 0 => nobody yet
+	== 1 => mentor
+	== 2 => mentee
