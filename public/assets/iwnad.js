@@ -56,6 +56,34 @@
     }
   });
 });
+;define("iwnad/controllers/login", ["exports"], function (exports) {
+  "use strict";
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = Ember.Controller.extend({
+    actions: {
+      //connect to backend
+      login() {
+        console.log(this.email, this.password);
+        $.ajax({
+          type: "post",
+          url: "api/login",
+          data: JSON.stringify({
+            email: this.email,
+            password: this.password
+          }),
+          contentType: "application/json"
+        }).then(() => {
+          this.transitionToRoute('main');
+        }, () => {
+          //error case
+        });
+      }
+    }
+  });
+});
 ;define('iwnad/controllers/module-resources', ['exports'], function (exports) {
 	'use strict';
 
@@ -326,8 +354,8 @@
     initialize: _initializeStoreService.default
   };
 });
-;define('iwnad/mirage/config', ['exports'], function (exports) {
-  'use strict';
+;define("iwnad/mirage/config", ["exports", "ember-cli-mirage"], function (exports, _emberCliMirage) {
+  "use strict";
 
   Object.defineProperty(exports, "__esModule", {
     value: true
@@ -335,7 +363,15 @@
 
   exports.default = function () {
 
-    this.get('/modules');
+    this.post("/login", function (schema, request) {
+      console.log(request);
+      let loginData = JSON.parse(request.requestBody);
+      if (loginData.email == "a@a.com") {
+        return new _emberCliMirage.Response(200);
+      } else {
+        return new _emberCliMirage.Response(401);
+      }
+    });
 
     // These comments are here to help you get started. Feel free to delete them.
 
@@ -389,8 +425,8 @@
     value: true
   });
 
-  exports.default = function (server) {
-    server.loadFixtures();
+  exports.default = function () /* server */{
+
     /*
       Seed your development database using your factories.
       This data will not be loaded in your tests.
@@ -560,7 +596,7 @@
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = Ember.HTMLBars.template({ "id": "F0XI+rDf", "block": "{\"symbols\":[],\"statements\":[[0,\"\\n\"],[7,\"div\"],[11,\"class\",\"component-padding\"],[9],[0,\"\\n\\t\"],[7,\"div\"],[11,\"class\",\"row\"],[9],[0,\"\\n\\t  \"],[7,\"div\"],[11,\"class\",\"col-md-4\"],[9],[0,\"\\n\\t  \\t\"],[7,\"img\"],[11,\"src\",\"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvyjtZBrZtFqBZEimzVor2zPU6VSgREi4YaIrOmzAGoGpGce0J\"],[9],[10],[0,\"\\n\\t  \"],[10],[0,\"\\n\\t  \"],[7,\"div\"],[11,\"class\",\"login-text col-md-8\"],[9],[0,\"\\n\\t  \\t\"],[7,\"h1\"],[11,\"class\",\"large-text\"],[9],[0,\"Log In\"],[10],[0,\"\\n\\t  \\t\"],[7,\"h6\"],[11,\"class\",\"small-text\"],[9],[0,\"Or click \"],[4,\"link-to\",[\"magic\"],null,{\"statements\":[[0,\"here\"]],\"parameters\":[]},null],[0,\" to sign up.\"],[10],[0,\"\\n\\t  \\t\"],[7,\"br\"],[9],[10],[0,\"\\n\\t\\t\"],[7,\"br\"],[9],[10],[0,\"\\n\\t\\t\"],[7,\"h6\"],[11,\"class\",\"small-text\"],[9],[0,\"Email Address\"],[7,\"span\"],[11,\"style\",\"color: #E36364;\"],[9],[0,\" *\"],[10],[10],[0,\"\\n\\t\\t\"],[7,\"input\"],[11,\"name\",\"email\"],[11,\"type\",\"text\"],[9],[10],[0,\"\\n\\t\\t\"],[7,\"br\"],[9],[10],[0,\"\\n\\t\\t\"],[7,\"br\"],[9],[10],[0,\"\\n\\t\\t\"],[7,\"h6\"],[11,\"class\",\"small-text\"],[9],[0,\"Password\"],[7,\"span\"],[11,\"style\",\"color: #E36364;\"],[9],[0,\" *\"],[10],[10],[0,\"\\n\\t\\t\"],[7,\"input\"],[11,\"name\",\"password\"],[11,\"type\",\"text\"],[9],[10],[0,\"\\n\\n\\t\\t\"],[7,\"div\"],[11,\"class\",\"button-div\"],[9],[0,\"\\n\\t\\t\\t\"],[4,\"link-to\",[\"dashboard-page\"],null,{\"statements\":[[7,\"button\"],[11,\"class\",\"submit-button\"],[9],[0,\"Next\"],[10]],\"parameters\":[]},null],[0,\" \\n\\t\\t\"],[10],[0,\"\\n\\t  \"],[10],[0,\"\\n\\t\"],[10],[0,\"\\n\"],[10],[0,\"\\n\\n\"],[1,[21,\"outlet\"],false],[0,\"\\n\"]],\"hasEval\":false}", "meta": { "moduleName": "iwnad/templates/login.hbs" } });
+  exports.default = Ember.HTMLBars.template({ "id": "wIsDj+PK", "block": "{\"symbols\":[],\"statements\":[[0,\"\\n\"],[7,\"div\"],[11,\"class\",\"component-padding\"],[9],[0,\"\\n\\t\"],[7,\"div\"],[11,\"class\",\"row\"],[9],[0,\"\\n\\t  \"],[7,\"div\"],[11,\"class\",\"col-md-4\"],[9],[0,\"\\n\\t  \\t\"],[7,\"img\"],[11,\"src\",\"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvyjtZBrZtFqBZEimzVor2zPU6VSgREi4YaIrOmzAGoGpGce0J\"],[9],[10],[0,\"\\n\\t  \"],[10],[0,\"\\n\\t  \"],[7,\"div\"],[11,\"class\",\"login-text col-md-8\"],[9],[0,\"\\n\\t  \\t\"],[7,\"h1\"],[11,\"class\",\"large-text\"],[9],[0,\"Log In\"],[10],[0,\"\\n\\t  \\t\"],[7,\"h6\"],[11,\"class\",\"small-text\"],[9],[0,\"Or click \"],[4,\"link-to\",[\"magic\"],null,{\"statements\":[[0,\"here\"]],\"parameters\":[]},null],[0,\" to sign up.\"],[10],[0,\"\\n\\t  \\t\"],[7,\"br\"],[9],[10],[0,\"\\n\\t\\t\"],[7,\"br\"],[9],[10],[0,\"\\n\\t\\t\"],[7,\"h6\"],[11,\"class\",\"small-text\"],[9],[0,\"Email Address\"],[7,\"span\"],[11,\"style\",\"color: #E36364;\"],[9],[0,\" *\"],[10],[10],[0,\"\\n    \"],[1,[27,\"input\",null,[[\"name\",\"type\",\"value\"],[\"address\",\"email\",[23,[\"email\"]]]]],false],[0,\"\\n\\t\\t\"],[7,\"br\"],[9],[10],[0,\"\\n\\t\\t\"],[7,\"br\"],[9],[10],[0,\"\\n\\t\\t\"],[7,\"h6\"],[11,\"class\",\"small-text\"],[9],[0,\"Password\"],[7,\"span\"],[11,\"style\",\"color: #E36364;\"],[9],[0,\" *\"],[10],[10],[0,\"\\n\\t\\t\"],[1,[27,\"input\",null,[[\"type\",\"name\",\"value\"],[\"password\",\"password\",[23,[\"password\"]]]]],false],[0,\"\\n\\n\\t\\t\"],[7,\"div\"],[11,\"class\",\"button-div\"],[9],[0,\"\\n\\t\\t\\t\"],[7,\"button\"],[11,\"class\",\"submit-button\"],[3,\"action\",[[22,0,[]],\"login\"]],[9],[0,\"Next\"],[10],[0,\"\\t\\t\"],[10],[0,\"\\n\\t  \"],[10],[0,\"\\n\\t\"],[10],[0,\"\\n\"],[10],[0,\"\\n\\n\"],[1,[21,\"outlet\"],false],[0,\"\\n\"]],\"hasEval\":false}", "meta": { "moduleName": "iwnad/templates/login.hbs" } });
 });
 ;define("iwnad/templates/magic", ["exports"], function (exports) {
   "use strict";
@@ -609,7 +645,7 @@
 
   QUnit.test('mirage/config.js', function (assert) {
     assert.expect(1);
-    assert.ok(true, 'mirage/config.js should pass ESLint\n\n');
+    assert.ok(false, 'mirage/config.js should pass ESLint\n\n8:5 - Unexpected console statement. (no-console)');
   });
 
   QUnit.test('mirage/fixtures/modules.js', function (assert) {
@@ -650,7 +686,7 @@ catch(err) {
 
 ;
           if (!runningTests) {
-            require("iwnad/app")["default"].create({"name":"iwnad","version":"0.0.0+9433ccbb"});
+            require("iwnad/app")["default"].create({"name":"iwnad","version":"0.0.0+582f0140"});
           }
         
 //# sourceMappingURL=iwnad.map

@@ -15,6 +15,11 @@ define('iwnad/tests/app.lint-test', [], function () {
     assert.ok(true, 'components/dashboard-module.js should pass ESLint\n\n');
   });
 
+  QUnit.test('controllers/login.js', function (assert) {
+    assert.expect(1);
+    assert.ok(false, 'controllers/login.js should pass ESLint\n\n7:7 - Unexpected console statement. (no-console)\n8:7 - \'$\' is not defined. (no-undef)');
+  });
+
   QUnit.test('controllers/module-resources.js', function (assert) {
     assert.expect(1);
     assert.ok(true, 'controllers/module-resources.js should pass ESLint\n\n');
@@ -215,6 +220,11 @@ define('iwnad/tests/tests.lint-test', [], function () {
     assert.ok(true, 'test-helper.js should pass ESLint\n\n');
   });
 
+  QUnit.test('unit/controllers/login-test.js', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'unit/controllers/login-test.js should pass ESLint\n\n');
+  });
+
   QUnit.test('unit/controllers/module-resources-test.js', function (assert) {
     assert.expect(1);
     assert.ok(true, 'unit/controllers/module-resources-test.js should pass ESLint\n\n');
@@ -263,6 +273,19 @@ define('iwnad/tests/tests.lint-test', [], function () {
   QUnit.test('unit/routes/signup-test.js', function (assert) {
     assert.expect(1);
     assert.ok(true, 'unit/routes/signup-test.js should pass ESLint\n\n');
+  });
+});
+define('iwnad/tests/unit/controllers/login-test', ['qunit', 'ember-qunit'], function (_qunit, _emberQunit) {
+  'use strict';
+
+  (0, _qunit.module)('Unit | Controller | login', function (hooks) {
+    (0, _emberQunit.setupTest)(hooks);
+
+    // Replace this with your real tests.
+    (0, _qunit.test)('it exists', function (assert) {
+      let controller = this.owner.lookup('controller:login');
+      assert.ok(controller);
+    });
   });
 });
 define('iwnad/tests/unit/controllers/module-resources-test', ['qunit', 'ember-qunit'], function (_qunit, _emberQunit) {
