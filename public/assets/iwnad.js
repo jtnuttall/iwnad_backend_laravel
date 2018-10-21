@@ -69,7 +69,7 @@
         console.log(this.email, this.password);
         $.ajax({
           type: "post",
-          url: "login",
+          url: "api/login",
           data: JSON.stringify({
             email: this.email,
             password: this.password
@@ -688,7 +688,7 @@ catch(err) {
 
 ;
           if (!runningTests) {
-            require("iwnad/app")["default"].create({"name":"iwnad","version":"0.0.0+82226a46"});
+            require("iwnad/app")["default"].create({"name":"iwnad","version":"0.0.0+b8bf2697"});
           }
         
 //# sourceMappingURL=iwnad.map
