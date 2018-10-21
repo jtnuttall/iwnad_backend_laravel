@@ -17,7 +17,7 @@ define('iwnad/tests/app.lint-test', [], function () {
 
   QUnit.test('controllers/login.js', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'controllers/login.js should pass ESLint\n\n7:7 - Unexpected console statement. (no-console)\n8:7 - \'$\' is not defined. (no-undef)');
+    assert.ok(false, 'controllers/login.js should pass ESLint\n\n7:7 - Unexpected console statement. (no-console)\n8:7 - \'$\' is not defined. (no-undef)\n18:11 - Unexpected console statement. (no-console)\n21:11 - Unexpected console statement. (no-console)');
   });
 
   QUnit.test('controllers/module-resources.js', function (assert) {

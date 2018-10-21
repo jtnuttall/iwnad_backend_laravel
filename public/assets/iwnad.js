@@ -69,15 +69,17 @@
         console.log(this.email, this.password);
         $.ajax({
           type: "post",
-          url: "api/login",
+          url: "login",
           data: JSON.stringify({
             email: this.email,
             password: this.password
           }),
           contentType: "application/json"
         }).then(() => {
-          this.transitionToRoute('main');
+          // this.transitionToRoute('main')
+          console.log("SUCCESS");
         }, () => {
+          console.log("FAILURE");
           //error case
         });
       }
@@ -686,7 +688,7 @@ catch(err) {
 
 ;
           if (!runningTests) {
-            require("iwnad/app")["default"].create({"name":"iwnad","version":"0.0.0+582f0140"});
+            require("iwnad/app")["default"].create({"name":"iwnad","version":"0.0.0+82226a46"});
           }
         
 //# sourceMappingURL=iwnad.map
