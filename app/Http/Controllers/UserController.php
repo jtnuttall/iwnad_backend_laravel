@@ -14,6 +14,7 @@ class UserController extends Controller
     public function authenticate(Request $request)
     {
     	error_log('authentication request');
+        var_dump($request);
         $credentials = $request->only('email', 'password');
 
         try {
