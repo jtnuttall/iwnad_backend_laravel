@@ -36,6 +36,9 @@ class Pairing extends Eloquent
 		'menteeid'
 	];
 
+	// protected $mentorid;
+	// protected $menteeid;
+
 	public function user()
 	{
 		return $this->belongsTo(\App\Models\User::class, 'menteeid');

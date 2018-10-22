@@ -9,7 +9,10 @@ namespace App\Models;
 
 use Reliese\Database\Eloquent\Model as Eloquent;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Auth\Authenticatable;
+// use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 /**
@@ -31,9 +34,9 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  *
  * @package App\Models
  */
-class User extends Authenticatable implements JWTSubject
+class User extends Eloquent implements JWTSubject, AuthenticatableContract, CanResetPasswordContract
 {
-	use Notifiable;
+	use Notifiable, Authenticatable;
 
 	protected $primaryKey = 'userid';
 	public $timestamps = true;
@@ -58,6 +61,16 @@ class User extends Authenticatable implements JWTSubject
 		'phone',
 	];
 
+	// protected $userid;
+	// protected $email;
+	// protected $permissions;
+	// protected $password;
+	// protected $name;
+	// protected $profilepic;
+	// protected $occupation;
+	// protected $organization;
+	// protected $phone;
+
 	public function pairings()
 	{
 		return $this->hasMany(\App\Models\Pairing::class, 'menteeid');
@@ -71,5 +84,15 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function getEmailForPasswordReset()
+    {
+    	return $this->email;
+    }
+
+    public function sendPasswordResetNotification($token)
+    {
+
     }
 }

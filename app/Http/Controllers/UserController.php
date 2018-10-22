@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Pairing;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -107,6 +108,34 @@ class UserController extends Controller
 
     public function pair(Request $request)
     {
-        error_log("user pair request");
+        error_log('user pair request');
+
+        $mentorEmail = $request->get('mentor');
+        $menteeEmail = $request->get('mentee');
+
+        $mentor = User::where('email', $mentorEmail);
+        if (is_null($mentor)) {
+            error_log('no such email "$mentorEmail" in DB');
+            return response()->json(['invalid_mentor'], 400);
+        }
+        $mentor = $mentor->first();
+
+        $mentee = User::where('email', $menteeEmail);
+        if (is_null($mentee)) {
+            error_log('no such email "$menteeEmail" in DB');
+            return response()->json(['invalid_mentee'], 400);
+        }
+        $mentee = $mentee->first();
+
+        error_log('both users exist: construct new pairing');
+
+        $pairing = new Pairing();
+        $pairing->mentorid = $mentor->userid;
+        $pairing->menteeid = $mentee->userid;
+        $pairing->save();
+
+        error_log('success');
+
+        return response()->json(compact('pairing'));
     }
 }
