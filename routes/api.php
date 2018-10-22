@@ -18,6 +18,8 @@ Route::post('login', 'UserController@authenticate');
 
 Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('user', 'UserController@getAuthenticatedUser');
+    
+    Route::post('currentpairs', 'PairingController@getCurrentPairs');
 });
 
 Route::group(['middleware' => ['admin.verify']], function() {
@@ -25,7 +27,6 @@ Route::group(['middleware' => ['admin.verify']], function() {
 
     Route::post('pair', 'PairingController@pair');
     Route::post('deletepair', 'PairingController@deletePair');
-    Route::post('currentpairs', 'PairingController@getCurrentPairs');
 	Route::post('allpairs', 'PairingController@getAllPairs');
 });
 
