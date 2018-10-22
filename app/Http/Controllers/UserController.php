@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use JWTAuth;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -48,17 +49,18 @@ class UserController extends Controller
 
     public function register(Request $request)
     {
+        error_log('registration request');
+
         $validator = Validator::make($request->all(), [
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6',
             'permissions' => 'required|int|between:0,2',
         ]);
-
         if($validator->fails()){
             return response()->json($validator->errors()->toJson(), 400);
         }
 
-        // $magicCode = Hash::make($this->makeMagicCode($request->get('email')));
+        // $magicCodeHash = Hash::make($this->makeMagicCode($request->get('email')));
 
         $user = User::create([
             'email' => $request->get('email'),
@@ -68,7 +70,7 @@ class UserController extends Controller
 
         $token = JWTAuth::fromUser($user);
 
-        return response()->json(compact('user','token'),201);
+        return response()->json(compact('user','token'), 201);
     }
 
     public function addUserInfo(Request $request)
@@ -107,7 +109,22 @@ class UserController extends Controller
 
     public function changePassword(Request $request)
     {
+        error_log('password change request');
 
+        $validator = Validator::make($request->all(), [
+            'password' => 'required|string|min:6',
+        ]);
+        if($validator->fails()){
+            return response()->json($validator->errors()->toJson(), 400);
+        }
+
+        $user = Auth::user();
+        $user->password = Hash::make($request->get('password'));
+        $user->save();
+
+        return response()->json([
+            'status' => 'password change successful',
+        ]);
     }
 
     public function getAllUsers(Request $request)
