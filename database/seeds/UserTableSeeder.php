@@ -12,14 +12,11 @@ class UserTableSeeder extends Seeder
      */
     public function run()
     {
-		$zeroemail = env('ADMIN_EMAIL', "abarman@usc.edu");
-		$zeropass = Hash::make(env('ADMIN_PASSWORD', "iwnadCS401"));
-
-		$zerouser = new User();
-		$zerouser->email = env('ADMIN_EMAIL', "abarman@usc.edu");
-		$zerouser->password = Hash::make(env('ADMIN_PASSWORD', "iwnadCS401"));
-		$zerouser->permissions = 0;
-		$zerouser->name = 'Avni';
-		$zerouser->save();
+		$baseadmin = new User();
+		$baseadmin->email = env('ADMIN_EMAIL', "abarman@usc.edu");
+		$baseadmin->password = Hash::make(env('ADMIN_PASSWORD', "iwnadCS401"));
+		$baseadmin->permissions = 0;
+		$baseadmin->name = 'Avni';
+		$baseadmin->save();
     }
 }
