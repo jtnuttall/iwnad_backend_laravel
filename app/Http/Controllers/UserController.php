@@ -104,4 +104,9 @@ class UserController extends Controller
     {
 
     }
+
+    public function pair(Request $request)
+    {
+        error_log("user pair request");
+    }
 }
