@@ -56,7 +56,7 @@ class UserController extends Controller
         ]);
 
         if($validator->fails()){
-                return response()->json($validator->errors()->toJson(), 400);
+            return response()->json($validator->errors()->toJson(), 400);
         }
 
         // $magicCode = Hash::make($this->makeMagicCode($request->get('email')));
@@ -115,6 +115,14 @@ class UserController extends Controller
     {
         error_log('user pair request');
 
+        $validator = Validator::make($request->all(), [
+            'mentor' => 'required|string|email',
+            'mentee' => 'required|string|email',
+        ]);
+        if($validator->fails()){
+            return response()->json($validator->errors()->toJson(), 400);
+        }
+
         $mentorEmail = $request->get('mentor');
         $menteeEmail = $request->get('mentee');
 
@@ -151,5 +159,9 @@ class UserController extends Controller
         error_log('success');
 
         return response()->json(compact('pairing'));
+    }
+
+    public function getAllUsers(Request $request)
+    {
     }
 }

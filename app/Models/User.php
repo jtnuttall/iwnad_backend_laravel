@@ -42,7 +42,7 @@ class User extends Eloquent implements JWTSubject, AuthenticatableContract, CanR
 	public $timestamps = true;
 
 	protected $casts = [
-		'permissions' => 'int'
+		'permissions' => 'int',
 	];
 
 	protected $hidden = [

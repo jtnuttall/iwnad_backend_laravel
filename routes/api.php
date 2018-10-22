@@ -18,6 +18,10 @@ Route::post('login', 'UserController@authenticate');
 
 Route::group(['middleware' => ['jwt.verify']], function() {
     Route::get('user', 'UserController@getAuthenticatedUser');
+});
+
+Route::group(['middleware' => ['admin.verify']], function() {
+	Route::post('allusers', 'UserController@');
     Route::post('pair', 'UserController@pair');
 });
 
