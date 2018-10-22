@@ -120,15 +120,23 @@ class UserController extends Controller
             error_log('no such email "'.$mentorEmail.'" in DB');
             return response()->json(['invalid_mentor'], 400);
         }
-        $mentor = $mentor->first();
+        if ($mentor->permissions != 1) {
+            error_log('email '.$mentorEmail.' is not a mentor email');
+            return response()->json(['invalid_mentor'], 400);
+        }
 
         $mentee = User::where('email', $menteeEmail)->first();
         if (is_null($mentee)) {
             error_log('no such email "'.$menteeEmail.'" in DB');
             return response()->json(['invalid_mentee'], 400);
         }
+        if ($mentee->permissions != 2) {
+            error_log('email '.$menteeEmail.' is not a mentee email');
+            return response()->json(['invalid_mentee'], 400);
+        }
 
-        error_log('both users exist: construct new pairing');
+        error_log('both users exist and are of the correct type: ');
+        error_log('construct new pairing');
 
         $pairing = new Pairing();
         $pairing->mentorid = $mentor->userid;
