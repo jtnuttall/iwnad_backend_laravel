@@ -28,18 +28,6 @@ class CreateUsersTable extends Migration {
 			$table->rememberToken();
 			$table->timestamps();
 		});
-
-		$zeroemail = env('ADMIN_EMAIL', "abarman@usc.edu");
-		$zeropass = Hash::make(env('ADMIN_PASSWORD', "iwnadCS401"));
-
-		DB::table('users')->insert(
-			array(
-				'email' => $zeroemail,
-				'password' => $zeropass,
-				'permissions' => 0,
-				'name' => "Avni - Admin"
-			)
-		);
 	}
 
 

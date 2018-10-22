@@ -51,6 +51,7 @@ class UserController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:6',
             'permissions' => 'required|int|between:0,2',
         ]);
 
@@ -58,9 +59,11 @@ class UserController extends Controller
                 return response()->json($validator->errors()->toJson(), 400);
         }
 
+        // $magicCode = Hash::make($this->makeMagicCode($request->get('email')));
+
         $user = User::create([
             'email' => $request->get('email'),
-            'password' => Hash::make($this->makeMagicCode($request->get('email'))),
+            'password' => $request->get('password'),
             'permissions' => $request->get('permissions'),
         ]);
 
@@ -71,7 +74,7 @@ class UserController extends Controller
 
     public function addUserInfo(Request $request)
     {
-
+        
     }
 
     public function getAuthenticatedUser()
