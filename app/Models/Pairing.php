@@ -39,7 +39,12 @@ class Pairing extends Eloquent
 	// protected $mentorid;
 	// protected $menteeid;
 
-	public function user()
+	public function mentor()
+	{
+		return $this->belongsTo(\App\Models\User::class, 'mentorid');
+	}
+
+	public function mentee()
 	{
 		return $this->belongsTo(\App\Models\User::class, 'menteeid');
 	}

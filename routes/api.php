@@ -21,7 +21,8 @@ Route::group(['middleware' => ['jwt.verify']], function() {
 });
 
 Route::group(['middleware' => ['admin.verify']], function() {
-	Route::post('allusers', 'UserController@');
+	Route::post('allusers', 'UserController@getAllUsers');
+	Route::post('allpairs', 'UserController@getAllPairs');
     Route::post('pair', 'UserController@pair');
 });
 

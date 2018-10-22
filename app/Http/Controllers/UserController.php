@@ -176,4 +176,20 @@ class UserController extends Controller
 
         return response()->json(compact('users'));
     }
+
+    public function getAllPairs(Request $request)
+    {
+        error_log('all pairs requested');
+
+        $count = $request->get('count');
+        if (is_null($count)) {
+            error_log('no per-page count given');
+            $count = 15;
+        }
+        error_log('per-page count is '.$count);
+
+        $pairings = Pairing::with(['mentor', 'mentee'])->paginate($count);
+
+        return response()->json(compact('pairings'));
+    }
 }
