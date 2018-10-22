@@ -73,7 +73,71 @@ class UserController extends Controller
         return response()->json(compact('user','token'), 201);
     }
 
-    public function addUserInfo(Request $request)
+    /**
+     * TODO: determine how to upload profile picture
+     */
+    public function updateUser(Request $request)
+    {
+        $user = Auth::user();
+        error_log('user update request for '.$user->name);
+
+        if ($user->firstlogin) {
+            $validator = Validator::make($request->all(), [
+                'name' => 'string|required|max:64',
+                'occupation' => 'string|required|max:64',
+                'organization' => 'string|required|max:45',
+                'phone' => 'string|required|max:20',
+            ]);
+
+            if($validator->fails()){
+                return response()->json($validator->errors()->toJson(), 400);
+            }
+
+            $user->firstlogin = false;
+        }
+
+        $validator = Validator::make($request->all(), [
+            'email' => 'string|email|max:255|unique:users',
+        ]);
+        if ($validator->fails()) {
+            return response()->json($validator->errors()->toJson(), 400);
+        }
+
+        $email = $request->get('email');
+        $name = $request->get('name');
+        $profilepic = $request->get('profilepic');
+        $occupation = $request->get('occupation');
+        $organization = $request->get('organization');
+        $phone = $request->get('phone');
+
+        if (!is_null($email)) {
+            $this->notifyEmailChange($user, $email);
+            $user->email = $email;
+        }
+        if (!is_null($name)) {
+            $user->name = $name;
+        }
+        if (!is_null($profilepic)) {
+            $user->profilepic = $profilepic;
+        }
+        if (!is_null($occupation)) {
+            $user->occupation = $occupation;
+        }
+        if (!is_null($organization)) {
+            $user->organization = $organization;
+        }
+        if (!is_null($phone)) {
+            $user->phone = $phone;
+        }
+
+        $user->save();
+
+        return response()->json([
+            'status' => 'user_update_success'
+        ]);
+    }
+
+    private function notifyEmailChange(User $user, string $newEmail)
     {
 
     }

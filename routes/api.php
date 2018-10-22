@@ -19,6 +19,7 @@ Route::post('login', 'UserController@authenticate');
 Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('user', 'UserController@getAuthenticatedUser');
     Route::post('changepassword', 'UserController@changePassword');
+    Route::post('updateuser', 'UserController@updateUser');
 
     Route::post('currentpairs', 'PairingController@getCurrentPairs');
 });
