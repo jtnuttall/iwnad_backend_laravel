@@ -36,7 +36,7 @@ class User extends Authenticatable implements JWTSubject
 	use Notifiable;
 
 	protected $primaryKey = 'userid';
-	public $timestamps = false;
+	public $timestamps = true;
 
 	protected $casts = [
 		'permissions' => 'int'
