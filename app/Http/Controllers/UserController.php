@@ -12,6 +12,9 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 
 class UserController extends Controller
 {
+    /**
+     *
+     */
     public function authenticate(Request $request)
     {
     	error_log('authentication request');
@@ -31,18 +34,17 @@ class UserController extends Controller
         return response()->json(compact('token'));
     }
 
-    /*
-     * Create magic code from email somehow
+    /**
+     * Create magic code from time
      * @param email
-     * @returns string
+     * @return string
      */
-    private function makeMagicCode(string $email)
+    private function makeMagicCode($email)
     {
-    	$result = 0xAFE121;
-
-    	// actually calculate $result
-
-    	return pack("H*", $result);
+    	$result = time() & 0xFFFFFF;
+        $result = substr(pack("H*", $result), 2);
+        error_log('magic code for '.$email.' is: '.$result);
+    	return $result;
     }
 
     public function register(Request $request)
