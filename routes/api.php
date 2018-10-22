@@ -17,13 +17,16 @@ Route::post('register', 'UserController@register');
 Route::post('login', 'UserController@authenticate');
 
 Route::group(['middleware' => ['jwt.verify']], function() {
-    Route::get('user', 'UserController@getAuthenticatedUser');
+    Route::post('user', 'UserController@getAuthenticatedUser');
 });
 
 Route::group(['middleware' => ['admin.verify']], function() {
 	Route::post('allusers', 'UserController@getAllUsers');
-	Route::post('allpairs', 'UserController@getAllPairs');
-    Route::post('pair', 'UserController@pair');
+
+    Route::post('pair', 'PairingController@pair');
+    Route::post('deletepair', 'PairingController@deletePair');
+    Route::post('currentpairs', 'PairingController@getCurrentPairs');
+	Route::post('allpairs', 'PairingController@getAllPairs');
 });
 
 // Route::group(

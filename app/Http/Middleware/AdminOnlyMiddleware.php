@@ -21,25 +21,25 @@ class AdminOnlyMiddleware
             $user = JWTAuth::parseToken()->authenticate();
 
             if ($user->permissions != 0) {
-                return response()->json(
-                    ['status' => 'Insufficient user permissions']
-                );
+                return response()->json([
+                    'status' => 'Insufficient user permissions'
+                ]);
             }
         } catch (Exception $e) {
             if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException) {
-                return response()->json(
-                    ['status' => 'Token is Invalid']
-                );
+                return response()->json([
+                    'status' => 'Token is Invalid'
+                ]);
             }
             else if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException) {
-                return response()->json(
-                    ['status' => 'Token is Expired']
-                );
+                return response()->json([
+                    'status' => 'Token is Expired'
+                ]);
             }
             else {
-                return response()->json(
-                    ['status' => 'Authorization Token not found']
-                );
+                return response()->json([
+                    'status' => 'Authorization Token not found'
+                ]);
             }
         }
         

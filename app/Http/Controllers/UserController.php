@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use JWTAuth;
 use App\Models\User;
-use App\Models\Pairing;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
 class UserController extends Controller
@@ -111,56 +110,6 @@ class UserController extends Controller
 
     }
 
-    public function pair(Request $request)
-    {
-        error_log('user pair request');
-
-        $validator = Validator::make($request->all(), [
-            'mentor' => 'required|string|email',
-            'mentee' => 'required|string|email',
-        ]);
-        if($validator->fails()){
-            return response()->json($validator->errors()->toJson(), 400);
-        }
-
-        $mentorEmail = $request->get('mentor');
-        $menteeEmail = $request->get('mentee');
-
-        $mentor = User::where('email', $mentorEmail)->first();
-        if (is_null($mentor)) {
-            error_log('no such email "'.$mentorEmail.'" in DB');
-            return response()->json(['invalid_mentor'], 400);
-        }
-        if ($mentor->permissions != 1) {
-            error_log('email '.$mentorEmail.' is not a mentor email');
-            return response()->json(['invalid_mentor'], 400);
-        }
-
-        $mentee = User::where('email', $menteeEmail)->first();
-        if (is_null($mentee)) {
-            error_log('no such email "'.$menteeEmail.'" in DB');
-            return response()->json(['invalid_mentee'], 400);
-        }
-        if ($mentee->permissions != 2) {
-            error_log('email '.$menteeEmail.' is not a mentee email');
-            return response()->json(['invalid_mentee'], 400);
-        }
-
-        error_log(
-            'both users exist and are of the correct type: '
-            .'construct new pairing'
-        );
-
-        $pairing = new Pairing();
-        $pairing->mentorid = $mentor->userid;
-        $pairing->menteeid = $mentee->userid;
-        $pairing->save();
-
-        error_log('success');
-
-        return response()->json(compact('pairing'));
-    }
-
     public function getAllUsers(Request $request)
     {
         error_log('all users requested');
@@ -175,21 +124,5 @@ class UserController extends Controller
         $users = User::paginate($count);
 
         return response()->json(compact('users'));
-    }
-
-    public function getAllPairs(Request $request)
-    {
-        error_log('all pairs requested');
-
-        $count = $request->get('count');
-        if (is_null($count)) {
-            error_log('no per-page count given');
-            $count = 15;
-        }
-        error_log('per-page count is '.$count);
-
-        $pairings = Pairing::with(['mentor', 'mentee'])->paginate($count);
-
-        return response()->json(compact('pairings'));
     }
 }
