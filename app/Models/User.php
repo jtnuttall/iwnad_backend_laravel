@@ -61,16 +61,6 @@ class User extends Eloquent implements JWTSubject, AuthenticatableContract, CanR
 		'phone',
 	];
 
-	// protected $userid;
-	// protected $email;
-	// protected $permissions;
-	// protected $password;
-	// protected $name;
-	// protected $profilepic;
-	// protected $occupation;
-	// protected $organization;
-	// protected $phone;
-
 	public function pairings()
 	{
 		return $this->hasMany(\App\Models\Pairing::class, 'menteeid');

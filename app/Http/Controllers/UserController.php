@@ -113,19 +113,18 @@ class UserController extends Controller
         $mentorEmail = $request->get('mentor');
         $menteeEmail = $request->get('mentee');
 
-        $mentor = User::where('email', $mentorEmail);
+        $mentor = User::where('email', $mentorEmail)->first();
         if (is_null($mentor)) {
-            error_log('no such email "$mentorEmail" in DB');
+            error_log('no such email "'.$mentorEmail.'" in DB');
             return response()->json(['invalid_mentor'], 400);
         }
         $mentor = $mentor->first();
 
-        $mentee = User::where('email', $menteeEmail);
+        $mentee = User::where('email', $menteeEmail)->first();
         if (is_null($mentee)) {
-            error_log('no such email "$menteeEmail" in DB');
+            error_log('no such email "'.$menteeEmail.'" in DB');
             return response()->json(['invalid_mentee'], 400);
         }
-        $mentee = $mentee->first();
 
         error_log('both users exist: construct new pairing');
 
