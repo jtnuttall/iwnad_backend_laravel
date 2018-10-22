@@ -163,5 +163,17 @@ class UserController extends Controller
 
     public function getAllUsers(Request $request)
     {
+        error_log('all users requested');
+
+        $count = $request->get('count');
+        if (is_null($count)) {
+            error_log('no per-page count given');
+            $count = 15;
+        }
+        error_log('per-page count is '.$count);
+
+        $users = User::paginate($count);
+
+        return response()->json(compact('users'));
     }
 }
