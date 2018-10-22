@@ -74,7 +74,7 @@ class UserController extends Controller
 
     public function addUserInfo(Request $request)
     {
-        
+
     }
 
     public function getAuthenticatedUser()
@@ -138,8 +138,10 @@ class UserController extends Controller
             return response()->json(['invalid_mentee'], 400);
         }
 
-        error_log('both users exist and are of the correct type: ');
-        error_log('construct new pairing');
+        error_log(
+            'both users exist and are of the correct type: '
+            .'construct new pairing'
+        );
 
         $pairing = new Pairing();
         $pairing->mentorid = $mentor->userid;
