@@ -19,6 +19,7 @@ class CreateUsersTable extends Migration {
 			$table->string('email', 64)->unique('email_UNIQUE');
 			$table->timestamp('email_verified_at')->nullable();
 			$table->integer('permissions');
+			$table->boolean('firstlogin')->default(true);
 			$table->string('password', 255);
 			$table->string('name', 64)->nullable();
 			$table->string('profilepic')->nullable();

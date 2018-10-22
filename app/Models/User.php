@@ -43,6 +43,7 @@ class User extends Eloquent implements JWTSubject, AuthenticatableContract, CanR
 
 	protected $casts = [
 		'permissions' => 'int',
+		'firstlogin' => 'boolean',
 	];
 
 	protected $hidden = [
@@ -53,6 +54,7 @@ class User extends Eloquent implements JWTSubject, AuthenticatableContract, CanR
 	protected $fillable = [
 		'email',
 		'permissions',
+		'firstlogin',
 		'password',
 		'name',
 		'profilepic',

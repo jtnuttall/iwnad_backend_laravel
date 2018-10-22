@@ -17,6 +17,7 @@ class UserTableSeeder extends Seeder
 		$baseadmin->password = Hash::make(env('ADMIN_PASSWORD', "iwnadCS401"));
 		$baseadmin->permissions = 0;
 		$baseadmin->name = 'Avni';
+        $baseadmin->firstlogin = false;
 		$baseadmin->save();
     }
 }
