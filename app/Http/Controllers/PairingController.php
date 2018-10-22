@@ -96,7 +96,8 @@ class PairingController extends Controller
 
     	$pairings = Pairing::with(['mentor', 'mentee'])
     					->where('mentorid', $user->userid)
-    					->orWhere('menteeid', $user->userid);
+    					->orWhere('menteeid', $user->userid)
+    					->get();
 
     	return response()->json(compact('pairings'));
     }
