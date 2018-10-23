@@ -4,12 +4,10 @@ namespace App\Http\Middleware;
 
 use Closure;
 use JWTAuth;
-use Exception;
 use Tymon\JWTAuth\Http\Middleware\BaseMiddleware;
 
-class JwtMiddleware extends BaseMiddleware
+class AdminOnlyMiddleware
 {
-
     /**
      * Handle an incoming request.
      *
@@ -21,6 +19,12 @@ class JwtMiddleware extends BaseMiddleware
     {
         try {
             $user = JWTAuth::parseToken()->authenticate();
+
+            if ($user->permissions != 0) {
+                return response()->json([
+                    'status' => 'Insufficient user permissions'
+                ]);
+            }
         } catch (Exception $e) {
             if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException) {
                 return response()->json([

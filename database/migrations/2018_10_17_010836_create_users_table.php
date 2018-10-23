@@ -19,6 +19,7 @@ class CreateUsersTable extends Migration {
 			$table->string('email', 64)->unique('email_UNIQUE');
 			$table->timestamp('email_verified_at')->nullable();
 			$table->integer('permissions');
+			$table->boolean('firstlogin')->default(true);
 			$table->string('password', 255);
 			$table->string('name', 64)->nullable();
 			$table->string('profilepic')->nullable();
@@ -28,18 +29,6 @@ class CreateUsersTable extends Migration {
 			$table->rememberToken();
 			$table->timestamps();
 		});
-
-		$zeroemail = env('ADMIN_EMAIL', "abarman@usc.edu");
-		$zeropass = Hash::make(env('ADMIN_PASSWORD', "iwnadCS401"));
-
-		DB::table('users')->insert(
-			array(
-				'email' => $zeroemail,
-				'password' => $zeropass,
-				'permissions' => 0,
-				'name' => "Avni - Admin"
-			)
-		);
 	}
 
 
