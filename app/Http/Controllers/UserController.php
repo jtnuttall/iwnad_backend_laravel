@@ -105,7 +105,7 @@ class UserController extends Controller
 
         $email = $request->get('email');
         $name = $request->get('name');
-        $profilepic = $request->get('profilepic');
+        $profilepic = $request->file('profilepic');
         $occupation = $request->get('occupation');
         $organization = $request->get('organization');
         $phone = $request->get('phone');
@@ -118,7 +118,7 @@ class UserController extends Controller
             $user->name = $name;
         }
         if (!is_null($profilepic)) {
-            $user->profilepic = $profilepic;
+            $user->profilepic = $profilepic->store('profilepics');
         }
         if (!is_null($occupation)) {
             $user->occupation = $occupation;
@@ -206,4 +206,21 @@ class UserController extends Controller
 
         return response()->json(compact('users'));
     }
+
+    // public function getMentorsAndMentees(Request $request)
+    // {
+    //     error_log('mentors and mentees requested');
+
+    //     $count = $request->get('count');
+    //     if (is_null($count)) {
+    //         error_log('no per-page count given');
+    //         $count = 15;
+    //     }
+    //     error_log('per-page count is '.$count);
+
+    //     $users = User::where('permissions', '<>', '0')
+    //                     ->paginate($count);
+
+    //     return response()->json(compact('users'));
+    // }
 }

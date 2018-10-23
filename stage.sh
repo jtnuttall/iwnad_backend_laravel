@@ -14,6 +14,7 @@ git push
 git checkout staging
 # merge master into staging
 git merge master
+cp -f .env_production .env
 # build the Ember application
 cd $FRONTEND && ember build --environment staging && cd -;
 # copy the new Ember build into the Laravel application
@@ -28,4 +29,3 @@ git push origin staging
 
 # switch back to master
 git checkout master
-git merge staging
