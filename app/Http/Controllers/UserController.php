@@ -97,7 +97,7 @@ class UserController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'email' => 'string|email|max:255|unique:users',
+            'email' => 'string|email|max:255',
         ]);
         if ($validator->fails()) {
             return response()->json($validator->errors()->toJson(), 400);
