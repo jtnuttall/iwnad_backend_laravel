@@ -33,7 +33,7 @@ class PairingController extends Controller
             	'status' => 'nonexistent_mentor'
             ], 400);
         }
-        if ($mentor->permissions != 1) {
+        if ($mentor->permissions != env('MENTOR_PERMISSIONS')) {
             error_log('email '.$mentorEmail.' is not a mentor email');
             return response()->json([
             	'status' => 'invalid_mentor'
@@ -47,7 +47,7 @@ class PairingController extends Controller
             	'status' => 'nonexistent_mentee'
             ], 400);
         }
-        if ($mentee->permissions != 2) {
+        if ($mentee->permissions != env('MENTEE_PERMISSIONS')) {
             error_log('email '.$menteeEmail.' is not a mentee email');
             return response()->json([
             	'status' => 'invalid_mentee'

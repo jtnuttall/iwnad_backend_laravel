@@ -35,14 +35,14 @@ class UserController extends Controller
     }
 
     /**
-     * Create magic code from time
+     * Create magic code from rand()
      * @param email
      * @return string
      */
     private function makeMagicCode($email)
     {
-    	$result = time() & 0xFFFFFF;
-        $result = substr(pack("H*", $result), 2);
+    	$result = rand() & 0xFFFFFF;
+        $result = dechex($result);
         error_log('magic code for '.$email.' is: '.$result);
     	return $result;
     }

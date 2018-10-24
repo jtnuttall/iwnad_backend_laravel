@@ -13,11 +13,24 @@ class UserSeeder extends Seeder
     public function run()
     {
 		$baseadmin = new User();
-		$baseadmin->email = env('ADMIN_EMAIL', "abarman@usc.edu");
-		$baseadmin->password = Hash::make(env('ADMIN_PASSWORD', "iwnadCS401"));
-		$baseadmin->permissions = 0;
+		$baseadmin->email = env('ADMIN_EMAIL', 'abarman@usc.edu');
+		$baseadmin->password = Hash::make(env('ADMIN_PASSWORD', 'abarman'));
+		$baseadmin->permissions = env('ADMIN_PERMISSIONS');
 		$baseadmin->name = 'Avni';
         $baseadmin->firstlogin = false;
 		$baseadmin->save();
+
+        // TODO remove for final production release
+        $testmentor = new User();
+        $testmentor->email = 'jtnuttal@usc.edu';
+        $testmentor->password = Hash::make('jtnuttal');
+        $testmentor->permissions = env('MENTOR_PERMISSIONS');
+        $testmentor->save();
+
+        $testmentee = new User();
+        $testmentee->email = 'dshafi@usc.edu';
+        $testmentee->password = Hash::make('dshafi');
+        $testmentee->permissions = env('MENTEE_PERMISSIONS');
+        $testmentee->save();
     }
 }
