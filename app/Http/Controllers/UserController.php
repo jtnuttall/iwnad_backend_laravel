@@ -207,6 +207,25 @@ class UserController extends Controller
         return response()->json(compact('users'));
     }
 
+    public function getUnpairedUsers(Request $request)
+    {
+        error_log('unpaired users requested');
+
+        $count = $request->get('count');
+        if (is_null($count)) {
+            error_log('no per-page count given');
+            $count = 15;
+        }
+        error_log('per-page count is '.$count);
+
+        $users = User::whereDoesntHave('mentorPairings')
+                        ->whereDoesntHave('menteePairings')
+                        ->where('permissions', '<>', env('ADMIN_PERMISSIONS'))
+                        ->paginate($count);
+
+        return response()->json(compact('users'));
+    }
+
     // public function getMentorsAndMentees(Request $request)
     // {
     //     error_log('mentors and mentees requested');

@@ -28,6 +28,7 @@ Route::group(['middleware' => ['jwt.verify']], function() {
 
 Route::group(['middleware' => ['admin.verify']], function() {
 	Route::post('allusers', 'UserController@getAllUsers');
+	Route::post('unpaired', 'UserController@getUnpairedUsers');
 
     Route::post('pair', 'PairingController@pair');
     Route::post('deletepair', 'PairingController@deletePair');
