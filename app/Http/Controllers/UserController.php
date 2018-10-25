@@ -30,8 +30,9 @@ class UserController extends Controller
             return response()->json(['error' => 'could_not_create_token'], 500);
         }
 
+        $user = Auth::user();
         error_log('success');
-        return response()->json(compact('token'));
+        return response()->json(compact('user', 'token'));
     }
 
     /**
