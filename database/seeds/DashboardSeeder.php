@@ -11,6 +11,6 @@ class DashboardSeeder extends Seeder
      */
     public function run()
     {
-        //
+        
     }
 }
