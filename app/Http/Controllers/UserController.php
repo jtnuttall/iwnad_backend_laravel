@@ -243,4 +243,15 @@ class UserController extends Controller
 
     //     return response()->json(compact('users'));
     // }
+
+    public function deleteUser(Request $request){
+        error_log('deleting a user');
+
+        $delete = User::whereDoesntHave('mentorPairings')
+                        ->whereDoesntHave('menteePairings')
+                        ->where('email', $request->get('email') )
+                        ->delete();
+
+        getAllUsers();
+    }
 }
