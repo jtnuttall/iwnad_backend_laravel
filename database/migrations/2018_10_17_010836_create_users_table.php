@@ -26,6 +26,7 @@ class CreateUsersTable extends Migration {
 			$table->string('occupation', 64)->nullable();
 			$table->string('organization', 45)->nullable();
 			$table->string('phone', 20)->nullable();
+			$table->text('bio')->nullable();
 			$table->rememberToken();
 			$table->timestamps();
 		});

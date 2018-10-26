@@ -13,7 +13,6 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::post('register', 'UserController@register');
 Route::post('login', 'UserController@authenticate');
 
 Route::group(['middleware' => ['jwt.verify']], function() {
@@ -27,6 +26,8 @@ Route::group(['middleware' => ['jwt.verify']], function() {
 });
 
 Route::group(['middleware' => ['admin.verify']], function() {
+	Route::post('register', 'UserController@register');
+
 	Route::post('allusers', 'UserController@getAllUsers');
 	Route::post('unpaired', 'UserController@getUnpairedUsers');
 

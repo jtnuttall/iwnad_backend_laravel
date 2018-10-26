@@ -55,6 +55,7 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6',
+            'name' => 'required|string|max:64',
             'permissions' => 'required|int|between:0,2',
         ]);
         if($validator->fails()){
@@ -66,6 +67,7 @@ class UserController extends Controller
         $user = User::create([
             'email' => $request->get('email'),
             'password' => Hash::make($request->get('password')),
+            'name' => $request->get('name'),
             'permissions' => $request->get('permissions'),
         ]);
 
@@ -84,7 +86,7 @@ class UserController extends Controller
 
         if ($user->firstlogin) {
             $validator = Validator::make($request->all(), [
-                'name' => 'string|required|max:64',
+                'profilepic' => 'file|required',  // mimes?
                 'occupation' => 'string|required|max:64',
                 'organization' => 'string|required|max:45',
                 'phone' => 'string|required|max:20',
@@ -98,18 +100,20 @@ class UserController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'email' => 'string|email|max:255',
+                'email' => 'string|email|max:255|unique:users',
+                'bio' => 'string|max:65535',
         ]);
         if ($validator->fails()) {
             return response()->json($validator->errors()->toJson(), 400);
         }
 
         $email = $request->get('email');
-        $name = $request->get('name');
+        // $name = $request->get('name');
         $profilepic = $request->file('profilepic');
         $occupation = $request->get('occupation');
         $organization = $request->get('organization');
         $phone = $request->get('phone');
+        $bio = $request->get('bio');
 
         if (!is_null($email)) {
             $this->notifyEmailChange($user, $email);
@@ -129,6 +133,9 @@ class UserController extends Controller
         }
         if (!is_null($phone)) {
             $user->phone = $phone;
+        }
+        if (!is_null($bio)) {
+
         }
 
         $user->save();
