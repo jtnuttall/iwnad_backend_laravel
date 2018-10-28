@@ -63,24 +63,38 @@
     value: true
   });
   exports.default = Ember.Controller.extend({
+    failedLogin: false,
+    emptyForm: false,
+
     actions: {
-      //connect to backend
+
       login() {
-        console.log(this.email, this.password);
+        console.log("email " + this.email);
+        console.log("pw " + this.password);
+
+        if (this.email == undefined || this.password == undefined) {
+          this.set('emptyForm', true);
+          return;
+        } else {
+          this.set('emptyForm', false);
+        }
         $.ajax({
           type: "post",
+          // url: "login",
           url: "api/login",
           data: JSON.stringify({
             email: this.email,
             password: this.password
           }),
           contentType: "application/json"
-        }).then(() => {
-          // this.transitionToRoute('main')
-          console.log("SUCCESS");
+        }).then(result => {
+          if (result) {
+            var temp = JSON.parse(result);
+            console.log("RESULT " + temp);
+          }
+          this.transitionToRoute("dashboard-page");
         }, () => {
-          console.log("FAILURE");
-          //error case
+          this.set('failedLogin', true);
         });
       }
     }
@@ -365,13 +379,16 @@
 
   exports.default = function () {
 
+    this.get('/modules');
+
     this.post("/login", function (schema, request) {
       console.log(request);
       let loginData = JSON.parse(request.requestBody);
       if (loginData.email == "a@a.com") {
-        return new _emberCliMirage.Response(200);
+        return ['Link', 'Zelda', 'Epona'];
       } else {
         return new _emberCliMirage.Response(401);
+        //400 or 500
       }
     });
 
@@ -487,21 +504,22 @@
     this.route('dashboard-page', { path: '/dashboard' });
     this.route('my-match');
     this.route('my-profile');
+    this.route('new-user');
   });
 
   exports.default = Router;
 });
 ;define("iwnad/routes/dashboard-page", ["exports"], function (exports) {
-	"use strict";
+  "use strict";
 
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-	exports.default = Ember.Route.extend({
-		model() {
-			return this.store.findAll("module");
-		}
-	});
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = Ember.Route.extend({
+    model() {
+      return this.store.findAll("module");
+    }
+  });
 });
 ;define('iwnad/routes/login', ['exports'], function (exports) {
   'use strict';
@@ -510,9 +528,7 @@
     value: true
   });
   exports.default = Ember.Route.extend({
-    model() {
-      return ['Marie Curie', 'Mae Jemison', 'Albert Hofmann'];
-    }
+    model() {}
   });
 });
 ;define('iwnad/routes/magic', ['exports'], function (exports) {
@@ -540,6 +556,14 @@
   exports.default = Ember.Route.extend({});
 });
 ;define('iwnad/routes/my-profile', ['exports'], function (exports) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = Ember.Route.extend({});
+});
+;define('iwnad/routes/new-user', ['exports'], function (exports) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -598,7 +622,7 @@
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = Ember.HTMLBars.template({ "id": "wIsDj+PK", "block": "{\"symbols\":[],\"statements\":[[0,\"\\n\"],[7,\"div\"],[11,\"class\",\"component-padding\"],[9],[0,\"\\n\\t\"],[7,\"div\"],[11,\"class\",\"row\"],[9],[0,\"\\n\\t  \"],[7,\"div\"],[11,\"class\",\"col-md-4\"],[9],[0,\"\\n\\t  \\t\"],[7,\"img\"],[11,\"src\",\"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvyjtZBrZtFqBZEimzVor2zPU6VSgREi4YaIrOmzAGoGpGce0J\"],[9],[10],[0,\"\\n\\t  \"],[10],[0,\"\\n\\t  \"],[7,\"div\"],[11,\"class\",\"login-text col-md-8\"],[9],[0,\"\\n\\t  \\t\"],[7,\"h1\"],[11,\"class\",\"large-text\"],[9],[0,\"Log In\"],[10],[0,\"\\n\\t  \\t\"],[7,\"h6\"],[11,\"class\",\"small-text\"],[9],[0,\"Or click \"],[4,\"link-to\",[\"magic\"],null,{\"statements\":[[0,\"here\"]],\"parameters\":[]},null],[0,\" to sign up.\"],[10],[0,\"\\n\\t  \\t\"],[7,\"br\"],[9],[10],[0,\"\\n\\t\\t\"],[7,\"br\"],[9],[10],[0,\"\\n\\t\\t\"],[7,\"h6\"],[11,\"class\",\"small-text\"],[9],[0,\"Email Address\"],[7,\"span\"],[11,\"style\",\"color: #E36364;\"],[9],[0,\" *\"],[10],[10],[0,\"\\n    \"],[1,[27,\"input\",null,[[\"name\",\"type\",\"value\"],[\"address\",\"email\",[23,[\"email\"]]]]],false],[0,\"\\n\\t\\t\"],[7,\"br\"],[9],[10],[0,\"\\n\\t\\t\"],[7,\"br\"],[9],[10],[0,\"\\n\\t\\t\"],[7,\"h6\"],[11,\"class\",\"small-text\"],[9],[0,\"Password\"],[7,\"span\"],[11,\"style\",\"color: #E36364;\"],[9],[0,\" *\"],[10],[10],[0,\"\\n\\t\\t\"],[1,[27,\"input\",null,[[\"type\",\"name\",\"value\"],[\"password\",\"password\",[23,[\"password\"]]]]],false],[0,\"\\n\\n\\t\\t\"],[7,\"div\"],[11,\"class\",\"button-div\"],[9],[0,\"\\n\\t\\t\\t\"],[7,\"button\"],[11,\"class\",\"submit-button\"],[3,\"action\",[[22,0,[]],\"login\"]],[9],[0,\"Next\"],[10],[0,\"\\t\\t\"],[10],[0,\"\\n\\t  \"],[10],[0,\"\\n\\t\"],[10],[0,\"\\n\"],[10],[0,\"\\n\\n\"],[1,[21,\"outlet\"],false],[0,\"\\n\"]],\"hasEval\":false}", "meta": { "moduleName": "iwnad/templates/login.hbs" } });
+  exports.default = Ember.HTMLBars.template({ "id": "7PB5Ltqz", "block": "{\"symbols\":[],\"statements\":[[0,\"\\n\"],[7,\"div\"],[11,\"class\",\"component-padding\"],[9],[0,\"\\n\\t\"],[7,\"div\"],[11,\"class\",\"row\"],[9],[0,\"\\n\\t  \"],[7,\"div\"],[11,\"class\",\"col-md-4\"],[9],[0,\"\\n\\t  \\t\"],[7,\"img\"],[11,\"src\",\"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvyjtZBrZtFqBZEimzVor2zPU6VSgREi4YaIrOmzAGoGpGce0J\"],[9],[10],[0,\"\\n\\t  \"],[10],[0,\"\\n\\t  \"],[7,\"div\"],[11,\"class\",\"login-text col-md-8\"],[9],[0,\"\\n\\t  \\t\"],[7,\"h1\"],[11,\"class\",\"large-text\"],[9],[0,\"Log In\"],[10],[0,\"\\n\\t  \\t\"],[7,\"h6\"],[11,\"class\",\"small-text\"],[9],[0,\"Or click \"],[4,\"link-to\",[\"magic\"],null,{\"statements\":[[0,\"here\"]],\"parameters\":[]},null],[0,\" to sign up.\"],[10],[0,\"\\n\\t  \\t\"],[7,\"br\"],[9],[10],[0,\"\\n\\t\\t\\t\"],[7,\"br\"],[9],[10],[0,\"\\n\\t\\t\\t\"],[7,\"h6\"],[11,\"required\",\"required\"],[11,\"class\",\"small-text\"],[9],[0,\"Email Address\"],[7,\"span\"],[11,\"style\",\"color: #E36364;\"],[9],[0,\" *\"],[10],[10],[0,\"\\n    \\t\"],[1,[27,\"input\",null,[[\"name\",\"type\",\"value\"],[\"email\",\"email\",[23,[\"email\"]]]]],false],[0,\"\\n\\t\\t\\t\"],[7,\"br\"],[9],[10],[0,\"\\n\\t\\t\\t\"],[7,\"br\"],[9],[10],[0,\"\\n\\t\\t\\t\"],[7,\"h6\"],[11,\"required\",\"required\"],[11,\"class\",\"small-text\"],[9],[0,\"Password\"],[7,\"span\"],[11,\"style\",\"color: #E36364;\"],[9],[0,\" *\"],[10],[10],[0,\"\\n\\t\\t\\t\"],[1,[27,\"input\",null,[[\"type\",\"name\",\"value\"],[\"password\",\"password\",[23,[\"password\"]]]]],false],[0,\"\\n\\t\\t\\t\"],[7,\"br\"],[9],[10],[0,\"\\n\\t\\t\\t\"],[7,\"br\"],[9],[10],[0,\"\\n\\n\\n\"],[4,\"if\",[[23,[\"emptyForm\"]]],null,{\"statements\":[],\"parameters\":[]},{\"statements\":[[4,\"if\",[[23,[\"failedLogin\"]]],null,{\"statements\":[],\"parameters\":[]},{\"statements\":[[0,\"\\t\\t\\t\\t\\t\"],[7,\"h6\"],[11,\"style\",\"color: #FFFFFF;\"],[9],[0,\" ffs \"],[10],[0,\"\\n\"]],\"parameters\":[]}]],\"parameters\":[]}],[0,\"\\n\\n\"],[4,\"if\",[[23,[\"emptyForm\"]]],null,{\"statements\":[[0,\"\\t\\t\\t\\t\"],[7,\"h6\"],[11,\"style\",\"color: #E36364;\"],[9],[0,\"*Username and password are required\"],[10],[0,\"\\n\"]],\"parameters\":[]},null],[0,\"\\n\"],[4,\"if\",[[23,[\"failedLogin\"]]],null,{\"statements\":[[0,\"\\t\\t\\t\\t\"],[7,\"h6\"],[11,\"style\",\"color: #E36364;\"],[9],[0,\"*Username or password is incorrect\"],[10],[0,\"\\n\"]],\"parameters\":[]},null],[0,\"\\n\\t\\t\\t\"],[7,\"div\"],[11,\"class\",\"button-div\"],[9],[0,\"\\n\\t\\t\\t\\t\"],[7,\"button\"],[11,\"class\",\"submit-button\"],[3,\"action\",[[22,0,[]],\"login\"]],[9],[0,\"Next\"],[10],[0,\"\\n\\t\\t\\t\"],[10],[0,\"\\n\\t  \"],[10],[0,\"\\n\\t\"],[10],[0,\"\\n\"],[10],[0,\"\\n\\n\"],[1,[21,\"outlet\"],false],[0,\"\\n\"]],\"hasEval\":false}", "meta": { "moduleName": "iwnad/templates/login.hbs" } });
 });
 ;define("iwnad/templates/magic", ["exports"], function (exports) {
   "use strict";
@@ -632,6 +656,14 @@
   });
   exports.default = Ember.HTMLBars.template({ "id": "OUYgu9WA", "block": "{\"symbols\":[],\"statements\":[[7,\"div\"],[11,\"class\",\"profileHeader\"],[9],[0,\"\\n  \"],[7,\"div\"],[11,\"class\",\"row\"],[9],[0,\"\\n\\t  \"],[7,\"div\"],[11,\"class\",\"col\"],[9],[0,\"\\n      \\t\"],[7,\"img\"],[11,\"src\",\"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvyjtZBrZtFqBZEimzVor2zPU6VSgREi4YaIrOmzAGoGpGce0J\"],[9],[10],[0,\"\\n\\t  \"],[10],[0,\"\\n\\n    \"],[7,\"div\"],[11,\"class\",\"col\"],[9],[0,\"\\n       \"],[1,[27,\"content-editable\",null,[[\"value\",\"placeholder\"],[[23,[\"name\"]],\"Name\"]]],false],[0,\"\\n    \"],[10],[0,\"\\n  \"],[10],[0,\"\\n\"],[10],[0,\"\\n\"],[7,\"div\"],[11,\"class\",\"MyProfileInfo\"],[9],[0,\"\\n  \"],[2,\"Student@USC\"],[0,\"\\n  \"],[7,\"div\"],[11,\"class\",\"row\"],[9],[0,\"\\n      \"],[7,\"div\"],[11,\"class\",\"col\"],[9],[0,\"\\n      \"],[10],[0,\"\\n  \\t  \"],[7,\"div\"],[11,\"class\",\"col\"],[9],[0,\"\\n          \"],[7,\"div\"],[11,\"class\",\"row\"],[9],[0,\"\\n            \"],[7,\"div\"],[11,\"class\",\"col\"],[9],[0,\"\\n              \"],[1,[27,\"content-editable\",null,[[\"class\",\"value\",\"placeholder\"],[\"content-editable-role\",[23,[\"role\"]],\"Student\"]]],false],[0,\"\\n            \"],[10],[0,\"\\n            \"],[7,\"div\"],[11,\"class\",\"col at-role\"],[9],[0,\"\\n              at\\n            \"],[10],[0,\"\\n            \"],[7,\"div\"],[11,\"class\",\"col\"],[9],[0,\"\\n              \"],[1,[27,\"content-editable\",null,[[\"class\",\"value\",\"placeholder\"],[\"content-editable-location\",[23,[\"location\"]],\"USC\"]]],false],[0,\"\\n            \"],[10],[0,\"\\n          \"],[10],[0,\"\\n  \\t  \"],[10],[0,\"\\n  \"],[10],[0,\"\\n\\n \"],[2,\"Contact Info\"],[0,\"\\n \"],[7,\"div\"],[11,\"class\",\"component-padding\"],[9],[0,\"\\n    \"],[7,\"h6\"],[11,\"class\",\"small-text\"],[9],[0,\"Contact*\"],[10],[0,\"\\n    \"],[7,\"div\"],[11,\"class\",\"row\"],[9],[0,\"\\n      \"],[7,\"div\"],[11,\"class\",\"col\"],[9],[0,\"\\n        \"],[7,\"div\"],[11,\"class\",\"row\"],[9],[0,\"\\n          \"],[7,\"div\"],[11,\"class\",\"col col-lg-2\"],[9],[0,\"\\n          \"],[10],[0,\"\\n          \"],[7,\"div\"],[11,\"class\",\"col\"],[9],[0,\"\\n            \"],[1,[27,\"content-editable\",null,[[\"class\",\"value\",\"placeholder\"],[\"content-editable\",[23,[\"emailContact\"]],\"name@gmail.com\"]]],false],[0,\"\\n          \"],[10],[0,\"\\n        \"],[10],[0,\"\\n      \"],[10],[0,\"\\n\\n      \"],[7,\"div\"],[11,\"class\",\"col\"],[9],[0,\"\\n        \"],[7,\"div\"],[11,\"class\",\"row\"],[9],[0,\"\\n          \"],[7,\"div\"],[11,\"class\",\"col col-lg-2\"],[9],[0,\"\\n          \"],[10],[0,\"\\n          \"],[7,\"div\"],[11,\"class\",\"col\"],[9],[0,\"\\n            \"],[1,[27,\"content-editable\",null,[[\"class\",\"value\",\"placeholder\"],[\"content-editable\",[23,[\"phoneContact\"]],\"(123)456-7890\"]]],false],[0,\"\\n          \"],[10],[0,\"\\n        \"],[10],[0,\"\\n      \"],[10],[0,\"\\n    \"],[10],[0,\"\\n    \"],[7,\"br\"],[9],[10],[0,\"\\n    \"],[7,\"br\"],[9],[10],[0,\"\\n    \"],[7,\"h6\"],[11,\"class\",\"small-text\"],[9],[0,\"Bio*\"],[10],[0,\"\\n    \"],[1,[27,\"content-editable\",null,[[\"class\",\"value\",\"placeholder\"],[\"content-editable\",[23,[\"bio\"]],\"Im an amazing coder look at how amazing I am at coding.\"]]],false],[0,\"\\n    \"],[7,\"br\"],[9],[10],[0,\"\\n    \"],[7,\"br\"],[9],[10],[0,\"\\n    \"],[7,\"h6\"],[11,\"class\",\"small-text\"],[9],[0,\"General Availability*\"],[10],[0,\"\\n    \"],[1,[27,\"content-editable\",null,[[\"class\",\"value\",\"placeholder\"],[\"content-editable\",[23,[\"availability\"]],\"wednesday at 3, thursday at 10\"]]],false],[0,\"\\n    \"],[7,\"br\"],[9],[10],[0,\"\\n    \"],[7,\"br\"],[9],[10],[0,\"\\n    \"],[7,\"h6\"],[11,\"class\",\"small-text\"],[9],[0,\"Skills\"],[10],[0,\"\\n    \"],[1,[27,\"content-editable\",null,[[\"class\",\"value\",\"placeholder\"],[\"content-editable\",[23,[\"skills\"]],\"C++, Java, Linux\"]]],false],[0,\"\\n    \"],[7,\"br\"],[9],[10],[0,\"\\n    \"],[7,\"br\"],[9],[10],[0,\"\\n    \"],[7,\"h6\"],[11,\"class\",\"small-text\"],[9],[0,\"Interests\"],[10],[0,\"\\n    \"],[1,[27,\"content-editable\",null,[[\"class\",\"value\",\"placeholder\"],[\"content-editable\",[23,[\"interests\"]],\"web development, hiking, dogs\"]]],false],[0,\"\\n    \"],[7,\"br\"],[9],[10],[0,\"\\n    \"],[7,\"br\"],[9],[10],[0,\"\\n    \"],[7,\"h6\"],[11,\"class\",\"small-text\"],[9],[0,\"Social Media\"],[10],[0,\"\\n    \"],[7,\"div\"],[11,\"class\",\"row\"],[9],[0,\"\\n      \"],[7,\"div\"],[11,\"class\",\"col\"],[9],[0,\"\\n        \"],[7,\"div\"],[11,\"class\",\"row\"],[9],[0,\"\\n          \"],[7,\"div\"],[11,\"class\",\"col col-lg-2\"],[9],[0,\"\\n          \"],[10],[0,\"\\n          \"],[7,\"div\"],[11,\"class\",\"col\"],[9],[0,\"\\n            \"],[1,[27,\"content-editable\",null,[[\"class\",\"value\",\"placeholder\"],[\"content-editable\",[23,[\"linkedIn\"]],\"linkedin.com/in/username\"]]],false],[0,\"\\n          \"],[10],[0,\"\\n        \"],[10],[0,\"\\n      \"],[10],[0,\"\\n\\n      \"],[7,\"div\"],[11,\"class\",\"col\"],[9],[0,\"\\n        \"],[7,\"div\"],[11,\"class\",\"row\"],[9],[0,\"\\n          \"],[7,\"div\"],[11,\"class\",\"col col-lg-2\"],[9],[0,\"\\n          \"],[10],[0,\"\\n          \"],[7,\"div\"],[11,\"class\",\"col\"],[9],[0,\"\\n            \"],[1,[27,\"content-editable\",null,[[\"class\",\"value\",\"placeholder\"],[\"content-editable\",[23,[\"twitter\"]],\"@username\"]]],false],[0,\"\\n          \"],[10],[0,\"\\n        \"],[10],[0,\"\\n      \"],[10],[0,\"\\n\\n      \"],[7,\"div\"],[11,\"class\",\"col\"],[9],[0,\"\\n        \"],[7,\"div\"],[11,\"class\",\"row\"],[9],[0,\"\\n          \"],[7,\"div\"],[11,\"class\",\"col col-lg-2\"],[9],[0,\"\\n          \"],[10],[0,\"\\n          \"],[7,\"div\"],[11,\"class\",\"col\"],[9],[0,\"\\n            \"],[1,[27,\"content-editable\",null,[[\"class\",\"value\",\"placeholder\"],[\"content-editable\",[23,[\"instagram\"]],\"username\"]]],false],[0,\"\\n          \"],[10],[0,\"\\n        \"],[10],[0,\"\\n      \"],[10],[0,\"\\n\\n      \"],[7,\"div\"],[11,\"class\",\"col\"],[9],[0,\"\\n        \"],[7,\"div\"],[11,\"class\",\"row\"],[9],[0,\"\\n          \"],[7,\"div\"],[11,\"class\",\"col col-lg-2\"],[9],[0,\"\\n          \"],[10],[0,\"\\n          \"],[7,\"div\"],[11,\"class\",\"col\"],[9],[0,\"\\n            \"],[1,[27,\"content-editable\",null,[[\"class\",\"value\",\"placeholder\"],[\"content-editable\",[23,[\"facebook\"]],\"facebook.com/username\"]]],false],[0,\"\\n          \"],[10],[0,\"\\n        \"],[10],[0,\"\\n      \"],[10],[0,\"\\n    \"],[10],[0,\"\\n\\n    \"],[7,\"div\"],[11,\"class\",\"update-button-div\"],[9],[0,\"\\n      \"],[7,\"button\"],[11,\"class\",\"submit-button\"],[9],[0,\"Update Info\"],[10],[0,\"\\n    \"],[10],[0,\"\\n  \"],[10],[0,\"\\n\"],[10],[0,\"\\n\\n\"],[1,[21,\"outlet\"],false],[0,\"\\n\"]],\"hasEval\":false}", "meta": { "moduleName": "iwnad/templates/my-profile.hbs" } });
 });
+;define("iwnad/templates/new-user", ["exports"], function (exports) {
+  "use strict";
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = Ember.HTMLBars.template({ "id": "+WsSIEsq", "block": "{\"symbols\":[],\"statements\":[[0,\"\\n\"],[7,\"div\"],[11,\"class\",\"component-padding\"],[9],[0,\"\\n\\t\"],[7,\"div\"],[11,\"class\",\"row\"],[9],[0,\"\\n\\t  \"],[7,\"div\"],[11,\"class\",\"greeting\"],[9],[0,\"\\n\\t  \\t\"],[7,\"div\"],[11,\"class\",\"greeting-pic\"],[9],[0,\"\\n\\t  \\t  \"],[7,\"img\"],[11,\"style\",\"width: 60px;\"],[11,\"src\",\"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvyjtZBrZtFqBZEimzVor2zPU6VSgREi4YaIrOmzAGoGpGce0J\"],[9],[10],[0,\"\\n\\t  \\t\"],[10],[0,\"\\n\\n\\t  \\t\"],[7,\"div\"],[11,\"class\",\"greeting-message\"],[9],[0,\"\\n\\t  \\t  \"],[7,\"h1\"],[11,\"class\",\"large-text\"],[9],[0,\"Hi, {person}!\"],[10],[0,\"\\n\\t\\t  \"],[7,\"h6\"],[11,\"class\",\"small-text\"],[9],[0,\"Let’s get to work.\"],[10],[0,\"\\n\\t  \\t\"],[10],[0,\"\\n\\t  \"],[10],[0,\"\\n\\n\\n    \"],[7,\"div\"],[11,\"class\",\"row\"],[9],[0,\"\\n      \"],[7,\"div\"],[11,\"class\",\"col\"],[9],[0,\"\\n        \"],[7,\"h6\"],[11,\"required\",\"required\"],[11,\"class\",\"small-text\"],[9],[0,\"Role\"],[7,\"span\"],[11,\"style\",\"color: #E36364;\"],[9],[0,\" *\"],[10],[10],[0,\"\\n         \"],[1,[27,\"input\",null,[[\"name\",\"type\",\"value\",\"placeholder\"],[\"role\",\"role\",[23,[\"role\"]],\"i.e. Student\"]]],false],[0,\"\\n       \"],[10],[0,\"\\n         \"],[7,\"h1\"],[11,\"class\",\"large-text\"],[11,\"style\",\"line-height: 2.5em\"],[9],[0,\"@\"],[10],[0,\"\\n      \"],[7,\"div\"],[11,\"class\",\"col\"],[9],[0,\"\\n        \"],[7,\"h6\"],[11,\"required\",\"required\"],[11,\"class\",\"small-text\"],[9],[0,\"Organization\"],[7,\"span\"],[11,\"style\",\"color: #E36364;\"],[9],[0,\" *\"],[10],[10],[0,\"\\n        \"],[1,[27,\"input\",null,[[\"type\",\"name\",\"value\",\"placeholder\"],[\"organization\",\"organization\",[23,[\"organization\"]],\"i.e. School\"]]],false],[0,\"\\n      \"],[10],[0,\"\\n      \"],[7,\"div\"],[11,\"class\",\"col\"],[9],[0,\"\\n        \"],[7,\"h6\"],[11,\"required\",\"required\"],[11,\"class\",\"small-text\"],[9],[0,\"Phone Number\"],[7,\"span\"],[11,\"style\",\"color: #E36364;\"],[9],[0,\" *\"],[10],[10],[0,\"\\n        \"],[1,[27,\"input\",null,[[\"type\",\"name\",\"value\"],[\"phone\",\"phone\",[23,[\"phone\"]]]]],false],[0,\"\\n      \"],[10],[0,\"\\n    \"],[10],[0,\"\\n    \"],[7,\"div\"],[11,\"class\",\"row\"],[9],[0,\"\\n      \"],[7,\"div\"],[11,\"class\",\"col\"],[9],[0,\"\\n        \"],[7,\"h6\"],[11,\"required\",\"required\"],[11,\"class\",\"small-text\"],[9],[0,\"Create Password\"],[7,\"span\"],[11,\"style\",\"color: #E36364;\"],[9],[0,\" *\"],[10],[10],[0,\"\\n         \"],[1,[27,\"input\",null,[[\"name\",\"type\",\"value\"],[\"password1\",\"password1\",[23,[\"password1\"]]]]],false],[0,\"\\n      \"],[10],[0,\"\\n      \"],[7,\"div\"],[11,\"class\",\"col\"],[9],[0,\"\\n        \"],[7,\"h6\"],[11,\"required\",\"required\"],[11,\"class\",\"small-text\"],[9],[0,\"Retype Password\"],[7,\"span\"],[11,\"style\",\"color: #E36364;\"],[9],[0,\" *\"],[10],[10],[0,\"\\n        \"],[1,[27,\"input\",null,[[\"type\",\"name\",\"value\"],[\"password2\",\"password2\",[23,[\"password2\"]]]]],false],[0,\"\\n      \"],[10],[0,\"\\n    \"],[10],[0,\"\\n\\n\\t\\t\"],[7,\"div\"],[11,\"class\",\"button-div\"],[9],[0,\"\\n\\t\\t\\t\"],[4,\"link-to\",[\"dashboard-page\"],null,{\"statements\":[[7,\"button\"],[11,\"class\",\"submit-button\"],[9],[0,\"Next\"],[10]],\"parameters\":[]},null],[0,\"\\n\\t\\t\"],[10],[0,\"\\n\\t  \"],[10],[0,\"\\n\\t\"],[10],[0,\"\\n\\n\"],[1,[21,\"outlet\"],false],[0,\"\\n\"]],\"hasEval\":false}", "meta": { "moduleName": "iwnad/templates/new-user.hbs" } });
+});
 ;define("iwnad/templates/signup", ["exports"], function (exports) {
   "use strict";
 
@@ -647,7 +679,7 @@
 
   QUnit.test('mirage/config.js', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'mirage/config.js should pass ESLint\n\n8:5 - Unexpected console statement. (no-console)');
+    assert.ok(false, 'mirage/config.js should pass ESLint\n\n10:5 - Unexpected console statement. (no-console)');
   });
 
   QUnit.test('mirage/fixtures/modules.js', function (assert) {
@@ -688,7 +720,7 @@ catch(err) {
 
 ;
           if (!runningTests) {
-            require("iwnad/app")["default"].create({"name":"iwnad","version":"0.0.0+b8bf2697"});
+            require("iwnad/app")["default"].create({"name":"iwnad","version":"0.0.0+75d5e329"});
           }
         
 //# sourceMappingURL=iwnad.map
