@@ -23,7 +23,7 @@ class AdminOnlyMiddleware
             if ($user->permissions != env('ADMIN_PERMISSIONS')) {
                 return response()->json([
                     'status' => 'insufficient_permissions'
-                ]);
+                ], 403);
             }
         } 
         catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
@@ -34,12 +34,17 @@ class AdminOnlyMiddleware
         catch (\Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
             return response()->json([
                 'status' => 'token_expired'
-            ]);
+            ], 403);
         }
+        catch (\Tymon\JWTAuth\Exceptions\JWTException $e) {
+            return response()->json([
+                'status' => 'no_token'
+            ], 403);
+        } 
         catch (Exception $e) {
             return response()->json([
                 'status' => 'token_not_found'
-            ]);
+            ], 403);
         }
         
         return $next($request);
