@@ -25,18 +25,18 @@ class JwtMiddleware extends BaseMiddleware
             if ($user->permissions != env('ADMIN_PERMISSIONS')) {
                 return response()->json([
                     'status' => 'insufficient_permissions'
-                ], 403);
+                ], 401);
             }
         } 
         catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
             return response()->json([
                 'status' => 'token_invalid'
-            ], 403);
+            ], 401);
         }
         catch (\Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
             return response()->json([
                 'status' => 'token_expired'
-            ], 403);
+            ], 401);
         }
         catch (\Tymon\JWTAuth\Exceptions\JWTException $e) {
             return response()->json([
