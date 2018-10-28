@@ -88,6 +88,7 @@
           }),
           contentType: "application/json"
         }).then(result => {
+          console.log(typeof result);
           if (result) {
             console.log(typeof result);
           }
