@@ -16,6 +16,7 @@ git checkout staging
 git merge master
 # build the Ember application
 cd $FRONTEND;
+rm -rf dist/ && echo "dist removed";
 ember build --environment staging;
 git checkout staging;
 cd -;
