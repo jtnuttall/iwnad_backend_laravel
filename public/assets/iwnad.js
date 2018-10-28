@@ -88,12 +88,8 @@
           }),
           contentType: "application/json"
         }).then(result => {
-          console.log('blah');
-          console.log(result);
           if (result) {
-            console.log("unparsed " + JSON.stringify(result));
-            var temp = JSON.parse(result);
-            console.log("RESULT " + temp);
+            console.log(typeof result);
           }
           this.transitionToRoute("dashboard-page");
         }, () => {
