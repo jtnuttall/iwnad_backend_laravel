@@ -89,7 +89,7 @@
           contentType: "application/json"
         }).then(result => {
           if (result) {
-            console.log("unparsed " + result);
+            console.log("unparsed " + result.stringify());
             var temp = JSON.parse(result);
             console.log("RESULT " + temp);
           }
