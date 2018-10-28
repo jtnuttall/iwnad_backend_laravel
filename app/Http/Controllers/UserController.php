@@ -59,7 +59,7 @@ class UserController extends Controller
             'permissions' => 'required|int|between:0,2',
         ]);
         if($validator->fails()){
-            return response()->json($validator->errors()->toJson(), 400);
+            return response()->json($validator->errors()->toArray(), 400);
         }
 
         // $magicCodeHash = Hash::make($this->makeMagicCode($request->get('email')));
@@ -93,7 +93,7 @@ class UserController extends Controller
             ]);
 
             if($validator->fails()){
-                return response()->json($validator->errors()->toJson(), 400);
+                return response()->json($validator->errors()->toArray(), 400);
             }
 
             $user->firstlogin = false;
@@ -104,7 +104,7 @@ class UserController extends Controller
                 'bio' => 'string|max:65535',
         ]);
         if ($validator->fails()) {
-            return response()->json($validator->errors()->toJson(), 400);
+            return response()->json($validator->errors()->toArray(), 400);
         }
 
         $email = $request->get('email');
@@ -187,7 +187,7 @@ class UserController extends Controller
             'password' => 'required|string|min:6',
         ]);
         if($validator->fails()){
-            return response()->json($validator->errors()->toJson(), 400);
+            return response()->json($validator->errors()->toArray(), 400);
         }
 
         $user = Auth::user();

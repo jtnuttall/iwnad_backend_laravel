@@ -21,22 +21,27 @@ class JwtMiddleware extends BaseMiddleware
     {
         try {
             $user = JWTAuth::parseToken()->authenticate();
-        } catch (Exception $e) {
-            if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException) {
+
+            if ($user->permissions != env('ADMIN_PERMISSIONS')) {
                 return response()->json([
-                    'status' => 'token_invalid',
+                    'status' => 'insufficient_permissions'
                 ]);
             }
-            else if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException) {
-                return response()->json([
-                    'status' => 'token_expired',
-                ]);
-            }
-            else {
-                return response()->json([
-                    'status' => 'token_not_found',
-                ]);
-            }
+        } 
+        catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
+            return response()->json([
+                'status' => 'token_invalid'
+            ]);
+        }
+        catch (\Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
+            return response()->json([
+                'status' => 'token_expired'
+            ]);
+        }
+        catch (Exception $e) {
+            return response()->json([
+                'status' => 'token_not_found'
+            ]);
         }
         
         return $next($request);
