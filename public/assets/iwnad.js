@@ -88,10 +88,8 @@
           }),
           contentType: "application/json"
         }).then(result => {
-          console.log(typeof result);
           if (result) {
-            console.log(typeof result);
-            console.log(result.user);
+            console.log(JSON.parse(JSON.stringify(result)).user);
           }
           this.transitionToRoute("dashboard-page");
         }, () => {
