@@ -91,6 +91,7 @@
           console.log(typeof result);
           if (result) {
             console.log(typeof result);
+            console.log(result.user);
           }
           this.transitionToRoute("dashboard-page");
         }, () => {
