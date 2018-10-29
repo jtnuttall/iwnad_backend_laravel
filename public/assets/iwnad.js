@@ -120,11 +120,12 @@
         $.ajax({
           type: "post",
           url: "api/allpairs",
+          data: null,
           contentType: "application/json"
         }).then(result => {
           console.log(result);
         }, () => {
-          console.log('error');
+          console.log('Ferror');
         });
       }
     }
