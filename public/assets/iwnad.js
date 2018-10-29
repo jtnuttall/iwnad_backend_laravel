@@ -105,7 +105,8 @@
           this.set('failedLogin', true);
         });
 
-        this.transitionToRoute("dashboard-page");
+        // this.transitionToRoute("dashboard-page");
+
 
         // console.log("email " + this.email);
         // console.log("pw " + this.password);
@@ -116,32 +117,15 @@
         // } else {
         //   this.set('emptyForm', false);
         // }
-        // $.ajax({
-        //   type: "post",
-        //   url: "login",
-        //   // url: "api/login",
-        //   data: JSON.stringify({
-        //     email: this.email,
-        //     password: this.password,
-        //   }),
-        //   contentType: "application/json",
-        // }).then((result) => {
-        //     var user = JSON.parse(JSON.stringify(result));
-        //     var name = user.name;
-        //     console.log("USEr " + JSON.stringify(result));
-        //     console.log(user.name);
-        //     // let post = store.createRecord('post', {
-        //     //   name: name,
-        //     // });
-        //     //
-        //     // post.save();
-        //
-        //     this.transitionToRoute("dashboard-page");
-        //   },
-        //   () => {
-        //     this.set('failedLogin', true);
-        //   }
-        // );
+        $.ajax({
+          type: "post",
+          url: "api/allpairs",
+          contentType: "application/json"
+        }).then(result => {
+          console.log(result);
+        }, () => {
+          console.log('error');
+        });
       }
     }
   });

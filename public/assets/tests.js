@@ -27,7 +27,7 @@ define('iwnad/tests/app.lint-test', [], function () {
 
   QUnit.test('controllers/login.js', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'controllers/login.js should pass ESLint\n\n4:12 - \'Ember\' is not defined. (no-undef)\n17:97 - \'reason\' is defined but never used. (no-unused-vars)');
+    assert.ok(false, 'controllers/login.js should pass ESLint\n\n4:12 - \'Ember\' is not defined. (no-undef)\n17:97 - \'reason\' is defined but never used. (no-unused-vars)\n33:7 - \'$\' is not defined. (no-undef)\n38:11 - Unexpected console statement. (no-console)\n41:11 - Unexpected console statement. (no-console)');
   });
 
   QUnit.test('controllers/module-resources.js', function (assert) {
