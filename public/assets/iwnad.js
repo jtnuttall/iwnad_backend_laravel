@@ -137,7 +137,7 @@
           type: "POST",
           contentType: "application/json",
           beforeSend: function (xhr) {
-            var token = this.get(session.session.authenticated.access_token);
+            var token = this.get(session.data.authenticated.access_token);
             if (token) {
               xhr.setRequestHeader("Authorization", "Bearer " + token);
             }
