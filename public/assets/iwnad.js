@@ -117,15 +117,16 @@
         // } else {
         //   this.set('emptyForm', false);
         // }
-        $.ajax({
-          type: "post",
-          url: "api/allpairs",
-          data: null,
-          contentType: "application/json"
-        }).then(result => {
-          console.log(result);
-        }, () => {
-          console.log('Ferror');
+        this.get('session').authorize('authorizer:oauth2-bearer', (headerName, headerValue) => {
+          $.ajax({
+            type: "post",
+            url: "api/allpairs",
+            contentType: "application/json"
+          }).then(result => {
+            console.log(result);
+          }, () => {
+            console.log('err');
+          });
         });
       }
     }
