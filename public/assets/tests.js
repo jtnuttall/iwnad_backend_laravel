@@ -10,14 +10,24 @@ define('iwnad/tests/app.lint-test', [], function () {
     assert.ok(true, 'app.js should pass ESLint\n\n');
   });
 
+  QUnit.test('authenticators/oauth2.js', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'authenticators/oauth2.js should pass ESLint\n\n');
+  });
+
   QUnit.test('components/dashboard-module.js', function (assert) {
     assert.expect(1);
     assert.ok(true, 'components/dashboard-module.js should pass ESLint\n\n');
   });
 
+  QUnit.test('controllers/application.js', function (assert) {
+    assert.expect(1);
+    assert.ok(false, 'controllers/application.js should pass ESLint\n\n4:12 - \'Ember\' is not defined. (no-undef)');
+  });
+
   QUnit.test('controllers/login.js', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'controllers/login.js should pass ESLint\n\n10:7 - Unexpected console statement. (no-console)\n11:7 - Unexpected console statement. (no-console)\n19:7 - \'$\' is not defined. (no-undef)\n30:13 - Unexpected console statement. (no-console)');
+    assert.ok(false, 'controllers/login.js should pass ESLint\n\n4:12 - \'Ember\' is not defined. (no-undef)\n17:97 - \'reason\' is defined but never used. (no-unused-vars)');
   });
 
   QUnit.test('controllers/module-resources.js', function (assert) {
@@ -40,6 +50,11 @@ define('iwnad/tests/app.lint-test', [], function () {
     assert.ok(true, 'models/module.js should pass ESLint\n\n');
   });
 
+  QUnit.test('models/user.js', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'models/user.js should pass ESLint\n\n');
+  });
+
   QUnit.test('resolver.js', function (assert) {
     assert.expect(1);
     assert.ok(true, 'resolver.js should pass ESLint\n\n');
@@ -48,6 +63,11 @@ define('iwnad/tests/app.lint-test', [], function () {
   QUnit.test('router.js', function (assert) {
     assert.expect(1);
     assert.ok(true, 'router.js should pass ESLint\n\n');
+  });
+
+  QUnit.test('routes/application.js', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'routes/application.js should pass ESLint\n\n');
   });
 
   QUnit.test('routes/dashboard-page.js', function (assert) {
@@ -89,6 +109,46 @@ define('iwnad/tests/app.lint-test', [], function () {
     assert.expect(1);
     assert.ok(true, 'routes/signup.js should pass ESLint\n\n');
   });
+});
+define('iwnad/tests/helpers/ember-simple-auth', ['exports', 'ember-simple-auth/authenticators/test'], function (exports, _test) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.authenticateSession = authenticateSession;
+  exports.currentSession = currentSession;
+  exports.invalidateSession = invalidateSession;
+
+
+  const TEST_CONTAINER_KEY = 'authenticator:test';
+
+  function ensureAuthenticator(app, container) {
+    const authenticator = container.lookup(TEST_CONTAINER_KEY);
+    if (!authenticator) {
+      app.register(TEST_CONTAINER_KEY, _test.default);
+    }
+  }
+
+  function authenticateSession(app, sessionData) {
+    const { __container__: container } = app;
+    const session = container.lookup('service:session');
+    ensureAuthenticator(app, container);
+    session.authenticate(TEST_CONTAINER_KEY, sessionData);
+    return app.testHelpers.wait();
+  }
+
+  function currentSession(app) {
+    return app.__container__.lookup('service:session');
+  }
+
+  function invalidateSession(app) {
+    const session = app.__container__.lookup('service:session');
+    if (session.get('isAuthenticated')) {
+      session.invalidate();
+    }
+    return app.testHelpers.wait();
+  }
 });
 define('iwnad/tests/integration/components/dashboard-module-test', ['qunit', 'ember-qunit', '@ember/test-helpers'], function (_qunit, _emberQunit, _testHelpers) {
   'use strict';
@@ -225,6 +285,11 @@ define('iwnad/tests/tests.lint-test', [], function () {
     assert.ok(true, 'test-helper.js should pass ESLint\n\n');
   });
 
+  QUnit.test('unit/controllers/application-test.js', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'unit/controllers/application-test.js should pass ESLint\n\n');
+  });
+
   QUnit.test('unit/controllers/login-test.js', function (assert) {
     assert.expect(1);
     assert.ok(true, 'unit/controllers/login-test.js should pass ESLint\n\n');
@@ -243,6 +308,16 @@ define('iwnad/tests/tests.lint-test', [], function () {
   QUnit.test('unit/models/module-test.js', function (assert) {
     assert.expect(1);
     assert.ok(true, 'unit/models/module-test.js should pass ESLint\n\n');
+  });
+
+  QUnit.test('unit/models/user-test.js', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'unit/models/user-test.js should pass ESLint\n\n');
+  });
+
+  QUnit.test('unit/routes/application-test.js', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'unit/routes/application-test.js should pass ESLint\n\n');
   });
 
   QUnit.test('unit/routes/dashboard-page-test.js', function (assert) {
@@ -283,6 +358,19 @@ define('iwnad/tests/tests.lint-test', [], function () {
   QUnit.test('unit/routes/signup-test.js', function (assert) {
     assert.expect(1);
     assert.ok(true, 'unit/routes/signup-test.js should pass ESLint\n\n');
+  });
+});
+define('iwnad/tests/unit/controllers/application-test', ['qunit', 'ember-qunit'], function (_qunit, _emberQunit) {
+  'use strict';
+
+  (0, _qunit.module)('Unit | Controller | application', function (hooks) {
+    (0, _emberQunit.setupTest)(hooks);
+
+    // Replace this with your real tests.
+    (0, _qunit.test)('it exists', function (assert) {
+      let controller = this.owner.lookup('controller:application');
+      assert.ok(controller);
+    });
   });
 });
 define('iwnad/tests/unit/controllers/login-test', ['qunit', 'ember-qunit'], function (_qunit, _emberQunit) {
@@ -336,6 +424,32 @@ define('iwnad/tests/unit/models/module-test', ['qunit', 'ember-qunit'], function
       let store = this.owner.lookup('service:store');
       let model = store.createRecord('module', {});
       assert.ok(model);
+    });
+  });
+});
+define('iwnad/tests/unit/models/user-test', ['qunit', 'ember-qunit'], function (_qunit, _emberQunit) {
+  'use strict';
+
+  (0, _qunit.module)('Unit | Model | user', function (hooks) {
+    (0, _emberQunit.setupTest)(hooks);
+
+    // Replace this with your real tests.
+    (0, _qunit.test)('it exists', function (assert) {
+      let store = this.owner.lookup('service:store');
+      let model = store.createRecord('user', {});
+      assert.ok(model);
+    });
+  });
+});
+define('iwnad/tests/unit/routes/application-test', ['qunit', 'ember-qunit'], function (_qunit, _emberQunit) {
+  'use strict';
+
+  (0, _qunit.module)('Unit | Route | application', function (hooks) {
+    (0, _emberQunit.setupTest)(hooks);
+
+    (0, _qunit.test)('it exists', function (assert) {
+      let route = this.owner.lookup('route:application');
+      assert.ok(route);
     });
   });
 });

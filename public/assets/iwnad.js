@@ -20,6 +20,16 @@
 
   exports.default = App;
 });
+;define('iwnad/authenticators/oauth2', ['exports', 'ember-simple-auth/authenticators/oauth2-password-grant'], function (exports, _oauth2PasswordGrant) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = _oauth2PasswordGrant.default.extend({
+    serverTokenEndpoint: 'api/login'
+  });
+});
 ;define('iwnad/components/content-editable', ['exports', 'ember-content-editable/components/content-editable'], function (exports, _contentEditable) {
   'use strict';
 
@@ -56,45 +66,82 @@
     }
   });
 });
-;define("iwnad/controllers/login", ["exports"], function (exports) {
-  "use strict";
+;define('iwnad/controllers/application', ['exports'], function (exports) {
+  'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
   exports.default = Ember.Controller.extend({
+    session: Ember.inject.service('session'),
+    actions: {
+      logout() {
+        this.get('session').invalidate();
+      }
+    }
+  });
+});
+;define('iwnad/controllers/login', ['exports'], function (exports) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = Ember.Controller.extend({
+    session: Ember.inject.service('session'),
+
     failedLogin: false,
     emptyForm: false,
 
     actions: {
 
       login() {
-        console.log("email " + this.email);
-        console.log("pw " + this.password);
+        let {
+          identification,
+          password
+        } = this.getProperties('identification', 'password');
 
-        if (this.email == undefined || this.password == undefined) {
-          this.set('emptyForm', true);
-          return;
-        } else {
-          this.set('emptyForm', false);
-        }
-        $.ajax({
-          type: "post",
-          // url: "login",
-          url: "api/login",
-          data: JSON.stringify({
-            email: this.email,
-            password: this.password
-          }),
-          contentType: "application/json"
-        }).then(result => {
-          if (result) {
-            console.log(JSON.parse(JSON.stringify(result)).user);
-          }
-          this.transitionToRoute("dashboard-page");
-        }, () => {
+        this.get('session').authenticate('authenticator:oauth2', identification, password).catch(reason => {
           this.set('failedLogin', true);
         });
+
+        this.transitionToRoute("dashboard-page");
+
+        // console.log("email " + this.email);
+        // console.log("pw " + this.password);
+        //
+        // if ((this.email == undefined) || (this.password == undefined)) {
+        //   this.set('emptyForm', true);
+        //   return;
+        // } else {
+        //   this.set('emptyForm', false);
+        // }
+        // $.ajax({
+        //   type: "post",
+        //   url: "login",
+        //   // url: "api/login",
+        //   data: JSON.stringify({
+        //     email: this.email,
+        //     password: this.password,
+        //   }),
+        //   contentType: "application/json",
+        // }).then((result) => {
+        //     var user = JSON.parse(JSON.stringify(result));
+        //     var name = user.name;
+        //     console.log("USEr " + JSON.stringify(result));
+        //     console.log(user.name);
+        //     // let post = store.createRecord('post', {
+        //     //   name: name,
+        //     // });
+        //     //
+        //     // post.save();
+        //
+        //     this.transitionToRoute("dashboard-page");
+        //   },
+        //   () => {
+        //     this.set('failedLogin', true);
+        //   }
+        // );
       }
     }
   });
@@ -295,6 +342,26 @@
     initialize: _setupContainer.default
   };
 });
+;define('iwnad/initializers/ember-simple-auth', ['exports', 'iwnad/config/environment', 'ember-simple-auth/configuration', 'ember-simple-auth/initializers/setup-session', 'ember-simple-auth/initializers/setup-session-service', 'ember-simple-auth/initializers/setup-session-restoration'], function (exports, _environment, _configuration, _setupSession, _setupSessionService, _setupSessionRestoration) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = {
+    name: 'ember-simple-auth',
+
+    initialize(registry) {
+      const config = _environment.default['ember-simple-auth'] || {};
+      config.rootURL = _environment.default.rootURL || _environment.default.baseURL;
+      _configuration.default.load(config);
+
+      (0, _setupSession.default)(registry);
+      (0, _setupSessionService.default)(registry);
+      (0, _setupSessionRestoration.default)(registry);
+    }
+  };
+});
 ;define('iwnad/initializers/export-application-global', ['exports', 'iwnad/config/environment'], function (exports, _environment) {
   'use strict';
 
@@ -369,6 +436,18 @@
     initialize: _initializeStoreService.default
   };
 });
+;define('iwnad/instance-initializers/ember-simple-auth', ['exports'], function (exports) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = {
+    name: 'ember-simple-auth',
+
+    initialize() {}
+  };
+});
 ;define("iwnad/mirage/config", ["exports", "ember-cli-mirage"], function (exports, _emberCliMirage) {
   "use strict";
 
@@ -380,11 +459,57 @@
 
     this.get('/modules');
 
+    function formEncodedToJson(encoded) {
+      var result = {};
+      encoded.split("&").forEach(function (part) {
+        var item = part.split("=");
+        result[item[0]] = decodeURIComponent(item[1]);
+      });
+      return result;
+    }
+
+    this.post('api/login', function (schema, req) {
+      console.log(schema);
+      console.log(req);
+      let loginData = formEncodedToJson(req.requestBody);
+      console.log(loginData);
+      console.log(loginData.grant_type);
+      if (loginData.grant_type === 'password') {
+        if (loginData.username === 'letme' && loginData.password === 'in') {
+          return {
+            'access_token': 'TOKEN'
+            // 'token_type': 'bearer'
+          };
+        } else {
+          return new _emberCliMirage.Response(400);
+        }
+      } else {
+        return new _emberCliMirage.Response(400);
+      }
+    });
+
     this.post("/login", function (schema, request) {
       console.log(request);
       let loginData = JSON.parse(request.requestBody);
       if (loginData.email == "a@a.com") {
-        return ['Link', 'Zelda', 'Epona'];
+        return {
+          "user": {
+            "userid": 1,
+            "email": "abarman@usc.edu",
+            "email_verified_at": null,
+            "permissions": 0,
+            "firstlogin": false,
+            "name": "Avni",
+            "profilepic": null,
+            "occupation": null,
+            "organization": null,
+            "phone": null,
+            "bio": null,
+            "created_at": "2018-10-25 21:36:25",
+            "updated_at": "2018-10-25 21:36:25"
+          },
+          "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODAwMFwvYXBpXC9sb2dpbiIsImlhdCI6MTU0MDc2MTk4OSwiZXhwIjoxNTQwNzY1NTg5LCJuYmYiOjE1NDA3NjE5ODksImp0aSI6IjFxZ2tTS29HdTBITVJsSUQiLCJzdWIiOjEsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.q7mKYQZVOHPSDcn1xiBD-gLDNxmuc-0e0WoWdlXTlfU"
+        };
       } else {
         return new _emberCliMirage.Response(401);
         //400 or 500
@@ -474,6 +599,28 @@
 		resources: _emberData.default.attr()
 	});
 });
+;define('iwnad/models/user', ['exports', 'ember-data'], function (exports, _emberData) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = _emberData.default.Model.extend({
+    userid: _emberData.default.attr('int'),
+    email: _emberData.default.attr('string'),
+    email_verified_at: _emberData.default.attr('string'),
+    permissions: _emberData.default.attr('int'),
+    firstlogin: _emberData.default.attr('boolean'),
+    name: _emberData.default.attr('string'),
+    profilepic: _emberData.default.attr('string'),
+    occupation: _emberData.default.attr('string'),
+    organization: _emberData.default.attr('string'),
+    phone: _emberData.default.attr('string'),
+    bio: _emberData.default.attr('string'),
+    created_at: _emberData.default.attr('string'),
+    updated_at: _emberData.default.attr('string')
+  });
+});
 ;define('iwnad/resolver', ['exports', 'ember-resolver'], function (exports, _emberResolver) {
   'use strict';
 
@@ -507,6 +654,14 @@
   });
 
   exports.default = Router;
+});
+;define('iwnad/routes/application', ['exports', 'ember-simple-auth/mixins/application-route-mixin'], function (exports, _applicationRouteMixin) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = Ember.Route.extend(_applicationRouteMixin.default);
 });
 ;define("iwnad/routes/dashboard-page", ["exports"], function (exports) {
   "use strict";
@@ -591,13 +746,37 @@
     }
   });
 });
+;define('iwnad/services/cookies', ['exports', 'ember-cookies/services/cookies'], function (exports, _cookies) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = _cookies.default;
+});
+;define('iwnad/services/session', ['exports', 'ember-simple-auth/services/session'], function (exports, _session) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = _session.default;
+});
+;define('iwnad/session-stores/application', ['exports', 'ember-simple-auth/session-stores/adaptive'], function (exports, _adaptive) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = _adaptive.default.extend();
+});
 ;define("iwnad/templates/application", ["exports"], function (exports) {
   "use strict";
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = Ember.HTMLBars.template({ "id": "E7F8buo1", "block": "{\"symbols\":[],\"statements\":[[0,\"\\n\"],[7,\"head\"],[9],[0,\"\\n  \"],[7,\"link\"],[11,\"rel\",\"stylesheet\"],[11,\"href\",\"https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css\"],[11,\"integrity\",\"sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO\"],[11,\"crossorigin\",\"anonymous\"],[9],[10],[0,\"\\n  \"],[7,\"script\"],[11,\"src\",\"https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js\"],[11,\"integrity\",\"sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy\"],[11,\"crossorigin\",\"anonymous\"],[9],[10],[0,\"\\n  \"],[7,\"link\"],[11,\"rel\",\"stylesheet\"],[11,\"href\",\"https://fonts.google.com/specimen/Muli?selection.family=Muli\"],[9],[10],[0,\"\\n\"],[10],[0,\"\\n\\n\"],[7,\"body\"],[9],[0,\"\\n\"],[7,\"nav\"],[11,\"class\",\"header navbar navbar-expand-lg navbar-dark\"],[9],[0,\"\\n  \"],[7,\"div\"],[11,\"class\",\"navbar-brand\"],[11,\"href\",\"#\"],[9],[0,\"she leads\"],[10],[0,\"\\n\\n\"],[4,\"if\",[true],null,{\"statements\":[[0,\"    \"],[7,\"button\"],[11,\"class\",\"navbar-toggler\"],[11,\"data-toggle\",\"collapse\"],[11,\"data-target\",\"#navbarSupportedContent\"],[11,\"aria-controls\",\"navbarSupportedContent\"],[11,\"aria-expanded\",\"false\"],[11,\"aria-label\",\"Toggle navigation\"],[11,\"type\",\"button\"],[9],[0,\"\\n      \"],[7,\"span\"],[11,\"class\",\"navbar-toggler-icon\"],[9],[10],[0,\"\\n    \"],[10],[0,\"\\n    \"],[7,\"div\"],[11,\"class\",\"collapse navbar-collapse\"],[11,\"id\",\"navbarSupportedContent\"],[9],[0,\"\\n      \"],[7,\"ul\"],[11,\"class\",\"navbar-nav mr-auto\"],[9],[0,\"\\n        \"],[7,\"li\"],[11,\"class\",\"navbar-link nav-item\"],[9],[0,\"\\n          \"],[4,\"link-to\",[\"my-match\"],null,{\"statements\":[[7,\"div\"],[11,\"class\",\"nav-link\"],[11,\"href\",\"#\"],[9],[0,\"My Match\"],[10]],\"parameters\":[]},null],[0,\"\\n        \"],[10],[0,\"\\n        \"],[7,\"li\"],[11,\"class\",\"navbar-link nav-item\"],[9],[0,\"\\n          \"],[4,\"link-to\",[\"my-profile\"],null,{\"statements\":[[7,\"div\"],[11,\"class\",\"nav-link\"],[11,\"href\",\"#\"],[9],[0,\"My Profile\"],[10]],\"parameters\":[]},null],[0,\"\\n        \"],[10],[0,\"\\n      \"],[10],[0,\"\\n\\n      \"],[4,\"link-to\",[\"login\"],null,{\"statements\":[[7,\"div\"],[11,\"class\",\"logout\"],[11,\"href\",\"#\"],[9],[0,\"Log In\"],[10]],\"parameters\":[]},null],[0,\"\\n\\n    \"],[10],[0,\"\\n\"]],\"parameters\":[]},null],[0,\"\\n\"],[10],[0,\"\\n\"],[10],[0,\"\\n\"],[1,[21,\"outlet\"],false],[0,\"\\n\\n\"],[0,\"\\n\"]],\"hasEval\":false}", "meta": { "moduleName": "iwnad/templates/application.hbs" } });
+  exports.default = Ember.HTMLBars.template({ "id": "r9c2giJF", "block": "{\"symbols\":[],\"statements\":[[0,\"\\n\"],[7,\"head\"],[9],[0,\"\\n  \"],[7,\"link\"],[11,\"rel\",\"stylesheet\"],[11,\"href\",\"https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css\"],[11,\"integrity\",\"sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO\"],[11,\"crossorigin\",\"anonymous\"],[9],[10],[0,\"\\n  \"],[7,\"script\"],[11,\"src\",\"https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js\"],[11,\"integrity\",\"sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy\"],[11,\"crossorigin\",\"anonymous\"],[9],[10],[0,\"\\n  \"],[7,\"link\"],[11,\"rel\",\"stylesheet\"],[11,\"href\",\"https://fonts.google.com/specimen/Muli?selection.family=Muli\"],[9],[10],[0,\"\\n\"],[10],[0,\"\\n\\n\"],[7,\"body\"],[9],[0,\"\\n\"],[7,\"nav\"],[11,\"class\",\"header navbar navbar-expand-lg navbar-dark\"],[9],[0,\"\\n  \"],[7,\"div\"],[11,\"class\",\"navbar-brand\"],[11,\"href\",\"#\"],[9],[0,\"she leads\"],[10],[0,\"\\n\\n\"],[4,\"if\",[true],null,{\"statements\":[[0,\"    \"],[7,\"button\"],[11,\"class\",\"navbar-toggler\"],[11,\"data-toggle\",\"collapse\"],[11,\"data-target\",\"#navbarSupportedContent\"],[11,\"aria-controls\",\"navbarSupportedContent\"],[11,\"aria-expanded\",\"false\"],[11,\"aria-label\",\"Toggle navigation\"],[11,\"type\",\"button\"],[9],[0,\"\\n      \"],[7,\"span\"],[11,\"class\",\"navbar-toggler-icon\"],[9],[10],[0,\"\\n    \"],[10],[0,\"\\n    \"],[7,\"div\"],[11,\"class\",\"collapse navbar-collapse\"],[11,\"id\",\"navbarSupportedContent\"],[9],[0,\"\\n      \"],[7,\"ul\"],[11,\"class\",\"navbar-nav mr-auto\"],[9],[0,\"\\n        \"],[7,\"li\"],[11,\"class\",\"navbar-link nav-item\"],[9],[0,\"\\n          \"],[4,\"link-to\",[\"my-match\"],null,{\"statements\":[[7,\"div\"],[11,\"class\",\"nav-link\"],[11,\"href\",\"#\"],[9],[0,\"My Match\"],[10]],\"parameters\":[]},null],[0,\"\\n        \"],[10],[0,\"\\n        \"],[7,\"li\"],[11,\"class\",\"navbar-link nav-item\"],[9],[0,\"\\n          \"],[4,\"link-to\",[\"my-profile\"],null,{\"statements\":[[7,\"div\"],[11,\"class\",\"nav-link\"],[11,\"href\",\"#\"],[9],[0,\"My Profile\"],[10]],\"parameters\":[]},null],[0,\"\\n        \"],[10],[0,\"\\n      \"],[10],[0,\"\\n\\n      \"],[2,\" {{#link-to 'login'}}<div class=\\\"logout\\\" href=\\\"#\\\">Log In</div>{{/link-to}} \"],[0,\"\\n\\n\"],[4,\"if\",[[23,[\"session\",\"isAuthenticated\"]]],null,{\"statements\":[[0,\"        \"],[7,\"button\"],[3,\"action\",[[22,0,[]],\"logout\"]],[9],[0,\"Logout\"],[10],[0,\"\\n\"]],\"parameters\":[]},{\"statements\":[[4,\"link-to\",[\"login\"],null,{\"statements\":[[0,\"          login\\n\"]],\"parameters\":[]},null]],\"parameters\":[]}],[0,\"\\n    \"],[10],[0,\"\\n\"]],\"parameters\":[]},null],[0,\"\\n\"],[10],[0,\"\\n\"],[10],[0,\"\\n\"],[1,[21,\"outlet\"],false],[0,\"\\n\\n\"]],\"hasEval\":false}", "meta": { "moduleName": "iwnad/templates/application.hbs" } });
 });
 ;define("iwnad/templates/components/dashboard-module", ["exports"], function (exports) {
   "use strict";
@@ -621,7 +800,7 @@
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = Ember.HTMLBars.template({ "id": "7PB5Ltqz", "block": "{\"symbols\":[],\"statements\":[[0,\"\\n\"],[7,\"div\"],[11,\"class\",\"component-padding\"],[9],[0,\"\\n\\t\"],[7,\"div\"],[11,\"class\",\"row\"],[9],[0,\"\\n\\t  \"],[7,\"div\"],[11,\"class\",\"col-md-4\"],[9],[0,\"\\n\\t  \\t\"],[7,\"img\"],[11,\"src\",\"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvyjtZBrZtFqBZEimzVor2zPU6VSgREi4YaIrOmzAGoGpGce0J\"],[9],[10],[0,\"\\n\\t  \"],[10],[0,\"\\n\\t  \"],[7,\"div\"],[11,\"class\",\"login-text col-md-8\"],[9],[0,\"\\n\\t  \\t\"],[7,\"h1\"],[11,\"class\",\"large-text\"],[9],[0,\"Log In\"],[10],[0,\"\\n\\t  \\t\"],[7,\"h6\"],[11,\"class\",\"small-text\"],[9],[0,\"Or click \"],[4,\"link-to\",[\"magic\"],null,{\"statements\":[[0,\"here\"]],\"parameters\":[]},null],[0,\" to sign up.\"],[10],[0,\"\\n\\t  \\t\"],[7,\"br\"],[9],[10],[0,\"\\n\\t\\t\\t\"],[7,\"br\"],[9],[10],[0,\"\\n\\t\\t\\t\"],[7,\"h6\"],[11,\"required\",\"required\"],[11,\"class\",\"small-text\"],[9],[0,\"Email Address\"],[7,\"span\"],[11,\"style\",\"color: #E36364;\"],[9],[0,\" *\"],[10],[10],[0,\"\\n    \\t\"],[1,[27,\"input\",null,[[\"name\",\"type\",\"value\"],[\"email\",\"email\",[23,[\"email\"]]]]],false],[0,\"\\n\\t\\t\\t\"],[7,\"br\"],[9],[10],[0,\"\\n\\t\\t\\t\"],[7,\"br\"],[9],[10],[0,\"\\n\\t\\t\\t\"],[7,\"h6\"],[11,\"required\",\"required\"],[11,\"class\",\"small-text\"],[9],[0,\"Password\"],[7,\"span\"],[11,\"style\",\"color: #E36364;\"],[9],[0,\" *\"],[10],[10],[0,\"\\n\\t\\t\\t\"],[1,[27,\"input\",null,[[\"type\",\"name\",\"value\"],[\"password\",\"password\",[23,[\"password\"]]]]],false],[0,\"\\n\\t\\t\\t\"],[7,\"br\"],[9],[10],[0,\"\\n\\t\\t\\t\"],[7,\"br\"],[9],[10],[0,\"\\n\\n\\n\"],[4,\"if\",[[23,[\"emptyForm\"]]],null,{\"statements\":[],\"parameters\":[]},{\"statements\":[[4,\"if\",[[23,[\"failedLogin\"]]],null,{\"statements\":[],\"parameters\":[]},{\"statements\":[[0,\"\\t\\t\\t\\t\\t\"],[7,\"h6\"],[11,\"style\",\"color: #FFFFFF;\"],[9],[0,\" ffs \"],[10],[0,\"\\n\"]],\"parameters\":[]}]],\"parameters\":[]}],[0,\"\\n\\n\"],[4,\"if\",[[23,[\"emptyForm\"]]],null,{\"statements\":[[0,\"\\t\\t\\t\\t\"],[7,\"h6\"],[11,\"style\",\"color: #E36364;\"],[9],[0,\"*Username and password are required\"],[10],[0,\"\\n\"]],\"parameters\":[]},null],[0,\"\\n\"],[4,\"if\",[[23,[\"failedLogin\"]]],null,{\"statements\":[[0,\"\\t\\t\\t\\t\"],[7,\"h6\"],[11,\"style\",\"color: #E36364;\"],[9],[0,\"*Username or password is incorrect\"],[10],[0,\"\\n\"]],\"parameters\":[]},null],[0,\"\\n\\t\\t\\t\"],[7,\"div\"],[11,\"class\",\"button-div\"],[9],[0,\"\\n\\t\\t\\t\\t\"],[7,\"button\"],[11,\"class\",\"submit-button\"],[3,\"action\",[[22,0,[]],\"login\"]],[9],[0,\"Next\"],[10],[0,\"\\n\\t\\t\\t\"],[10],[0,\"\\n\\t  \"],[10],[0,\"\\n\\t\"],[10],[0,\"\\n\"],[10],[0,\"\\n\\n\"],[1,[21,\"outlet\"],false],[0,\"\\n\"]],\"hasEval\":false}", "meta": { "moduleName": "iwnad/templates/login.hbs" } });
+  exports.default = Ember.HTMLBars.template({ "id": "ApSqI3EL", "block": "{\"symbols\":[],\"statements\":[[0,\"\\n\"],[7,\"div\"],[11,\"class\",\"component-padding\"],[9],[0,\"\\n\\t\"],[7,\"div\"],[11,\"class\",\"row\"],[9],[0,\"\\n\\t  \"],[7,\"div\"],[11,\"class\",\"col-md-4\"],[9],[0,\"\\n\\t  \\t\"],[7,\"img\"],[11,\"src\",\"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvyjtZBrZtFqBZEimzVor2zPU6VSgREi4YaIrOmzAGoGpGce0J\"],[9],[10],[0,\"\\n\\t  \"],[10],[0,\"\\n\\t  \"],[7,\"div\"],[11,\"class\",\"login-text col-md-8\"],[9],[0,\"\\n\\t  \\t\"],[7,\"h1\"],[11,\"class\",\"large-text\"],[9],[0,\"Log In\"],[10],[0,\"\\n\\t  \\t\"],[7,\"h6\"],[11,\"class\",\"small-text\"],[9],[0,\"Or click \"],[4,\"link-to\",[\"magic\"],null,{\"statements\":[[0,\"here\"]],\"parameters\":[]},null],[0,\" to sign up.\"],[10],[0,\"\\n\\t  \\t\"],[7,\"br\"],[9],[10],[0,\"\\n\\t\\t\\t\"],[7,\"br\"],[9],[10],[0,\"\\n\\t\\t\\t\"],[7,\"h6\"],[11,\"required\",\"required\"],[11,\"class\",\"small-text\"],[9],[0,\"Email Address\"],[7,\"span\"],[11,\"style\",\"color: #E36364;\"],[9],[0,\" *\"],[10],[10],[0,\"\\n    \\t\"],[1,[27,\"input\",null,[[\"name\",\"value\"],[\"identification\",[23,[\"identification\"]]]]],false],[0,\"\\n\\t\\t\\t\"],[7,\"br\"],[9],[10],[0,\"\\n\\t\\t\\t\"],[7,\"br\"],[9],[10],[0,\"\\n\\t\\t\\t\"],[7,\"h6\"],[11,\"required\",\"required\"],[11,\"class\",\"small-text\"],[9],[0,\"Password\"],[7,\"span\"],[11,\"style\",\"color: #E36364;\"],[9],[0,\" *\"],[10],[10],[0,\"\\n\\t\\t\\t\"],[1,[27,\"input\",null,[[\"type\",\"name\",\"value\"],[\"password\",\"password\",[23,[\"password\"]]]]],false],[0,\"\\n\\t\\t\\t\"],[7,\"br\"],[9],[10],[0,\"\\n\\t\\t\\t\"],[7,\"br\"],[9],[10],[0,\"\\n\\n\\n\"],[4,\"if\",[[23,[\"emptyForm\"]]],null,{\"statements\":[],\"parameters\":[]},{\"statements\":[[4,\"if\",[[23,[\"failedLogin\"]]],null,{\"statements\":[],\"parameters\":[]},{\"statements\":[[0,\"\\t\\t\\t\\t\\t\"],[7,\"h6\"],[11,\"style\",\"color: #FFFFFF;\"],[9],[0,\" ffs \"],[10],[0,\"\\n\"]],\"parameters\":[]}]],\"parameters\":[]}],[0,\"\\n\\n\"],[4,\"if\",[[23,[\"emptyForm\"]]],null,{\"statements\":[[0,\"\\t\\t\\t\\t\"],[7,\"h6\"],[11,\"style\",\"color: #E36364;\"],[9],[0,\"*Username and password are required\"],[10],[0,\"\\n\"]],\"parameters\":[]},null],[0,\"\\n\"],[4,\"if\",[[23,[\"failedLogin\"]]],null,{\"statements\":[[0,\"\\t\\t\\t\\t\"],[7,\"h6\"],[11,\"style\",\"color: #E36364;\"],[9],[0,\"*Username or password is incorrect\"],[10],[0,\"\\n\"]],\"parameters\":[]},null],[0,\"\\n\\t\\t\\t\"],[7,\"div\"],[11,\"class\",\"button-div\"],[9],[0,\"\\n\\t\\t\\t\\t\"],[7,\"button\"],[11,\"class\",\"submit-button\"],[3,\"action\",[[22,0,[]],\"login\"]],[9],[0,\"Next\"],[10],[0,\"\\n\\t\\t\\t\"],[10],[0,\"\\n\\t  \"],[10],[0,\"\\n\\t\"],[10],[0,\"\\n\"],[10],[0,\"\\n\\n\"],[1,[21,\"outlet\"],false],[0,\"\\n\"]],\"hasEval\":false}", "meta": { "moduleName": "iwnad/templates/login.hbs" } });
 });
 ;define("iwnad/templates/magic", ["exports"], function (exports) {
   "use strict";
@@ -669,7 +848,7 @@
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = Ember.HTMLBars.template({ "id": "Hx6BFqFK", "block": "{\"symbols\":[],\"statements\":[[7,\"div\"],[11,\"class\",\"component-padding\"],[9],[0,\"\\n\\t\"],[7,\"div\"],[11,\"class\",\"row\"],[9],[0,\"\\n\\t  \"],[7,\"div\"],[11,\"class\",\"greeting\"],[9],[0,\"\\n\\t  \\t\"],[7,\"div\"],[11,\"class\",\"greeting-pic\"],[9],[0,\"\\n\\t  \\t  \"],[7,\"img\"],[11,\"style\",\"width: 60px;\"],[11,\"src\",\"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvyjtZBrZtFqBZEimzVor2zPU6VSgREi4YaIrOmzAGoGpGce0J\"],[9],[10],[0,\"\\n\\t  \\t\"],[10],[0,\"\\n\\n\\t  \\t\"],[7,\"div\"],[11,\"class\",\"greeting-message\"],[9],[0,\"\\n\\t  \\t  \"],[7,\"h1\"],[11,\"class\",\"large-text\"],[9],[0,\"Hi, {person}!\"],[10],[0,\"\\n\\t\\t  \"],[7,\"h6\"],[11,\"class\",\"small-text\"],[9],[0,\"Let’s get to work.\"],[10],[0,\"\\n\\t  \\t\"],[10],[0,\"\\n\\t  \"],[10],[0,\"\\n\\n\\n\\t  \"],[7,\"div\"],[11,\"class\",\"col\"],[9],[0,\"\\n\\t\\t\"],[7,\"h6\"],[11,\"class\",\"small-text\"],[9],[0,\"Create Password\"],[7,\"span\"],[11,\"style\",\"color: #E36364;\"],[9],[0,\" *\"],[10],[10],[0,\"\\n\\t\\t\"],[7,\"input\"],[11,\"name\",\"first-attempt-password\"],[11,\"type\",\"text\"],[9],[10],[0,\"\\n\\t\\t\"],[7,\"br\"],[9],[10],[0,\"\\n\\t\\t\"],[7,\"br\"],[9],[10],[0,\"\\n\\t\\t\"],[7,\"h6\"],[11,\"class\",\"small-text\"],[9],[0,\"Retype Password\"],[7,\"span\"],[11,\"style\",\"color: #E36364;\"],[9],[0,\" *\"],[10],[10],[0,\"\\n\\t\\t\"],[7,\"input\"],[11,\"name\",\"retype-password\"],[11,\"type\",\"text\"],[9],[10],[0,\"\\n\\t  \"],[10],[0,\"\\n\\t  \"],[7,\"div\"],[11,\"class\",\"login-text col\"],[9],[0,\"\\n\\t\\t\"],[7,\"h6\"],[11,\"class\",\"small-text\"],[9],[0,\"Alternate Name\"],[10],[0,\"\\n\\t\\t\"],[7,\"input\"],[11,\"name\",\"alternate-name\"],[11,\"type\",\"text\"],[9],[10],[0,\"\\n\\t\\t\"],[7,\"br\"],[9],[10],[0,\"\\n\\t\\t\"],[7,\"br\"],[9],[10],[0,\"\\n\\t\\t\"],[7,\"h6\"],[11,\"class\",\"small-text\"],[9],[0,\"Alternate Email Address\"],[10],[0,\"\\n\\t\\t\"],[7,\"input\"],[11,\"name\",\"alternate-email\"],[11,\"type\",\"text\"],[9],[10],[0,\"\\n\\n\\t\\t\"],[7,\"div\"],[11,\"class\",\"button-div\"],[9],[0,\"\\n\\t\\t\\t\"],[4,\"link-to\",[\"dashboard-page\"],null,{\"statements\":[[7,\"button\"],[11,\"class\",\"submit-button\"],[9],[0,\"Next\"],[10]],\"parameters\":[]},null],[0,\"\\n\\t\\t\"],[10],[0,\"\\n\\t  \"],[10],[0,\"\\n\\t\"],[10],[0,\"\\n\"],[10],[0,\"\\n\\n\"],[1,[21,\"outlet\"],false],[0,\"\\n\"]],\"hasEval\":false}", "meta": { "moduleName": "iwnad/templates/signup.hbs" } });
+  exports.default = Ember.HTMLBars.template({ "id": "J7HSfqXK", "block": "{\"symbols\":[],\"statements\":[[0,\"\\n\"],[7,\"div\"],[11,\"class\",\"component-padding\"],[9],[0,\"\\n\\t\"],[7,\"div\"],[11,\"class\",\"row\"],[9],[0,\"\\n\\t  \"],[7,\"div\"],[11,\"class\",\"greeting\"],[9],[0,\"\\n\\t  \\t\"],[7,\"div\"],[11,\"class\",\"greeting-pic\"],[9],[0,\"\\n\\t  \\t  \"],[7,\"img\"],[11,\"style\",\"width: 60px;\"],[11,\"src\",\"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvyjtZBrZtFqBZEimzVor2zPU6VSgREi4YaIrOmzAGoGpGce0J\"],[9],[10],[0,\"\\n\\t  \\t\"],[10],[0,\"\\n\\n\\t  \\t\"],[7,\"div\"],[11,\"class\",\"greeting-message\"],[9],[0,\"\\n\\t  \\t  \"],[7,\"h1\"],[11,\"class\",\"large-text\"],[9],[0,\"Hi, {person}!\"],[10],[0,\"\\n\\t\\t  \"],[7,\"h6\"],[11,\"class\",\"small-text\"],[9],[0,\"Let’s get to work.\"],[10],[0,\"\\n\\t  \\t\"],[10],[0,\"\\n\\t  \"],[10],[0,\"\\n\\n\\n    \"],[7,\"div\"],[11,\"class\",\"row\"],[9],[0,\"\\n      \"],[7,\"div\"],[11,\"class\",\"col\"],[9],[0,\"\\n        \"],[7,\"h6\"],[11,\"required\",\"required\"],[11,\"class\",\"small-text\"],[9],[0,\"Role\"],[7,\"span\"],[11,\"style\",\"color: #E36364;\"],[9],[0,\" *\"],[10],[10],[0,\"\\n         \"],[1,[27,\"input\",null,[[\"name\",\"type\",\"value\",\"placeholder\"],[\"role\",\"role\",[23,[\"role\"]],\"i.e. Student\"]]],false],[0,\"\\n       \"],[10],[0,\"\\n         \"],[7,\"h1\"],[11,\"class\",\"large-text\"],[11,\"style\",\"line-height: 2.5em\"],[9],[0,\"@\"],[10],[0,\"\\n      \"],[7,\"div\"],[11,\"class\",\"col\"],[9],[0,\"\\n        \"],[7,\"h6\"],[11,\"required\",\"required\"],[11,\"class\",\"small-text\"],[9],[0,\"Organization\"],[7,\"span\"],[11,\"style\",\"color: #E36364;\"],[9],[0,\" *\"],[10],[10],[0,\"\\n        \"],[1,[27,\"input\",null,[[\"type\",\"name\",\"value\",\"placeholder\"],[\"organization\",\"organization\",[23,[\"organization\"]],\"i.e. School\"]]],false],[0,\"\\n      \"],[10],[0,\"\\n      \"],[7,\"div\"],[11,\"class\",\"col\"],[9],[0,\"\\n        \"],[7,\"h6\"],[11,\"required\",\"required\"],[11,\"class\",\"small-text\"],[9],[0,\"Phone Number\"],[7,\"span\"],[11,\"style\",\"color: #E36364;\"],[9],[0,\" *\"],[10],[10],[0,\"\\n        \"],[1,[27,\"input\",null,[[\"type\",\"name\",\"value\"],[\"phone\",\"phone\",[23,[\"phone\"]]]]],false],[0,\"\\n      \"],[10],[0,\"\\n    \"],[10],[0,\"\\n    \"],[7,\"div\"],[11,\"class\",\"row\"],[9],[0,\"\\n      \"],[7,\"div\"],[11,\"class\",\"col\"],[9],[0,\"\\n        \"],[7,\"h6\"],[11,\"required\",\"required\"],[11,\"class\",\"small-text\"],[9],[0,\"Create Password\"],[7,\"span\"],[11,\"style\",\"color: #E36364;\"],[9],[0,\" *\"],[10],[10],[0,\"\\n         \"],[1,[27,\"input\",null,[[\"name\",\"type\",\"value\"],[\"password1\",\"password1\",[23,[\"password1\"]]]]],false],[0,\"\\n      \"],[10],[0,\"\\n      \"],[7,\"div\"],[11,\"class\",\"col\"],[9],[0,\"\\n        \"],[7,\"h6\"],[11,\"required\",\"required\"],[11,\"class\",\"small-text\"],[9],[0,\"Retype Password\"],[7,\"span\"],[11,\"style\",\"color: #E36364;\"],[9],[0,\" *\"],[10],[10],[0,\"\\n        \"],[1,[27,\"input\",null,[[\"type\",\"name\",\"value\"],[\"password2\",\"password2\",[23,[\"password2\"]]]]],false],[0,\"\\n      \"],[10],[0,\"\\n    \"],[10],[0,\"\\n\\n\\t\\t\"],[7,\"div\"],[11,\"class\",\"button-div\"],[9],[0,\"\\n\\t\\t\\t\"],[4,\"link-to\",[\"dashboard-page\"],null,{\"statements\":[[7,\"button\"],[11,\"class\",\"submit-button\"],[9],[0,\"Next\"],[10]],\"parameters\":[]},null],[0,\"\\n\\t\\t\"],[10],[0,\"\\n\\t  \"],[10],[0,\"\\n\\t\"],[10],[0,\"\\n\\n\"],[1,[21,\"outlet\"],false],[0,\"\\n\"]],\"hasEval\":false}", "meta": { "moduleName": "iwnad/templates/signup.hbs" } });
 });
 ;define('iwnad/tests/mirage/mirage.lint-test', [], function () {
   'use strict';
@@ -678,7 +857,7 @@
 
   QUnit.test('mirage/config.js', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'mirage/config.js should pass ESLint\n\n10:5 - Unexpected console statement. (no-console)');
+    assert.ok(false, 'mirage/config.js should pass ESLint\n\n19:5 - Unexpected console statement. (no-console)\n20:5 - Unexpected console statement. (no-console)\n22:5 - Unexpected console statement. (no-console)\n23:5 - Unexpected console statement. (no-console)\n39:5 - Unexpected console statement. (no-console)');
   });
 
   QUnit.test('mirage/fixtures/modules.js', function (assert) {
@@ -719,7 +898,7 @@ catch(err) {
 
 ;
           if (!runningTests) {
-            require("iwnad/app")["default"].create({"name":"iwnad","version":"0.0.0+75d5e329"});
+            require("iwnad/app")["default"].create({"name":"iwnad","version":"0.0.0+3a7e16d1"});
           }
         
 //# sourceMappingURL=iwnad.map
