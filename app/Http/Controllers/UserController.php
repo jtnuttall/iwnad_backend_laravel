@@ -18,7 +18,10 @@ class UserController extends Controller
     public function authenticate(Request $request)
     {
     	error_log('authentication request');
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->only('username', 'password');
+        // error_log(implode($credentials));
+        // error_log('email: '.$credentials['email']);
+        // error_log('password: '.$credentials['password']);
 
         try {
             if (! $access_token = JWTAuth::attempt($credentials)) {
@@ -66,6 +69,7 @@ class UserController extends Controller
 
         $user = User::create([
             'email' => $request->get('email'),
+            'username' => $request->get('email'),
             'password' => Hash::make($request->get('password')),
             'name' => $request->get('name'),
             'permissions' => $request->get('permissions'),
@@ -118,6 +122,7 @@ class UserController extends Controller
         if (!is_null($email)) {
             $this->notifyEmailChange($user, $email);
             $user->email = $email;
+            $user->username = $username;
         }
         if (!is_null($name)) {
             $user->name = $name;

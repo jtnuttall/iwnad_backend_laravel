@@ -17,6 +17,7 @@ class CreateUsersTable extends Migration {
 		{
 			$table->integer('userid', true);
 			$table->string('email', 64)->unique('email_UNIQUE');
+			$table->string('username', 64)->unique('username_UNIQUE');
 			$table->timestamp('email_verified_at')->nullable();
 			$table->integer('permissions');
 			$table->boolean('firstlogin')->default(true);

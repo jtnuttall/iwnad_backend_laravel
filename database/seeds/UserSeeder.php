@@ -14,6 +14,7 @@ class UserSeeder extends Seeder
     {
 		$baseadmin = new User();
 		$baseadmin->email = env('ADMIN_EMAIL', 'abarman@usc.edu');
+        $baseadmin->username = env('ADMIN_EMAIL', 'abarman@usc.edu');
 		$baseadmin->password = Hash::make(env('ADMIN_PASSWORD', 'abarman'));
 		$baseadmin->permissions = env('ADMIN_PERMISSIONS');
 		$baseadmin->name = 'Avni';
@@ -23,12 +24,14 @@ class UserSeeder extends Seeder
         // TODO remove for final production release
         $testmentor = new User();
         $testmentor->email = 'jtnuttal@usc.edu';
+        $testmentor->username = 'jtnuttal@usc.edu';
         $testmentor->password = Hash::make('jtnuttal');
         $testmentor->permissions = env('MENTOR_PERMISSIONS');
         $testmentor->save();
 
         $testmentee = new User();
         $testmentee->email = 'dshafi@usc.edu';
+        $testmentee->username = 'dshafi@usc.edu';
         $testmentee->password = Hash::make('dshafi');
         $testmentee->permissions = env('MENTEE_PERMISSIONS');
         $testmentee->save();

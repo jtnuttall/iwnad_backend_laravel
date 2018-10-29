@@ -48,11 +48,13 @@ class User extends Eloquent implements JWTSubject, AuthenticatableContract, CanR
 
 	protected $hidden = [
 		'password',
+		'username',
 		'remember_token',
 	];
 
 	protected $fillable = [
 		'email',
+		'username',
 		'permissions',
 		'firstlogin',
 		'password',

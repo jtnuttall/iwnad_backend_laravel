@@ -31,4 +31,4 @@ git commit -a -m "Fresh Staging build"
 git push origin staging
 
 # switch back to master
-git checkout master
+# git checkout master
