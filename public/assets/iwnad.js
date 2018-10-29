@@ -117,16 +117,32 @@
         // } else {
         //   this.set('emptyForm', false);
         // }
-        this.get('session').authorize('authorizer:oauth2-bearer', (headerName, headerValue) => {
-          $.ajax({
-            type: "post",
-            url: "api/allpairs",
-            contentType: "application/json"
-          }).then(result => {
-            console.log(result);
-          }, () => {
-            console.log('err');
-          });
+
+        // this.get('session').authorize('authorizer:oauth2-bearer', (headerName, headerValue) => {
+        //   $.ajax({
+        //   type: "post",
+        //   url: "api/allpairs",
+        //   contentType: "application/json",
+        // }).then((result) => {
+        //     console.log(result);
+        //   },
+        //   () => {
+        //     console.log('err');
+        //   }
+        // );});
+
+        $.ajax({
+          headers: { "Accept": "application/json" },
+          url: "api/allpairs",
+          type: "POST",
+          contentType: "application/json",
+          beforeSend: function (xhr) {
+            var token = this.get(session.session.authenticated.access_token);
+            if (token) {
+              xhr.setRequestHeader("Authorization", "Bearer " + token);
+            }
+          }
+
         });
       }
     }
