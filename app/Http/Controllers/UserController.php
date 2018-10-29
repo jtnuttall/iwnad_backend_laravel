@@ -21,7 +21,7 @@ class UserController extends Controller
         $credentials = $request->only('email', 'password');
 
         try {
-            if (! $token = JWTAuth::attempt($credentials)) {
+            if (! $access_token = JWTAuth::attempt($credentials)) {
                 error_log('invalid creds');
                 return response()->json(['error' => 'invalid_credentials'], 400);
             }
@@ -32,7 +32,7 @@ class UserController extends Controller
 
         $user = Auth::user();
         error_log('success');
-        return response()->json(compact('user', 'token'));
+        return response()->json(compact('user', 'access_token'));
     }
 
     /**
