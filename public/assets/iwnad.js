@@ -2,6 +2,16 @@
 
 
 
+;define('iwnad/adapters/application', ['exports', 'ember-data', 'ember-simple-auth/mixins/data-adapter-mixin'], function (exports, _emberData, _dataAdapterMixin) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = _emberData.default.JSONAPIAdapter.extend(_dataAdapterMixin.default, {
+    authorizer: 'authorizer:application'
+  });
+});
 ;define('iwnad/app', ['exports', 'iwnad/resolver', 'ember-load-initializers', 'iwnad/config/environment'], function (exports, _resolver, _emberLoadInitializers, _environment) {
   'use strict';
 
@@ -132,17 +142,13 @@
         // );});
 
         $.ajax({
-          headers: { "Accept": "application/json" },
           url: "api/allpairs",
           type: "POST",
-          contentType: "application/json",
-          beforeSend: function (xhr) {
-            var token = this.get(session.data.authenticated.access_token);
-            if (token) {
-              xhr.setRequestHeader("Authorization", "Bearer " + token);
-            }
-          }
-
+          contentType: "application/json"
+        }).then(result => {
+          console.log(result);
+        }, () => {
+          console.log('err');
         });
       }
     }

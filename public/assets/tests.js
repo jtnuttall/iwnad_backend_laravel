@@ -5,6 +5,11 @@ define('iwnad/tests/app.lint-test', [], function () {
 
   QUnit.module('ESLint | app');
 
+  QUnit.test('adapters/application.js', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'adapters/application.js should pass ESLint\n\n');
+  });
+
   QUnit.test('app.js', function (assert) {
     assert.expect(1);
     assert.ok(true, 'app.js should pass ESLint\n\n');
@@ -27,7 +32,7 @@ define('iwnad/tests/app.lint-test', [], function () {
 
   QUnit.test('controllers/login.js', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'controllers/login.js should pass ESLint\n\n4:12 - \'Ember\' is not defined. (no-undef)\n17:97 - \'reason\' is defined but never used. (no-unused-vars)\n47:9 - \'$\' is not defined. (no-undef)\n53:34 - \'session\' is not defined. (no-undef)');
+    assert.ok(false, 'controllers/login.js should pass ESLint\n\n4:12 - \'Ember\' is not defined. (no-undef)\n17:97 - \'reason\' is defined but never used. (no-unused-vars)\n47:9 - \'$\' is not defined. (no-undef)\n53:13 - Unexpected console statement. (no-console)\n56:13 - Unexpected console statement. (no-console)');
   });
 
   QUnit.test('controllers/module-resources.js', function (assert) {
@@ -285,6 +290,11 @@ define('iwnad/tests/tests.lint-test', [], function () {
     assert.ok(true, 'test-helper.js should pass ESLint\n\n');
   });
 
+  QUnit.test('unit/adapters/application-test.js', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'unit/adapters/application-test.js should pass ESLint\n\n');
+  });
+
   QUnit.test('unit/controllers/application-test.js', function (assert) {
     assert.expect(1);
     assert.ok(true, 'unit/controllers/application-test.js should pass ESLint\n\n');
@@ -358,6 +368,19 @@ define('iwnad/tests/tests.lint-test', [], function () {
   QUnit.test('unit/routes/signup-test.js', function (assert) {
     assert.expect(1);
     assert.ok(true, 'unit/routes/signup-test.js should pass ESLint\n\n');
+  });
+});
+define('iwnad/tests/unit/adapters/application-test', ['qunit', 'ember-qunit'], function (_qunit, _emberQunit) {
+  'use strict';
+
+  (0, _qunit.module)('Unit | Adapter | application', function (hooks) {
+    (0, _emberQunit.setupTest)(hooks);
+
+    // Replace this with your real tests.
+    (0, _qunit.test)('it exists', function (assert) {
+      let adapter = this.owner.lookup('adapter:application');
+      assert.ok(adapter);
+    });
   });
 });
 define('iwnad/tests/unit/controllers/application-test', ['qunit', 'ember-qunit'], function (_qunit, _emberQunit) {
