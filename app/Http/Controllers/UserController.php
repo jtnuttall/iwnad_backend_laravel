@@ -18,8 +18,8 @@ class UserController extends Controller
     public function authenticate(Request $request)
     {
     	error_log('authentication request');
-        $credentials = $request->only('username', 'password');
-        // error_log(implode($credentials));
+        $credentials = $request->only('email', 'password');
+        error_log(implode($credentials));
         // error_log('email: '.$credentials['email']);
         // error_log('password: '.$credentials['password']);
 
@@ -259,11 +259,20 @@ class UserController extends Controller
     public function deleteUser(Request $request){
         error_log('deleting a user');
 
-        $delete = User::whereDoesntHave('mentorPairings')
-                        ->whereDoesntHave('menteePairings')
-                        ->where('email', $request->get('email') )
-                        ->delete();
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email|exists:users',
+        ]);
+        if($validator->fails()){
+            return response()->json($validator->errors()->toArray(), 400);
+        }
 
-        getAllUsers();
+        User::whereDoesntHave('mentorPairings')
+                ->whereDoesntHave('menteePairings')
+                ->where('email', $request->get('email') )
+                ->delete();
+
+        return response()->json([
+            'status' => 'user deleted',
+        ]);
     }
 }

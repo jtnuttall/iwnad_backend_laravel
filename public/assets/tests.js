@@ -20,6 +20,11 @@ define('iwnad/tests/app.lint-test', [], function () {
     assert.ok(true, 'authenticators/oauth2.js should pass ESLint\n\n');
   });
 
+  QUnit.test('authorizers/application.js', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'authorizers/application.js should pass ESLint\n\n');
+  });
+
   QUnit.test('components/dashboard-module.js', function (assert) {
     assert.expect(1);
     assert.ok(true, 'components/dashboard-module.js should pass ESLint\n\n');
@@ -32,7 +37,7 @@ define('iwnad/tests/app.lint-test', [], function () {
 
   QUnit.test('controllers/login.js', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'controllers/login.js should pass ESLint\n\n4:12 - \'Ember\' is not defined. (no-undef)\n17:97 - \'reason\' is defined but never used. (no-unused-vars)\n47:9 - \'$\' is not defined. (no-undef)\n53:13 - Unexpected console statement. (no-console)\n56:13 - Unexpected console statement. (no-console)');
+    assert.ok(false, 'controllers/login.js should pass ESLint\n\n19:7 - \'$\' is not defined. (no-undef)\n29:11 - \'$\' is not defined. (no-undef)\n32:11 - \'$\' is not defined. (no-undef)\n41:15 - Unexpected console statement. (no-console)\n44:15 - Unexpected console statement. (no-console)\n49:11 - Unexpected console statement. (no-console)');
   });
 
   QUnit.test('controllers/module-resources.js', function (assert) {
@@ -48,6 +53,11 @@ define('iwnad/tests/app.lint-test', [], function () {
   QUnit.test('helpers/get-status-color.js', function (assert) {
     assert.expect(1);
     assert.ok(false, 'helpers/get-status-color.js should pass ESLint\n\n5:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n8:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n11:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)');
+  });
+
+  QUnit.test('initializers/ajax-setup.js', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'initializers/ajax-setup.js should pass ESLint\n\n');
   });
 
   QUnit.test('models/module.js', function (assert) {
@@ -310,6 +320,11 @@ define('iwnad/tests/tests.lint-test', [], function () {
     assert.ok(true, 'unit/controllers/module-resources-test.js should pass ESLint\n\n');
   });
 
+  QUnit.test('unit/initializers/ajax-setup-test.js', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'unit/initializers/ajax-setup-test.js should pass ESLint\n\n');
+  });
+
   QUnit.test('unit/models/1-test.js', function (assert) {
     assert.expect(1);
     assert.ok(true, 'unit/models/1-test.js should pass ESLint\n\n');
@@ -419,6 +434,34 @@ define('iwnad/tests/unit/controllers/module-resources-test', ['qunit', 'ember-qu
     (0, _qunit.test)('it exists', function (assert) {
       let controller = this.owner.lookup('controller:module-resources');
       assert.ok(controller);
+    });
+  });
+});
+define('iwnad/tests/unit/initializers/ajax-setup-test', ['iwnad/initializers/ajax-setup', 'qunit', 'ember-qunit'], function (_ajaxSetup, _qunit, _emberQunit) {
+  'use strict';
+
+  (0, _qunit.module)('Unit | Initializer | ajax-setup', function (hooks) {
+    (0, _emberQunit.setupTest)(hooks);
+
+    hooks.beforeEach(function () {
+      this.TestApplication = Ember.Application.extend();
+      this.TestApplication.initializer({
+        name: 'initializer under test',
+        initialize: _ajaxSetup.initialize
+      });
+
+      this.application = this.TestApplication.create({ autoboot: false });
+    });
+
+    hooks.afterEach(function () {
+      Ember.run(this.application, 'destroy');
+    });
+
+    // Replace this with your real tests.
+    (0, _qunit.test)('it works', async function (assert) {
+      await this.application.boot();
+
+      assert.ok(true);
     });
   });
 });

@@ -17,6 +17,9 @@ class AdminOnlyMiddleware
      */
     public function handle($request, Closure $next)
     {
+        error_log('admin-only auth request');
+        // dd($request);
+        error_log($request->header('authorization'));
         try {
             $user = JWTAuth::parseToken()->authenticate();
 
@@ -47,6 +50,7 @@ class AdminOnlyMiddleware
             ], 403);
         }
         
+        error_log('admin auth successful');
         return $next($request);
     }
 }

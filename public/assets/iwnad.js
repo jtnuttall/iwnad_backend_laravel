@@ -40,6 +40,14 @@
     serverTokenEndpoint: 'api/login'
   });
 });
+;define('iwnad/authorizers/application', ['exports', 'ember-simple-auth/authorizers/oauth2-bearer'], function (exports, _oauth2Bearer) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.default = _oauth2Bearer.default.extend();
+});
 ;define('iwnad/components/content-editable', ['exports', 'ember-content-editable/components/content-editable'], function (exports, _contentEditable) {
   'use strict';
 
@@ -111,44 +119,32 @@
           password
         } = this.getProperties('identification', 'password');
 
-        this.get('session').authenticate('authenticator:oauth2', identification, password).catch(reason => {
-          this.set('failedLogin', true);
-        });
-
-        // this.transitionToRoute("dashboard-page");
-
-
-        // console.log("email " + this.email);
-        // console.log("pw " + this.password);
-        //
-        // if ((this.email == undefined) || (this.password == undefined)) {
-        //   this.set('emptyForm', true);
-        //   return;
-        // } else {
-        //   this.set('emptyForm', false);
-        // }
-
-        // this.get('session').authorize('authorizer:oauth2-bearer', (headerName, headerValue) => {
-        //   $.ajax({
-        //   type: "post",
-        //   url: "api/allpairs",
-        //   contentType: "application/json",
-        // }).then((result) => {
-        //     console.log(result);
-        //   },
-        //   () => {
-        //     console.log('err');
-        //   }
-        // );});
-
         $.ajax({
-          url: "api/allpairs",
-          type: "POST",
-          contentType: "application/json"
+          url: 'api/login',
+          type: 'post',
+          contentType: 'application/json',
+          data: JSON.stringify({
+            email: identification,
+            password: password
+          })
         }).then(result => {
-          console.log(result);
-        }, () => {
-          console.log('err');
+          $.ajaxSetup({
+            headers: { 'Authorization': 'Bearer ' + result.access_token }
+          });
+          $.ajax({
+            url: "api/allpairs",
+            type: "POST",
+            contentType: "application/json"
+            // headers: {
+            //   'Authorization': 'Bearer '+result.access_token
+            // }
+          }).then(result => {
+            console.log(result);
+          }, err => {
+            console.log(err);
+          });
+        }, error => {
+          console.log(error);
         });
       }
     }
@@ -251,6 +247,21 @@
     value: true
   });
   exports.default = _singularize.default;
+});
+;define("iwnad/initializers/ajax-setup", ["exports"], function (exports) {
+  "use strict";
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.initialize = initialize;
+  function initialize() /* application */{
+    // application.inject('route', 'foo', 'service:foo');
+  }
+
+  exports.default = {
+    initialize
+  };
 });
 ;define('iwnad/initializers/app-version', ['exports', 'ember-cli-app-version/initializer-factory', 'iwnad/config/environment'], function (exports, _initializerFactory, _environment) {
   'use strict';
@@ -906,7 +917,7 @@ catch(err) {
 
 ;
           if (!runningTests) {
-            require("iwnad/app")["default"].create({"name":"iwnad","version":"0.0.0+3a7e16d1"});
+            require("iwnad/app")["default"].create({"name":"iwnad","version":"0.0.0+2468c921"});
           }
         
 //# sourceMappingURL=iwnad.map
