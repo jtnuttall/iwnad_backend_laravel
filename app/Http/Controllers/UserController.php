@@ -239,23 +239,6 @@ class UserController extends Controller
         return response()->json(compact('users'));
     }
 
-    // public function getMentorsAndMentees(Request $request)
-    // {
-    //     error_log('mentors and mentees requested');
-
-    //     $count = $request->get('count');
-    //     if (is_null($count)) {
-    //         error_log('no per-page count given');
-    //         $count = 15;
-    //     }
-    //     error_log('per-page count is '.$count);
-
-    //     $users = User::where('permissions', '<>', '0')
-    //                     ->paginate($count);
-
-    //     return response()->json(compact('users'));
-    // }
-
     public function deleteUser(Request $request){
         error_log('deleting a user');
 
@@ -266,10 +249,18 @@ class UserController extends Controller
             return response()->json($validator->errors()->toArray(), 400);
         }
 
-        User::whereDoesntHave('mentorPairings')
-                ->whereDoesntHave('menteePairings')
-                ->where('email', $request->get('email') )
-                ->delete();
+        $user = User::whereDoesntHave('mentorPairings')
+                    ->whereDoesntHave('menteePairings')
+                    ->where('email', $request->get('email'))
+                    ->first();
+        
+        if (is_null($user)) {
+            return response()->json([
+                'status' => 'user has existing pairings',
+            ], 400);
+        }
+
+        $user->delete();
 
         return response()->json([
             'status' => 'user deleted',
