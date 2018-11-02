@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Auth;
 use JWTAuth;
 use App\Models\User;
+use App\Models\Pairing;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -259,7 +260,7 @@ class UserController extends Controller
                 ->where('mentorid', $user->userid)
                 ->orWhere('menteeid', $user->userid)
                 ->get();
-                
+
             return response()->json([
                 'status' => 'user has existing pairings',
                 'pairings' => $pairings,
