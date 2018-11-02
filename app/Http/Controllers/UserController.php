@@ -256,6 +256,9 @@ class UserController extends Controller
                     ->first();
         
         if (is_null($user)) {
+            $user = User::where('email', $request->get('email'))
+                        ->first();
+
             $pairings = Pairing::with(['mentor', 'mentee'])
                 ->where('mentorid', $user->userid)
                 ->orWhere('menteeid', $user->userid)
