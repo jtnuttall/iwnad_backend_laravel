@@ -255,8 +255,14 @@ class UserController extends Controller
                     ->first();
         
         if (is_null($user)) {
+            $pairings = Pairing::with(['mentor', 'mentee'])
+                ->where('mentorid', $user->userid)
+                ->orWhere('menteeid', $user->userid)
+                ->get();
+                
             return response()->json([
                 'status' => 'user has existing pairings',
+                'pairings' => $pairings,
             ], 400);
         }
 
