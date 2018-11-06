@@ -25,8 +25,14 @@ class Phase extends Eloquent
 	protected $primaryKey = 'phaseid';
 	public $timestamps = false;
 
+	protected $dates = [
+		'duedate'
+	];
+
 	protected $fillable = [
-		'name'
+		'name',
+		'description',
+		'duedate'
 	];
 
 	public function dashboards()

@@ -15,7 +15,7 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property int $doclinkid
  * @property string $link
  * @property int $dashboardid
- * @property int $phaseid
+ * @property int $moduleid
  * 
  * @property \App\Models\Dashboard $dashboard
  * @property \App\Models\Phase $phase
@@ -29,13 +29,13 @@ class Doclink extends Eloquent
 
 	protected $casts = [
 		'dashboardid' => 'int',
-		'phaseid' => 'int'
+		'moduleid' => 'int',
 	];
 
 	protected $fillable = [
 		'link',
 		'dashboardid',
-		'phaseid'
+		'moduleid',
 	];
 
 	public function dashboard()
@@ -43,8 +43,8 @@ class Doclink extends Eloquent
 		return $this->belongsTo(\App\Models\Dashboard::class, 'dashboardid');
 	}
 
-	public function phase()
+	public function module()
 	{
-		return $this->belongsTo(\App\Models\Phase::class, 'phaseid');
+		return $this->belongsTo(\App\Models\Module::class, 'moduleid');
 	}
 }

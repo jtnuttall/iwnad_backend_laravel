@@ -5,11 +5,6 @@ define('iwnad/tests/app.lint-test', [], function () {
 
   QUnit.module('ESLint | app');
 
-  QUnit.test('adapters/application.js', function (assert) {
-    assert.expect(1);
-    assert.ok(true, 'adapters/application.js should pass ESLint\n\n');
-  });
-
   QUnit.test('app.js', function (assert) {
     assert.expect(1);
     assert.ok(true, 'app.js should pass ESLint\n\n');
@@ -20,29 +15,59 @@ define('iwnad/tests/app.lint-test', [], function () {
     assert.ok(true, 'authenticators/oauth2.js should pass ESLint\n\n');
   });
 
-  QUnit.test('authorizers/application.js', function (assert) {
+  QUnit.test('authenticators/torii.js', function (assert) {
     assert.expect(1);
-    assert.ok(true, 'authorizers/application.js should pass ESLint\n\n');
+    assert.ok(false, 'authenticators/torii.js should pass ESLint\n\n14:4 - Unexpected console statement. (no-console)');
   });
 
   QUnit.test('components/dashboard-module.js', function (assert) {
     assert.expect(1);
-    assert.ok(true, 'components/dashboard-module.js should pass ESLint\n\n');
+    assert.ok(false, 'components/dashboard-module.js should pass ESLint\n\n29:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n30:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n31:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n32:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n32:15 - Empty block statement. (no-empty)\n33:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n34:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n36:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n36:7 - \'$\' is not defined. (no-undef)\n37:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n38:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n39:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n40:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n41:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n42:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n43:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n44:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n45:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n46:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n47:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n48:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n49:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n50:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n51:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n52:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n53:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n54:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n55:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n55:9 - \'$\' is not defined. (no-undef)\n56:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n57:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n58:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n59:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n60:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n61:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n62:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n63:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n64:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n65:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n66:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n67:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n68:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n69:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n70:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n71:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n72:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n73:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n74:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n75:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n76:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n77:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n77:7 - \'$\' is not defined. (no-undef)\n78:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n79:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n80:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n81:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n82:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n83:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n84:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n85:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n86:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n87:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n88:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n89:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n90:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n91:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n93:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n93:7 - \'$\' is not defined. (no-undef)\n94:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n95:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n96:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n97:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n98:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n99:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n100:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n101:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n102:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n104:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n105:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)');
+  });
+
+  QUnit.test('controllers/admin.js', function (assert) {
+    assert.expect(1);
+    assert.ok(false, 'controllers/admin.js should pass ESLint\n\n8:11 - \'$\' is not defined. (no-undef)\n11:9 - \'$\' is not defined. (no-undef)\n23:11 - \'$\' is not defined. (no-undef)\n27:13 - \'$\' is not defined. (no-undef)\n36:11 - \'$\' is not defined. (no-undef)\n39:9 - \'$\' is not defined. (no-undef)\n48:11 - \'$\' is not defined. (no-undef)\n52:13 - \'$\' is not defined. (no-undef)');
   });
 
   QUnit.test('controllers/application.js', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'controllers/application.js should pass ESLint\n\n4:12 - \'Ember\' is not defined. (no-undef)');
+    assert.ok(false, 'controllers/application.js should pass ESLint\n\n5:26 - \'Ember\' is not defined. (no-undef)');
+  });
+
+  QUnit.test('controllers/dashboard-module.js', function (assert) {
+    assert.expect(1);
+    assert.ok(false, 'controllers/dashboard-module.js should pass ESLint\n\n4:13 - \'service\' is defined but never used. (no-unused-vars)');
+  });
+
+  QUnit.test('controllers/dashboard-page.js', function (assert) {
+    assert.expect(1);
+    assert.ok(false, 'controllers/dashboard-page.js should pass ESLint\n\n4:13 - \'service\' is defined but never used. (no-unused-vars)');
+  });
+
+  QUnit.test('controllers/google-drive-api.js', function (assert) {
+    assert.expect(1);
+    assert.ok(false, 'controllers/google-drive-api.js should pass ESLint\n\n4:12 - \'service\' is assigned a value but never used. (no-unused-vars)\n5:5 - \'Ember\' is not defined. (no-undef)\n8:11 - \'Ember\' is not defined. (no-undef)');
   });
 
   QUnit.test('controllers/login.js', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'controllers/login.js should pass ESLint\n\n19:7 - \'$\' is not defined. (no-undef)\n29:11 - \'$\' is not defined. (no-undef)\n32:11 - \'$\' is not defined. (no-undef)\n41:15 - Unexpected console statement. (no-console)\n44:15 - Unexpected console statement. (no-console)\n49:11 - Unexpected console statement. (no-console)');
+    assert.ok(false, 'controllers/login.js should pass ESLint\n\n3:13 - \'service\' is defined but never used. (no-unused-vars)\n10:26 - \'Ember\' is not defined. (no-undef)\n26:7 - \'$\' is not defined. (no-undef)\n37:11 - Unexpected console statement. (no-console)\n38:11 - Unexpected console statement. (no-console)\n41:11 - \'$\' is not defined. (no-undef)\n45:48 - \'errorThrown\' is defined but never used. (no-unused-vars)\n53:11 - Unexpected console statement. (no-console)\n58:13 - Unexpected console statement. (no-console)\n61:13 - Unexpected console statement. (no-console)\n64:13 - Unexpected console statement. (no-console)\n70:11 - Unexpected console statement. (no-console)\n71:11 - Unexpected console statement. (no-console)');
   });
 
   QUnit.test('controllers/module-resources.js', function (assert) {
     assert.expect(1);
     assert.ok(true, 'controllers/module-resources.js should pass ESLint\n\n');
+  });
+
+  QUnit.test('controllers/my-profile.js', function (assert) {
+    assert.expect(1);
+    assert.ok(false, 'controllers/my-profile.js should pass ESLint\n\n8:4 - \'$\' is not defined. (no-undef)\n9:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n10:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n11:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n12:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n13:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n14:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n15:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n16:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n17:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n18:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n19:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)');
+  });
+
+  QUnit.test('controllers/signup.js', function (assert) {
+    assert.expect(1);
+    assert.ok(false, 'controllers/signup.js should pass ESLint\n\n30:7 - \'$\' is not defined. (no-undef)\n41:10 - \'result\' is defined but never used. (no-unused-vars)');
   });
 
   QUnit.test('helpers/get-dashboard-module-status.js', function (assert) {
@@ -53,11 +78,6 @@ define('iwnad/tests/app.lint-test', [], function () {
   QUnit.test('helpers/get-status-color.js', function (assert) {
     assert.expect(1);
     assert.ok(false, 'helpers/get-status-color.js should pass ESLint\n\n5:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n8:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)\n11:2 - Mixed spaces and tabs. (no-mixed-spaces-and-tabs)');
-  });
-
-  QUnit.test('initializers/ajax-setup.js', function (assert) {
-    assert.expect(1);
-    assert.ok(true, 'initializers/ajax-setup.js should pass ESLint\n\n');
   });
 
   QUnit.test('models/module.js', function (assert) {
@@ -80,6 +100,11 @@ define('iwnad/tests/app.lint-test', [], function () {
     assert.ok(true, 'router.js should pass ESLint\n\n');
   });
 
+  QUnit.test('routes/admin.js', function (assert) {
+    assert.expect(1);
+    assert.ok(false, 'routes/admin.js should pass ESLint\n\n7:6 - Unnecessary semicolon. (no-extra-semi)');
+  });
+
   QUnit.test('routes/application.js', function (assert) {
     assert.expect(1);
     assert.ok(true, 'routes/application.js should pass ESLint\n\n');
@@ -87,12 +112,12 @@ define('iwnad/tests/app.lint-test', [], function () {
 
   QUnit.test('routes/dashboard-page.js', function (assert) {
     assert.expect(1);
-    assert.ok(true, 'routes/dashboard-page.js should pass ESLint\n\n');
+    assert.ok(false, 'routes/dashboard-page.js should pass ESLint\n\n1:8 - \'Route\' is defined but never used. (no-unused-vars)\n3:13 - \'service\' is defined but never used. (no-unused-vars)\n6:16 - \'Ember\' is not defined. (no-undef)');
   });
 
   QUnit.test('routes/login.js', function (assert) {
     assert.expect(1);
-    assert.ok(true, 'routes/login.js should pass ESLint\n\n');
+    assert.ok(false, 'routes/login.js should pass ESLint\n\n11:6 - Unnecessary semicolon. (no-extra-semi)');
   });
 
   QUnit.test('routes/magic.js', function (assert) {
@@ -107,12 +132,12 @@ define('iwnad/tests/app.lint-test', [], function () {
 
   QUnit.test('routes/my-match.js', function (assert) {
     assert.expect(1);
-    assert.ok(true, 'routes/my-match.js should pass ESLint\n\n');
+    assert.ok(false, 'routes/my-match.js should pass ESLint\n\n7:6 - Unnecessary semicolon. (no-extra-semi)');
   });
 
   QUnit.test('routes/my-profile.js', function (assert) {
     assert.expect(1);
-    assert.ok(true, 'routes/my-profile.js should pass ESLint\n\n');
+    assert.ok(false, 'routes/my-profile.js should pass ESLint\n\n7:6 - Unnecessary semicolon. (no-extra-semi)');
   });
 
   QUnit.test('routes/new-user.js', function (assert) {
@@ -122,47 +147,35 @@ define('iwnad/tests/app.lint-test', [], function () {
 
   QUnit.test('routes/signup.js', function (assert) {
     assert.expect(1);
-    assert.ok(true, 'routes/signup.js should pass ESLint\n\n');
+    assert.ok(false, 'routes/signup.js should pass ESLint\n\n7:6 - Unnecessary semicolon. (no-extra-semi)');
+  });
+
+  QUnit.test('services/current-user.js', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'services/current-user.js should pass ESLint\n\n');
   });
 });
-define('iwnad/tests/helpers/ember-simple-auth', ['exports', 'ember-simple-auth/authenticators/test'], function (exports, _test) {
+define('iwnad/tests/helpers/torii', ['exports', 'iwnad/config/environment'], function (exports, _environment) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.authenticateSession = authenticateSession;
-  exports.currentSession = currentSession;
-  exports.invalidateSession = invalidateSession;
+  exports.stubValidSession = stubValidSession;
 
 
-  const TEST_CONTAINER_KEY = 'authenticator:test';
+  const {
+    torii: { sessionServiceName }
+  } = _environment.default;
 
-  function ensureAuthenticator(app, container) {
-    const authenticator = container.lookup(TEST_CONTAINER_KEY);
-    if (!authenticator) {
-      app.register(TEST_CONTAINER_KEY, _test.default);
-    }
-  }
+  function stubValidSession(application, sessionData) {
+    let session = application.__container__.lookup(`service:${sessionServiceName}`);
 
-  function authenticateSession(app, sessionData) {
-    const { __container__: container } = app;
-    const session = container.lookup('service:session');
-    ensureAuthenticator(app, container);
-    session.authenticate(TEST_CONTAINER_KEY, sessionData);
-    return app.testHelpers.wait();
-  }
-
-  function currentSession(app) {
-    return app.__container__.lookup('service:session');
-  }
-
-  function invalidateSession(app) {
-    const session = app.__container__.lookup('service:session');
-    if (session.get('isAuthenticated')) {
-      session.invalidate();
-    }
-    return app.testHelpers.wait();
+    let sm = session.get('stateMachine');
+    Ember.run(() => {
+      sm.send('startOpen');
+      sm.send('finishOpen', sessionData);
+    });
   }
 });
 define('iwnad/tests/integration/components/dashboard-module-test', ['qunit', 'ember-qunit', '@ember/test-helpers'], function (_qunit, _emberQunit, _testHelpers) {
@@ -300,14 +313,24 @@ define('iwnad/tests/tests.lint-test', [], function () {
     assert.ok(true, 'test-helper.js should pass ESLint\n\n');
   });
 
-  QUnit.test('unit/adapters/application-test.js', function (assert) {
+  QUnit.test('unit/controllers/admin-test.js', function (assert) {
     assert.expect(1);
-    assert.ok(true, 'unit/adapters/application-test.js should pass ESLint\n\n');
+    assert.ok(true, 'unit/controllers/admin-test.js should pass ESLint\n\n');
   });
 
   QUnit.test('unit/controllers/application-test.js', function (assert) {
     assert.expect(1);
     assert.ok(true, 'unit/controllers/application-test.js should pass ESLint\n\n');
+  });
+
+  QUnit.test('unit/controllers/dashboard-page-test.js', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'unit/controllers/dashboard-page-test.js should pass ESLint\n\n');
+  });
+
+  QUnit.test('unit/controllers/google-drive-api-test.js', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'unit/controllers/google-drive-api-test.js should pass ESLint\n\n');
   });
 
   QUnit.test('unit/controllers/login-test.js', function (assert) {
@@ -320,9 +343,14 @@ define('iwnad/tests/tests.lint-test', [], function () {
     assert.ok(true, 'unit/controllers/module-resources-test.js should pass ESLint\n\n');
   });
 
-  QUnit.test('unit/initializers/ajax-setup-test.js', function (assert) {
+  QUnit.test('unit/controllers/my-profile-test.js', function (assert) {
     assert.expect(1);
-    assert.ok(true, 'unit/initializers/ajax-setup-test.js should pass ESLint\n\n');
+    assert.ok(true, 'unit/controllers/my-profile-test.js should pass ESLint\n\n');
+  });
+
+  QUnit.test('unit/controllers/signup-test.js', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'unit/controllers/signup-test.js should pass ESLint\n\n');
   });
 
   QUnit.test('unit/models/1-test.js', function (assert) {
@@ -384,17 +412,22 @@ define('iwnad/tests/tests.lint-test', [], function () {
     assert.expect(1);
     assert.ok(true, 'unit/routes/signup-test.js should pass ESLint\n\n');
   });
+
+  QUnit.test('unit/services/current-user-test.js', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'unit/services/current-user-test.js should pass ESLint\n\n');
+  });
 });
-define('iwnad/tests/unit/adapters/application-test', ['qunit', 'ember-qunit'], function (_qunit, _emberQunit) {
+define('iwnad/tests/unit/controllers/admin-test', ['qunit', 'ember-qunit'], function (_qunit, _emberQunit) {
   'use strict';
 
-  (0, _qunit.module)('Unit | Adapter | application', function (hooks) {
+  (0, _qunit.module)('Unit | Controller | admin', function (hooks) {
     (0, _emberQunit.setupTest)(hooks);
 
     // Replace this with your real tests.
     (0, _qunit.test)('it exists', function (assert) {
-      let adapter = this.owner.lookup('adapter:application');
-      assert.ok(adapter);
+      let controller = this.owner.lookup('controller:admin');
+      assert.ok(controller);
     });
   });
 });
@@ -407,6 +440,32 @@ define('iwnad/tests/unit/controllers/application-test', ['qunit', 'ember-qunit']
     // Replace this with your real tests.
     (0, _qunit.test)('it exists', function (assert) {
       let controller = this.owner.lookup('controller:application');
+      assert.ok(controller);
+    });
+  });
+});
+define('iwnad/tests/unit/controllers/dashboard-page-test', ['qunit', 'ember-qunit'], function (_qunit, _emberQunit) {
+  'use strict';
+
+  (0, _qunit.module)('Unit | Controller | dashboard-page', function (hooks) {
+    (0, _emberQunit.setupTest)(hooks);
+
+    // Replace this with your real tests.
+    (0, _qunit.test)('it exists', function (assert) {
+      let controller = this.owner.lookup('controller:dashboard-page');
+      assert.ok(controller);
+    });
+  });
+});
+define('iwnad/tests/unit/controllers/google-drive-api-test', ['qunit', 'ember-qunit'], function (_qunit, _emberQunit) {
+  'use strict';
+
+  (0, _qunit.module)('Unit | Controller | google-drive-api', function (hooks) {
+    (0, _emberQunit.setupTest)(hooks);
+
+    // Replace this with your real tests.
+    (0, _qunit.test)('it exists', function (assert) {
+      let controller = this.owner.lookup('controller:google-drive-api');
       assert.ok(controller);
     });
   });
@@ -437,31 +496,29 @@ define('iwnad/tests/unit/controllers/module-resources-test', ['qunit', 'ember-qu
     });
   });
 });
-define('iwnad/tests/unit/initializers/ajax-setup-test', ['iwnad/initializers/ajax-setup', 'qunit', 'ember-qunit'], function (_ajaxSetup, _qunit, _emberQunit) {
+define('iwnad/tests/unit/controllers/my-profile-test', ['qunit', 'ember-qunit'], function (_qunit, _emberQunit) {
   'use strict';
 
-  (0, _qunit.module)('Unit | Initializer | ajax-setup', function (hooks) {
+  (0, _qunit.module)('Unit | Controller | my-profile', function (hooks) {
     (0, _emberQunit.setupTest)(hooks);
 
-    hooks.beforeEach(function () {
-      this.TestApplication = Ember.Application.extend();
-      this.TestApplication.initializer({
-        name: 'initializer under test',
-        initialize: _ajaxSetup.initialize
-      });
-
-      this.application = this.TestApplication.create({ autoboot: false });
+    // Replace this with your real tests.
+    (0, _qunit.test)('it exists', function (assert) {
+      let controller = this.owner.lookup('controller:my-profile');
+      assert.ok(controller);
     });
+  });
+});
+define('iwnad/tests/unit/controllers/signup-test', ['qunit', 'ember-qunit'], function (_qunit, _emberQunit) {
+  'use strict';
 
-    hooks.afterEach(function () {
-      Ember.run(this.application, 'destroy');
-    });
+  (0, _qunit.module)('Unit | Controller | signup', function (hooks) {
+    (0, _emberQunit.setupTest)(hooks);
 
     // Replace this with your real tests.
-    (0, _qunit.test)('it works', async function (assert) {
-      await this.application.boot();
-
-      assert.ok(true);
+    (0, _qunit.test)('it exists', function (assert) {
+      let controller = this.owner.lookup('controller:signup');
+      assert.ok(controller);
     });
   });
 });
@@ -612,6 +669,19 @@ define('iwnad/tests/unit/routes/signup-test', ['qunit', 'ember-qunit'], function
     (0, _qunit.test)('it exists', function (assert) {
       let route = this.owner.lookup('route:signup');
       assert.ok(route);
+    });
+  });
+});
+define('iwnad/tests/unit/services/current-user-test', ['qunit', 'ember-qunit'], function (_qunit, _emberQunit) {
+  'use strict';
+
+  (0, _qunit.module)('Unit | Service | current-user', function (hooks) {
+    (0, _emberQunit.setupTest)(hooks);
+
+    // Replace this with your real tests.
+    (0, _qunit.test)('it exists', function (assert) {
+      let service = this.owner.lookup('service:current-user');
+      assert.ok(service);
     });
   });
 });

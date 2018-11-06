@@ -20,23 +20,25 @@ class UserController extends Controller
     {
     	error_log('authentication request');
         $credentials = $request->only('email', 'password');
-        error_log(implode($credentials));
+        // error_log(implode($credentials));
         // error_log('email: '.$credentials['email']);
         // error_log('password: '.$credentials['password']);
 
         try {
             if (! $access_token = JWTAuth::attempt($credentials)) {
                 error_log('invalid creds');
-                return response()->json(['error' => 'invalid_credentials'], 400);
+                return response()->json(['status' => 'invalid_credentials'], 400);
             }
         } catch (JWTException $e) {
             error_log('no token created');
-            return response()->json(['error' => 'could_not_create_token'], 500);
+            return response()->json([
+                'status' => 'could_not_create_token'
+            ], 500);
         }
 
         $user = Auth::user();
         error_log('success');
-        return response()->json(compact('user', 'access_token'));
+        return response()->json(compact('user', 'access_token'), 200);
     }
 
     /**
@@ -141,7 +143,7 @@ class UserController extends Controller
             $user->phone = $phone;
         }
         if (!is_null($bio)) {
-
+            $user->bio = $bio;
         }
 
         $user->save();

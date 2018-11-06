@@ -31,10 +31,10 @@ class Dashboard extends Eloquent
 	public $timestamps = false;
 
 	protected $casts = [
-		'parentdashboardid' => 'int',
 		'pairingid' => 'int',
 		'currentphaseid' => 'int',
-		'currentphasestatus' => 'int'
+		'currentphasestatus' => 'int',
+		'requestorid' => 'int',
 	];
 
 	protected $dates = [
@@ -42,11 +42,11 @@ class Dashboard extends Eloquent
 	];
 
 	protected $fillable = [
-		'meetingtime',
-		'parentdashboardid',
 		'pairingid',
 		'currentphaseid',
-		'currentphasestatus'
+		'currentphasestatus',
+		'requestorid',
+		'meetingtime'
 	];
 
 	public function pairing()
@@ -62,5 +62,10 @@ class Dashboard extends Eloquent
 	public function doclinks()
 	{
 		return $this->hasMany(\App\Models\Doclink::class, 'dashboardid');
+	}
+
+	public function availabilities()
+	{
+		return $this->hasMany(\App\Models\Availability::class, 'dashboardid');
 	}
 }
