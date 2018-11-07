@@ -218,7 +218,7 @@ class UserController extends Controller
         }
         error_log('per-page count is '.$count);
 
-        $users = User::paginate($count);
+        $users = User::get();
 
         return response()->json(compact('users'));
     }
@@ -237,7 +237,7 @@ class UserController extends Controller
         $users = User::whereDoesntHave('mentorPairings')
                         ->whereDoesntHave('menteePairings')
                         ->where('permissions', '<>', env('ADMIN_PERMISSIONS'))
-                        ->paginate($count);
+                        ->get();
 
         return response()->json(compact('users'));
     }

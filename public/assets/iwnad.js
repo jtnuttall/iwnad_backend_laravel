@@ -311,14 +311,16 @@
           data: JSON.stringify({
             email: this.email,
             name: this.username,
-            type: this.userType,
+            permissions: this.userType,
             password: this.password
           }),
           contentType: "application/json"
-        }).then(() => {
+        }).then(response => {
+          console.log(response);
           $("#addresults").html("Successfuly added user!");
           //add user to data of all users
-        }, () => {
+        }, error => {
+          console.log(error);
           $("#addresults").html("failed to add user");
           // this.transitionToRoute("login");
           //error case
@@ -478,11 +480,11 @@
             console.log('setup complete');
 
             localStorage.token = result.access_token;
-            localStorage.currentUser = result.user;
-            if (localStorage.currentUser.firstlogin) {
+            localStorage.currentUser = JSON.stringify(result.user);
+            if (JSON.parse(localStorage.currentUser).firstlogin) {
               console.log('go to signup');
               this.transitionToRoute('signup');
-            } else if (localStorage.currentUser.permissions === 0) {
+            } else if (JSON.parse(localStorage.currentUser).permissions === 0) {
               console.log('go to admin');
               this.transitionToRoute('admin');
             } else {
@@ -1825,7 +1827,7 @@ catch(err) {
 
 ;
           if (!runningTests) {
-            require("iwnad/app")["default"].create({"name":"iwnad","version":"0.0.0+5963e6b7"});
+            require("iwnad/app")["default"].create({"name":"iwnad","version":"0.0.0+1f3e0665"});
           }
         
 //# sourceMappingURL=iwnad.map

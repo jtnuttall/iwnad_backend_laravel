@@ -27,7 +27,7 @@ define('iwnad/tests/app.lint-test', [], function () {
 
   QUnit.test('controllers/admin.js', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'controllers/admin.js should pass ESLint\n\n8:11 - \'$\' is not defined. (no-undef)\n11:9 - \'$\' is not defined. (no-undef)\n23:11 - \'$\' is not defined. (no-undef)\n27:13 - \'$\' is not defined. (no-undef)\n36:11 - \'$\' is not defined. (no-undef)\n39:9 - \'$\' is not defined. (no-undef)\n48:11 - \'$\' is not defined. (no-undef)\n52:13 - \'$\' is not defined. (no-undef)');
+    assert.ok(false, 'controllers/admin.js should pass ESLint\n\n8:11 - \'$\' is not defined. (no-undef)\n11:9 - \'$\' is not defined. (no-undef)\n24:13 - Unexpected console statement. (no-console)\n25:13 - \'$\' is not defined. (no-undef)\n29:13 - Unexpected console statement. (no-console)\n30:13 - \'$\' is not defined. (no-undef)\n39:11 - \'$\' is not defined. (no-undef)\n42:9 - \'$\' is not defined. (no-undef)\n51:11 - \'$\' is not defined. (no-undef)\n55:13 - \'$\' is not defined. (no-undef)');
   });
 
   QUnit.test('controllers/application.js', function (assert) {
