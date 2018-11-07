@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 */
 
 Route::post('login', 'UserController@authenticate');
+Route::post('subscribe', 'SubscriberController@addSubscriber');
 
 Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('user', 'UserController@getAuthenticatedUser');
@@ -35,4 +36,6 @@ Route::group(['middleware' => ['admin.verify']], function() {
     Route::post('pair', 'PairingController@pair');
     Route::post('deletepair', 'PairingController@deletePair');
 	Route::post('allpairs', 'PairingController@getAllPairs');
+
+	Route::post('subscribers', 'SubscriberController@getSubscribers');
 });

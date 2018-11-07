@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\Pairing;
 use App\Models\Dashboard;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Validator;
 
 class DashboardController extends Controller
 {

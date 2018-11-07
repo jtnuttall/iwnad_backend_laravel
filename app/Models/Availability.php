@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,12 +13,12 @@ class Availability extends Model
 		'dashboardid' => 'int',
 	];
 
-	protected $dates [
+	protected $dates = [
 		'begindate',
 		'enddate',
 	];
 
-	protected $fillable [
+	protected $fillable = [
 		'dashboardid',
 		'begindate',
 		'enddate',
