@@ -34,7 +34,7 @@ class Dashboard extends Eloquent
 		'pairingid' => 'int',
 		'currentphaseid' => 'int',
 		'currentphasestatus' => 'int',
-		'requestorid' => 'int',
+		// 'requestorid' => 'int',
 	];
 
 	protected $dates = [
@@ -45,8 +45,8 @@ class Dashboard extends Eloquent
 		'pairingid',
 		'currentphaseid',
 		'currentphasestatus',
-		'requestorid',
-		'meetingtime'
+		// 'requestorid',
+		'meetingtime',
 	];
 
 	public function pairing()
@@ -67,5 +67,10 @@ class Dashboard extends Eloquent
 	public function availabilities()
 	{
 		return $this->hasMany(\App\Models\Availability::class, 'dashboardid');
+	}
+
+	public function modules()
+	{
+		return $this->hasMany(\App\Models\Module::class, 'dashboardid');
 	}
 }

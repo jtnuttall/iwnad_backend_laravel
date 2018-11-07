@@ -14,8 +14,7 @@ class AddForeignKeysToDoclinksTable extends Migration {
 	{
 		Schema::table('doclinks', function(Blueprint $table)
 		{
-			$table->foreign('dashboardid', 'fk_doclinks_dashboards1')->references('dashboardid')->on('dashboards')->onUpdate('NO ACTION')->onDelete('NO ACTION');
-			$table->foreign('phaseid', 'fk_doclinks_phases1')->references('phaseid')->on('phases')->onUpdate('NO ACTION')->onDelete('NO ACTION');
+			$table->foreign('moduleid', 'fk_doclinks_modules1')->references('moduleid')->on('modules')->onUpdate('NO ACTION')->onDelete('NO ACTION');
 		});
 	}
 
@@ -29,8 +28,7 @@ class AddForeignKeysToDoclinksTable extends Migration {
 	{
 		Schema::table('doclinks', function(Blueprint $table)
 		{
-			$table->dropForeign('fk_doclinks_dashboards1');
-			$table->dropForeign('fk_doclinks_phases1');
+			$table->dropForeign('fk_doclinks_modules1');
 		});
 	}
 

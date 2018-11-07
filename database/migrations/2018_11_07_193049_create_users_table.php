@@ -2,7 +2,6 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\DB;
 
 class CreateUsersTable extends Migration {
 
@@ -18,17 +17,18 @@ class CreateUsersTable extends Migration {
 			$table->integer('userid', true);
 			$table->string('email', 64)->unique('email_UNIQUE');
 			$table->string('username', 64)->unique('username_UNIQUE');
-			$table->timestamp('email_verified_at')->nullable();
+			$table->dateTime('email_verified_at')->nullable();
 			$table->integer('permissions');
-			$table->boolean('firstlogin')->default(true);
-			$table->string('password', 255);
+			$table->boolean('firstlogin')->default(1);
+			$table->string('password');
 			$table->string('name', 64)->nullable();
 			$table->string('profilepic')->nullable();
 			$table->string('occupation', 64)->nullable();
 			$table->string('organization', 45)->nullable();
 			$table->string('phone', 20)->nullable();
-			$table->text('bio')->nullable();
-			$table->rememberToken();
+			$table->text('bio', 65535)->nullable();
+			$table->text('partnernote', 65535)->nullable();
+			$table->string('remember_token', 100)->nullable();
 			$table->timestamps();
 		});
 	}

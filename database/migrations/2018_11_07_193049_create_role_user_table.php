@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreatePhasesTable extends Migration {
+class CreateRoleUserTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,10 +12,10 @@ class CreatePhasesTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('phases', function(Blueprint $table)
+		Schema::create('role_user', function(Blueprint $table)
 		{
-			$table->integer('phaseid', true);
-			$table->string('name', 128)->nullable();
+			$table->increments('id');
+			$table->timestamps();
 		});
 	}
 
@@ -27,7 +27,7 @@ class CreatePhasesTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('phases');
+		Schema::drop('role_user');
 	}
 
 }
