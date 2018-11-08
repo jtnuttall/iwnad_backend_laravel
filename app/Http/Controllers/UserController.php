@@ -256,6 +256,14 @@ class UserController extends Controller
                     ->whereDoesntHave('menteePairings')
                     ->where('email', $request->get('email'))
                     ->first();
+
+        $baseAdmin = User::where('permissions', ADMIN_PERMISSIONS)->first();
+
+        if ($baseAdmin->userid === $user->userid) {
+            return response()->json([
+                'status' => 'cannot_delete_base_admin'
+            ], 400);
+        }
         
         if (is_null($user)) {
             $user = User::where('email', $request->get('email'))

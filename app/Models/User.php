@@ -77,14 +77,6 @@ class User extends Eloquent implements JWTSubject, AuthenticatableContract, CanR
 		return $this->hasOne(\App\Models\Pairing::class, 'mentorid');
 	}
 
-	public function pairings()
-	{
-		if ($this->permissions == env('MENTOR_PERMISSIONS'))
-			return $this->hasMany(\App\Models\Pairing::class, 'menteeid');
-		else
-			return $this->hasOne(\App\Models\Pairing::class, 'mentorid');
-	}
-
     public function getJWTIdentifier()
     {
         return $this->getKey();
