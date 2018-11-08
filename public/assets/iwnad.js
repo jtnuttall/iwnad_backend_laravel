@@ -1827,7 +1827,7 @@ catch(err) {
 
 ;
           if (!runningTests) {
-            require("iwnad/app")["default"].create({"name":"iwnad","version":"0.0.0+1f3e0665"});
+            require("iwnad/app")["default"].create({"name":"iwnad","version":"0.0.0+9677e17a"});
           }
         
 //# sourceMappingURL=iwnad.map

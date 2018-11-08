@@ -8,8 +8,8 @@ BACKEND=".";
 # build the Ember application
 cd $FRONTEND;
 rm -rvf dist;
-ember build --environment staging;
-git checkout staging;
+ember build --environment working;
+git checkout working;
 cd -;
 # copy the new Ember build into the Laravel application
 cp -Rvf $FRONTEND/dist/assets $BACKEND/public
