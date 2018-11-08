@@ -257,7 +257,7 @@ class UserController extends Controller
                     ->where('email', $request->get('email'))
                     ->first();
 
-        $baseAdmin = User::where('permissions', ADMIN_PERMISSIONS)->first();
+        $baseAdmin = User::where('permissions', env('ADMIN_PERMISSIONS'))->first();
 
         if ($baseAdmin->userid === $user->userid) {
             return response()->json([
