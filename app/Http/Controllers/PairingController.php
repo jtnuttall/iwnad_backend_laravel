@@ -124,6 +124,18 @@ class PairingController extends Controller
     					->orWhere('menteeid', $user->userid)
     					->get();
 
+    	foreach ($pairings as &$pairing) {
+	        if ($pairing['mentor']->userid === $user->userid) {
+	        	$pairing['current'] = $pairing['mentor'];
+	        	$pairing['match'] = $pairing['mentee'];
+	        } else {
+	        	$pairing['current'] = $pairing['mentee'];
+	        	$pairing['match'] = $pairing['mentor'];
+	        }
+	        unset($pairing['mentor']);
+	        unset($pairing['mentee']);
+	    }
+
     	return response()->json(compact('pairings'));
     }
 
@@ -139,6 +151,8 @@ class PairingController extends Controller
         // error_log('per-page count is '.$count);
 
         // $pairings = Pairing::with(['mentor', 'mentee'])->paginate($count);
+        $user = Auth::user();
+
         $pairings = Pairing::with(['mentor', 'mentee'])->get();
 
         return response()->json(compact('pairings'));
