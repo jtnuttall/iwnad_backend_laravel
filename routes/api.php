@@ -15,7 +15,10 @@ use Illuminate\Http\Request;
 
 Route::post('login', 'UserController@authenticate');
 Route::post('subscribe', 'SubscriberController@addSubscriber');
-//Route::post('createDashboard','PairingController@createDashboard');
+Route::post('addLink','DoclinkController@addLink');
+Route::post('deleteLink','DoclinkController@deleteLink');
+Route::post('getDashboard','DashboardController@getDashboards');
+
 
 Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('user', 'UserController@getAuthenticatedUser');

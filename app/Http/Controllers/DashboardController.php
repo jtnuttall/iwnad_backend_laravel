@@ -24,10 +24,11 @@ class DashboardController extends Controller
             return response()->json($validator->errors()->toJson(), 400);
         }
 
-        $user = Auth::user();
-        $maybeuser = User::where('email', $request->get('email'));
+        //$user = Auth::user();
+        //$maybeuser = User::where('email', $request->get('email'));
 
-        if ($user->userid != $maybeuser->userid) {
+
+       /* if ($user->userid != $maybeuser->userid) {
         	if ($user->permissions != env('ADMIN_PERMISSIONS')) {
         		return response()->json(['status' => 'forbidden'], 403);
         	}
@@ -35,6 +36,8 @@ class DashboardController extends Controller
         		$user = $maybeuser;
         	}
         }
+*/
+        $user = User::where('email', $request->get('email'))->first();
 
         /** 
          * TODO 
@@ -50,7 +53,7 @@ class DashboardController extends Controller
         $dashboards = new Collection();
         foreach ($pairings as $pair) {
         	$dashboards->push(
-        		Dashboard::where('pairingid', $pair->pairingid)->first();
+        		Dashboard::where('pairingid', $pair->pairingid)->first()
         	);
         }
 
