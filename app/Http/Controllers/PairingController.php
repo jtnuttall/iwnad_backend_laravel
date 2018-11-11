@@ -5,11 +5,33 @@ namespace App\Http\Controllers;
 use Auth;
 use App\Models\User;
 use App\Models\Pairing;
+use App\Models\Dashboard;
+use App\Models\Module;
+use App\Models\Phase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class PairingController extends Controller
 {
+   private function createDashboard($pairingid){
+
+        error_log('trying to create dashboard');
+
+        $dashboard = Dashboard::create([
+            'pairingid' => $pairingid,
+            'currentphaseid'=> Phase::first()->value('phaseid'),
+            'currentphasestatus' => 0,
+        ]);
+
+        $allPhases = Phase::all();
+
+        foreach($allPhases as $phase){
+        Module::create([
+            'phaseid' => $phase->phaseid,
+            'dashboardid' => $dashboard->value('dashboardid'),
+        ]);
+        }
+    }
     
     public function pair(Request $request)
     {
@@ -65,6 +87,9 @@ class PairingController extends Controller
         $pairing->save();
 
         error_log('success');
+        error_log('pairingid:' + $pairingid);
+
+        //create_dashboard($pairing->value($pairing->pairingid));
 
         return response()->json(compact('pairing'));
     }

@@ -17,8 +17,7 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property int $parentdashboardid
  * @property int $pairingid
  * @property int $currentphaseid
- * @property int $currentphasestatus
- * 
+ * @property int $currentphasestatu  
  * @property \App\Models\Pairing $pairing
  * @property \App\Models\Phase $phase
  * @property \Illuminate\Database\Eloquent\Collection $doclinks

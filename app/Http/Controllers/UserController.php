@@ -148,9 +148,7 @@ class UserController extends Controller
 
         $user->save();
 
-        return response()->json([
-            'status' => 'user_update_success'
-        ]);
+       return response()->json(compact('user'), 200);
     }
 
     private function notifyEmailChange(User $user, string $newEmail)
