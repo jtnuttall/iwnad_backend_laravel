@@ -97,6 +97,7 @@ class UserController extends Controller
                 'occupation' => 'string|required|max:64',
                 'organization' => 'string|required|max:45',
                 'phone' => 'string|required|max:20',
+                'password' => 'string|required|min:6',
             ]);
 
             if($validator->fails()){
@@ -107,15 +108,17 @@ class UserController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-                'email' => 'string|email|max:255|unique:users',
-                'bio' => 'string|max:65535',
+            'name' => 'string',
+            'email' => 'string|email|max:255|unique:users',
+            'bio' => 'string|max:65535',
         ]);
         if ($validator->fails()) {
             return response()->json($validator->errors()->toArray(), 400);
         }
 
         $email = $request->get('email');
-        // $name = $request->get('name');
+        $password = $request->get('password');
+        $name = $request->get('name');
         $profilepic = $request->file('profilepic');
         $occupation = $request->get('occupation');
         $organization = $request->get('organization');
@@ -144,6 +147,9 @@ class UserController extends Controller
         }
         if (!is_null($bio)) {
             $user->bio = $bio;
+        }
+        if (!is_null($password)) {
+            $user->password = $password;
         }
 
         $user->save();
