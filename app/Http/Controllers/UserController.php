@@ -117,7 +117,7 @@ class UserController extends Controller
         }
 
         $email = $request->get('email');
-        $password = Hash::make($request->get('password'));
+        $password = $request->get('password');
         $name = $request->get('name');
         $profilepic = $request->file('profilepic');
         $occupation = $request->get('occupation');
@@ -149,7 +149,7 @@ class UserController extends Controller
             $user->bio = $bio;
         }
         if (!is_null($password)) {
-            $user->password = $password;
+            $user->password = Hash::make($password);
         }
 
         $user->save();
