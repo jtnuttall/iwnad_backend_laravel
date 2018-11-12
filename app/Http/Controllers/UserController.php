@@ -117,7 +117,7 @@ class UserController extends Controller
         }
 
         $email = $request->get('email');
-        $password = $request->get('password');
+        $password = Hash::make($request->get('password'));
         $name = $request->get('name');
         $profilepic = $request->file('profilepic');
         $occupation = $request->get('occupation');
