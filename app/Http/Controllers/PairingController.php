@@ -85,11 +85,9 @@ class PairingController extends Controller
         $pairing->mentorid = $mentor->userid;
         $pairing->menteeid = $mentee->userid;
         $pairing->save();
-
         error_log('success');
-        error_log('pairingid:' + $pairingid);
 
-        create_dashboard($pairing->$pairingid);
+        $this->createDashboard($pairing->pairingid);
 
         return response()->json(compact('pairing'));
     }
