@@ -89,7 +89,7 @@ class PairingController extends Controller
         error_log('success');
         error_log('pairingid:' + $pairingid);
 
-        //create_dashboard($pairing->value($pairing->pairingid));
+        create_dashboard($pairing->$pairingid);
 
         return response()->json(compact('pairing'));
     }
