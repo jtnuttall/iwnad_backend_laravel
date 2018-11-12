@@ -182,7 +182,6 @@ class UserController extends Controller
 
     public function forgotPassword()
     {
-
     }
 
     public function changePassword(Request $request)

@@ -34,13 +34,20 @@ class DoclinkController extends Controller
         	]);
       }
 
-      public function deleteLink(Request $request){
+    public function deleteLink(Request $request){
 
         error_log(' in deleteLink');
 
-        //$user = Auth::user();
+        $user = Auth::user();
 
         $doc = DocLink::where('doclinkid', $request->get('doclinkid'));
+
+        if(!is_null($doc)){
+
+         return response()->json([
+            'status' => 'doclink doesnt exist',
+        ], 404);
+        }
 
         $doc->delete();
 
