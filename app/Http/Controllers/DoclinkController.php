@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Auth;
 use App\Models\Doclink;
+use App\Models\Module;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -23,6 +24,13 @@ class DoclinkController extends Controller
            return response()->json($validator->errors()->toArray(), 400);
          }
 
+         $module = Module::where('moduleid', $request->get('moduleid'))->get();
+
+         if($module->isEmpty()){
+            return response()->json([
+                'status' => 'module doesnt exist'],400);
+         }
+
          Doclink::create([
             'link' => $request->get('link'),
             'moduleid' => $request->get('moduleid'),
@@ -40,9 +48,11 @@ class DoclinkController extends Controller
 
         $user = Auth::user();
 
-        $doc = DocLink::where('doclinkid', $request->get('doclinkid'));
+        $doc = Doclink::where('doclinkid', $request->get('doclinkid'));
 
-        if(!is_null($doc)){
+        $docArray = $doc->get(); 
+
+        if($docArray->isEmpty()){
 
          return response()->json([
             'status' => 'doclink doesnt exist',

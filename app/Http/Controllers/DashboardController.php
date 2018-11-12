@@ -26,7 +26,7 @@ class DashboardController extends Controller
         $dashboards = new Collection();
         foreach ($pairings as $pair) {
         	$dashboards->push(
-        		Dashboard::with(['pairing', 'modules', 'modules.phase', 'modules.doclinks'])
+        		Dashboard::with(['modules', 'modules.phase', 'modules.doclinks'])
                     ->where('pairingid', $pair->pairingid)->first()
         	);
         }

@@ -23,8 +23,8 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('updateuser', 'UserController@updateUser');
     Route::post('currentpairs', 'PairingController@getCurrentPairs');
     Route::post('dashboard', 'DashboardController@getDashboards');
-    Route::post('addLink','DoclinkController@addLink');
-    Route::post('deleteLink','DoclinkController@deleteLink');
+    Route::post('addlink','DoclinkController@addLink');
+    Route::post('deletelink','DoclinkController@deleteLink');
 });
 
 Route::group(['middleware' => ['admin.verify']], function() {

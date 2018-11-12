@@ -26,9 +26,10 @@ class PairingController extends Controller
         $allPhases = Phase::all();
 
         foreach($allPhases as $phase){
+        error_log('in foreach loop ');
         Module::create([
             'phaseid' => $phase->phaseid,
-            'dashboardid' => $dashboard->value('dashboardid'),
+            'dashboardid' => $dashboard->dashboardid,
         ]);
         }
     }
