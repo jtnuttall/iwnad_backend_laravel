@@ -13,7 +13,7 @@ class DoclinkController extends Controller
 
         error_log('in addLink');
 
-        //$user = Auth::user();
+        $user = Auth::user();
 
         $validator = Validator::make($request->all(), [
                 'link' => 'string|required',

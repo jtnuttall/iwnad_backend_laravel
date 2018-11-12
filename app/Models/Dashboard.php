@@ -58,10 +58,6 @@ class Dashboard extends Eloquent
 		return $this->belongsTo(\App\Models\Phase::class, 'currentphaseid');
 	}
 
-	public function doclinks()
-	{
-		return $this->hasMany(\App\Models\Doclink::class, 'dashboardid');
-	}
 
 	public function availabilities()
 	{

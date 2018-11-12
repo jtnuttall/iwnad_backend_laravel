@@ -15,19 +15,16 @@ use Illuminate\Http\Request;
 
 Route::post('login', 'UserController@authenticate');
 Route::post('subscribe', 'SubscriberController@addSubscriber');
-Route::post('addLink','DoclinkController@addLink');
-Route::post('deleteLink','DoclinkController@deleteLink');
-Route::post('getDashboard','DashboardController@getDashboards');
 
 
 Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('user', 'UserController@getAuthenticatedUser');
     Route::post('changepassword', 'UserController@changePassword');
     Route::post('updateuser', 'UserController@updateUser');
-
     Route::post('currentpairs', 'PairingController@getCurrentPairs');
-
     Route::post('dashboard', 'DashboardController@getDashboards');
+    Route::post('addLink','DoclinkController@addLink');
+    Route::post('deleteLink','DoclinkController@deleteLink');
 });
 
 Route::group(['middleware' => ['admin.verify']], function() {

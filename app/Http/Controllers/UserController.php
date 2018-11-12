@@ -93,7 +93,7 @@ class UserController extends Controller
 
         if ($user->firstlogin) {
             $validator = Validator::make($request->all(), [
-                'profilepic' => 'file|required',  // mimes?
+                'profilepic' => 'file',  
                 'occupation' => 'string|required|max:64',
                 'organization' => 'string|required|max:45',
                 'phone' => 'string|required|max:20',
@@ -283,5 +283,10 @@ class UserController extends Controller
         return response()->json([
             'status' => 'user deleted',
         ]);
+    }
+
+    public function logout(Request $request){
+
+        $user = Auth::user();
     }
 }
