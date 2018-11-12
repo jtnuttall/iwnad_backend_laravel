@@ -14,8 +14,17 @@ class AddForeignKeysToPairingsTable extends Migration {
 	{
 		Schema::table('pairings', function(Blueprint $table)
 		{
-			$table->foreign('mentorid', 'fk_pairings_users')->references('userid')->on('users')->onUpdate('NO ACTION')->onDelete('NO ACTION');
-			$table->foreign('menteeid', 'fk_pairings_users1')->references('userid')->on('users')->onUpdate('NO ACTION')->onDelete('NO ACTION');
+			$table->foreign('mentorid', 'fk_pairings_users')
+				->references('userid')
+				->on('users')
+				->onUpdate('NO ACTION')
+				->onDelete('CASCADE');
+			
+			$table->foreign('menteeid', 'fk_pairings_users1')
+				->references('userid')
+				->on('users')
+				->onUpdate('NO ACTION')
+				->onDelete('CASCADE');
 		});
 	}
 

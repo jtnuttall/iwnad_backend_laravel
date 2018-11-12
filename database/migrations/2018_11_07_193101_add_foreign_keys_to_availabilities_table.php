@@ -14,7 +14,11 @@ class AddForeignKeysToAvailabilitiesTable extends Migration {
 	{
 		Schema::table('availabilities', function(Blueprint $table)
 		{
-			$table->foreign('dashboardid', 'fk_availabilities_dashboards1')->references('dashboardid')->on('dashboards')->onUpdate('NO ACTION')->onDelete('NO ACTION');
+			$table->foreign('dashboardid', 'fk_availabilities_dashboards1')
+				->references('dashboardid')
+				->on('dashboards')
+				->onUpdate('NO ACTION')
+				->onDelete('CASCADE');
 		});
 	}
 
