@@ -124,6 +124,10 @@ class UserController extends Controller
         $organization = $request->get('organization');
         $phone = $request->get('phone');
         $bio = $request->get('bio');
+        $linkedin = $request->get('linkedin');
+        $facebook = $request->get('facebook');
+        $instagram = $request->get('instagram');
+        $twitter = $request->get('twitter');
 
         if (!is_null($email)) {
             $this->notifyEmailChange($user, $email);
@@ -148,8 +152,17 @@ class UserController extends Controller
         if (!is_null($bio)) {
             $user->bio = $bio;
         }
-        if (!is_null($password)) {
-            $user->password = Hash::make($password);
+        if (!is_null($instagram)) {
+            $user->instagram = $instagram;
+        }
+        if (!is_null($linkedin)) {
+            $user->linkedin = $linkedin;
+        }
+        if (!is_null($facebook)) {
+            $user->facebook = $facebook;
+        }
+        if (!is_null($twitter)) {
+            $user->twitter = $twitter;
         }
 
         $user->save();
