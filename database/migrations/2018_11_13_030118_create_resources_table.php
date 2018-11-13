@@ -16,8 +16,8 @@ class CreateResourcesTable extends Migration
         Schema::create('resources', function (Blueprint $table) {
             $table->increments('resourceid');
             $table->string('name', 64);
-	    $table->string('link', 255);
-	    $table->integer('phaseid')->unsigned()->index('fk_resources_phases1_idx');
+	       $table->string('link', 255);
+	       $table->integer('phaseid')->index('fk_resources_phases1_idx');
             $table->timestamps();
         });
     }
