@@ -25,6 +25,8 @@ Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('dashboard', 'DashboardController@getDashboards');
     Route::post('addlink','DoclinkController@addLink');
     Route::post('deletelink','DoclinkController@deleteLink');
+    Route::post('approve','ModulesController@approvePhase');
+
 });
 
 Route::group(['middleware' => ['admin.verify']], function() {
