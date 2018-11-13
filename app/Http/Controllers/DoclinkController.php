@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Auth;
 use App\Models\Doclink;
+use App\Models\Pairing;
+use App\Models\Dashboard;
 use App\Models\Module;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -24,18 +26,25 @@ class DoclinkController extends Controller
            return response()->json($validator->errors()->toArray(), 400);
          }
 
-         $module = Module::where('moduleid', $request->get('moduleid'))->get();
+         /*$module = Module::where('moduleid', $request->get('moduleid'))->get();
 
          if($module->isEmpty()){
             return response()->json([
                 'status' => 'module doesnt exist'],400);
-         }
+         }*/
+
+         $pair = Pairing::where('menteeid', $user->userid)->first();
+         $dashboard = Dashboard::where('pairingid', $pair->pairingid)->first();
+         $module = Module::where('dashboardid', $dashboard->dashboardid)
+                        ->where('phaseid', $dashboard->currentphaseid)->first();
 
          Doclink::create([
             'link' => $request->get('link'),
-            'moduleid' => $request->get('moduleid'),
+            'moduleid' => $module->moduleid,
             
          ]);
+
+         error_log($module->moduleid);
 
            return response()->json([
             	'status' => 'doclink added',
