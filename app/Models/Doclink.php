@@ -34,6 +34,7 @@ class Doclink extends Eloquent
 	protected $fillable = [
 		'link',
 		'moduleid',
+		'name',
 	];
 
 

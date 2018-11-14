@@ -20,18 +20,12 @@ class DoclinkController extends Controller
 
         $validator = Validator::make($request->all(), [
                 'link' => 'string|required',
+                'name' => 'string|required',
           ]);
 
          if ($validator->fails()) {
            return response()->json($validator->errors()->toArray(), 400);
          }
-
-         /*$module = Module::where('moduleid', $request->get('moduleid'))->get();
-
-         if($module->isEmpty()){
-            return response()->json([
-                'status' => 'module doesnt exist'],400);
-         }*/
 
          $pair = Pairing::where('menteeid', $user->userid)->first();
          $dashboard = Dashboard::where('pairingid', $pair->pairingid)->first();
@@ -40,6 +34,7 @@ class DoclinkController extends Controller
 
          Doclink::create([
             'link' => $request->get('link'),
+            'name' => $request->get('name'),
             'moduleid' => $module->moduleid,
             
          ]);

@@ -33,18 +33,17 @@ class Dashboard extends Eloquent
 		'pairingid' => 'int',
 		'currentphaseid' => 'int',
 		'currentphasestatus' => 'int',
-		// 'requestorid' => 'int',
 	];
 
 	protected $dates = [
 		'meetingtime'
 	];
 
+
 	protected $fillable = [
 		'pairingid',
 		'currentphaseid',
 		'currentphasestatus',
-		// 'requestorid',
 		'meetingtime',
 	];
 
