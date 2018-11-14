@@ -137,6 +137,9 @@ class UserController extends Controller
         if (!is_null($name)) {
             $user->name = $name;
         }
+        if (!is_null($password)) {
+            $user->password = Hash::make($password);
+        }
         if (!is_null($profilepic)) {
             $user->profilepic = $profilepic->store('profilepics');
         }
@@ -149,21 +152,12 @@ class UserController extends Controller
         if (!is_null($phone)) {
             $user->phone = $phone;
         }
-        if (!is_null($bio)) {
-            $user->bio = $bio;
-        }
-        if (!is_null($instagram)) {
-            $user->instagram = $instagram;
-        }
-        if (!is_null($linkedin)) {
-            $user->linkedin = $linkedin;
-        }
-        if (!is_null($facebook)) {
-            $user->facebook = $facebook;
-        }
-        if (!is_null($twitter)) {
-            $user->twitter = $twitter;
-        }
+        
+        $user->bio = $bio;
+        $user->instagram = $instagram;
+        $user->linkedin = $linkedin;
+        $user->facebook = $facebook;
+        $user->twitter = $twitter;
 
         $user->save();
 
