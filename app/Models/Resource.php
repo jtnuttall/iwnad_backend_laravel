@@ -20,8 +20,11 @@ class Resource extends Model
 	];
 
 
-	public function module()
+	public function phase()
 	{
 		return $this->belongsTo(\App\Models\Phase::class, 'phaseid');
 	}
+
+
+	
 }
