@@ -93,11 +93,11 @@ class UserController extends Controller
 
         if ($user->firstlogin) {
             $validator = Validator::make($request->all(), [
-                'profilepic' => 'file',  
                 'occupation' => 'string|required|max:64',
                 'organization' => 'string|required|max:45',
                 'phone' => 'string|required|max:20',
                 'password' => 'string|required|min:6',
+                'profilepic' => 'file',  
             ]);
 
             if($validator->fails()){
