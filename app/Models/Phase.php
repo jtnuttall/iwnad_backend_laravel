@@ -25,10 +25,7 @@ class Phase extends Eloquent
 	protected $primaryKey = 'phaseid';
 	public $timestamps = false;
 
-	protected $dates = [
-		'duedate'
-	];
-
+	
 	protected $fillable = [
 		'name',
 		'description',

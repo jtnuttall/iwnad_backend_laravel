@@ -5,11 +5,34 @@ namespace App\Http\Controllers;
 use Auth;
 use App\Models\User;
 use App\Models\Pairing;
+use App\Models\Dashboard;
+use App\Models\Module;
+use App\Models\Phase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class PairingController extends Controller
 {
+   private function createDashboard($pairingid){
+
+        error_log('trying to create dashboard');
+
+        $dashboard = Dashboard::create([
+            'pairingid' => $pairingid,
+            'currentphaseid'=> Phase::first()->value('phaseid'),
+            'currentphasestatus' => 0,
+        ]);
+
+        $allPhases = Phase::all();
+
+        foreach($allPhases as $phase){
+        error_log('in foreach loop ');
+        Module::create([
+            'phaseid' => $phase->phaseid,
+            'dashboardid' => $dashboard->dashboardid,
+        ]);
+        }
+    }
     
     public function pair(Request $request)
     {
@@ -63,8 +86,9 @@ class PairingController extends Controller
         $pairing->mentorid = $mentor->userid;
         $pairing->menteeid = $mentee->userid;
         $pairing->save();
-
         error_log('success');
+
+        $this->createDashboard($pairing->pairingid);
 
         return response()->json(compact('pairing'));
     }
@@ -99,6 +123,18 @@ class PairingController extends Controller
     					->orWhere('menteeid', $user->userid)
     					->get();
 
+    	foreach ($pairings as &$pairing) {
+	        if ($pairing['mentor']->userid === $user->userid) {
+	        	$pairing['current'] = $pairing['mentor'];
+	        	$pairing['match'] = $pairing['mentee'];
+	        } else {
+	        	$pairing['current'] = $pairing['mentee'];
+	        	$pairing['match'] = $pairing['mentor'];
+	        }
+	        unset($pairing['mentor']);
+	        unset($pairing['mentee']);
+	    }
+
     	return response()->json(compact('pairings'));
     }
 
@@ -114,6 +150,8 @@ class PairingController extends Controller
         // error_log('per-page count is '.$count);
 
         // $pairings = Pairing::with(['mentor', 'mentee'])->paginate($count);
+        $user = Auth::user();
+
         $pairings = Pairing::with(['mentor', 'mentee'])->get();
 
         return response()->json(compact('pairings'));

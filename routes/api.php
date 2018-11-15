@@ -16,14 +16,17 @@ use Illuminate\Http\Request;
 Route::post('login', 'UserController@authenticate');
 Route::post('subscribe', 'SubscriberController@addSubscriber');
 
+
 Route::group(['middleware' => ['jwt.verify']], function() {
     Route::post('user', 'UserController@getAuthenticatedUser');
     Route::post('changepassword', 'UserController@changePassword');
     Route::post('updateuser', 'UserController@updateUser');
-
     Route::post('currentpairs', 'PairingController@getCurrentPairs');
-
     Route::post('dashboard', 'DashboardController@getDashboards');
+    Route::post('addlink','DoclinkController@addLink');
+    Route::post('deletelink','DoclinkController@deleteLink');
+    Route::post('approve','ModulesController@approvePhase');
+
 });
 
 Route::group(['middleware' => ['admin.verify']], function() {
@@ -39,3 +42,5 @@ Route::group(['middleware' => ['admin.verify']], function() {
 
 	Route::post('subscribers', 'SubscriberController@getSubscribers');
 });
+
+

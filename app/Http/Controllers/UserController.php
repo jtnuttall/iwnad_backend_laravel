@@ -93,10 +93,11 @@ class UserController extends Controller
 
         if ($user->firstlogin) {
             $validator = Validator::make($request->all(), [
-                'profilepic' => 'file|required',  // mimes?
                 'occupation' => 'string|required|max:64',
                 'organization' => 'string|required|max:45',
                 'phone' => 'string|required|max:20',
+                'password' => 'string|required|min:6',
+                // 'profilepic' => 'file',  
             ]);
 
             if($validator->fails()){
@@ -107,20 +108,30 @@ class UserController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-                'email' => 'string|email|max:255|unique:users',
-                'bio' => 'string|max:65535',
+            'name' => 'string',
+            'email' => 'string|email|max:255|unique:users',
+            'bio' => 'string|max:65535',
         ]);
         if ($validator->fails()) {
             return response()->json($validator->errors()->toArray(), 400);
         }
 
         $email = $request->get('email');
-        // $name = $request->get('name');
+        $password = $request->get('password');
+        $name = $request->get('name');
         $profilepic = $request->file('profilepic');
         $occupation = $request->get('occupation');
         $organization = $request->get('organization');
         $phone = $request->get('phone');
         $bio = $request->get('bio');
+        $linkedin = $request->get('linkedin');
+        $facebook = $request->get('facebook');
+        $instagram = $request->get('instagram');
+        $twitter = $request->get('twitter');
+        $availability = $request->get('availability');
+        $skills = $request->get('skills');
+        $interests = $request->get('interests');
+
 
         if (!is_null($email)) {
             $this->notifyEmailChange($user, $email);
@@ -129,6 +140,9 @@ class UserController extends Controller
         }
         if (!is_null($name)) {
             $user->name = $name;
+        }
+        if (!is_null($password)) {
+            $user->password = Hash::make($password);
         }
         if (!is_null($profilepic)) {
             $user->profilepic = $profilepic->store('profilepics');
@@ -145,12 +159,31 @@ class UserController extends Controller
         if (!is_null($bio)) {
             $user->bio = $bio;
         }
+        if (!is_null($instagram)) {
+            $user->instagram = $instagram;
+        }
+        if (!is_null($linkedin)) {
+            $user->linkedin = $linkedin;
+        }
+        if (!is_null($facebook)) {
+            $user->facebook = $facebook;
+        }
+        if (!is_null($twitter)) {
+            $user->twitter = $twitter;
+        }
+        if (!is_null($skills)) {
+            $user->skills = $skills;
+        }
+        if (!is_null($availability)) {
+            $user->availability = $availability;
+        }
+        if (!is_null($interests)) {
+            $user->interests = $interests;
+        }
 
         $user->save();
 
-        return response()->json([
-            'status' => 'user_update_success'
-        ]);
+       return response()->json(compact('user'), 200);
     }
 
     private function notifyEmailChange(User $user, string $newEmail)
@@ -184,7 +217,6 @@ class UserController extends Controller
 
     public function forgotPassword()
     {
-
     }
 
     public function changePassword(Request $request)
@@ -285,5 +317,10 @@ class UserController extends Controller
         return response()->json([
             'status' => 'user deleted',
         ]);
+    }
+
+    public function logout(Request $request){
+
+        $user = Auth::user();
     }
 }

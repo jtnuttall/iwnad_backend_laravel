@@ -16,7 +16,8 @@ class CreatePhasesTable extends Migration {
 		{
 			$table->integer('phaseid', true);
 			$table->string('name', 128);
-			$table->dateTime('duedate');
+			$table->string('duedate');
+			$table->string('description', 500);
 		});
 	}
 

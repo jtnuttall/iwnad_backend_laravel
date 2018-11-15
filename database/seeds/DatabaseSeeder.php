@@ -15,5 +15,6 @@ class DatabaseSeeder extends Seeder
         $this->call(DashboardSeeder::class);
         $this->call(DoclinkSeeder::class);
         $this->call(PhaseSeeder::class);
+        $this->call(ResourceSeeder::class);
     }
 }

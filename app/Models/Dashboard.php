@@ -17,8 +17,7 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property int $parentdashboardid
  * @property int $pairingid
  * @property int $currentphaseid
- * @property int $currentphasestatus
- * 
+ * @property int $currentphasestatu  
  * @property \App\Models\Pairing $pairing
  * @property \App\Models\Phase $phase
  * @property \Illuminate\Database\Eloquent\Collection $doclinks
@@ -34,18 +33,17 @@ class Dashboard extends Eloquent
 		'pairingid' => 'int',
 		'currentphaseid' => 'int',
 		'currentphasestatus' => 'int',
-		// 'requestorid' => 'int',
 	];
 
 	protected $dates = [
 		'meetingtime'
 	];
 
+
 	protected $fillable = [
 		'pairingid',
 		'currentphaseid',
 		'currentphasestatus',
-		// 'requestorid',
 		'meetingtime',
 	];
 
@@ -59,10 +57,6 @@ class Dashboard extends Eloquent
 		return $this->belongsTo(\App\Models\Phase::class, 'currentphaseid');
 	}
 
-	public function doclinks()
-	{
-		return $this->hasMany(\App\Models\Doclink::class, 'dashboardid');
-	}
 
 	public function availabilities()
 	{

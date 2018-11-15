@@ -65,6 +65,13 @@ class User extends Eloquent implements JWTSubject, AuthenticatableContract, CanR
 		'phone',
 		'bio',
 		'partnernote',
+		'availability',
+		'skills',
+		'interests',
+		'linkedin',
+		'facebook',
+		'instagram',
+		'twitter',
 	];
 
 	public function mentorPairings()

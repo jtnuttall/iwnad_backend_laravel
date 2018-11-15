@@ -28,4 +28,9 @@ class Module extends Model
 	{
 		return $this->belongsTo(\App\Models\Dashboard::class, 'dashboardid');
 	}
+
+	public function doclinks()
+	{
+		return $this->hasMany(\App\Models\Doclink::class, 'moduleid');
+	}
 }

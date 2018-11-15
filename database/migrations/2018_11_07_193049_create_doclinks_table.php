@@ -15,6 +15,7 @@ class CreateDoclinksTable extends Migration {
 		Schema::create('doclinks', function(Blueprint $table)
 		{
 			$table->integer('doclinkid', true);
+			$table->string('name', 45);
 			$table->string('link', 256);
 			$table->integer('moduleid')->unsigned()->index('fk_doclinks_modules1_idx');
 		});

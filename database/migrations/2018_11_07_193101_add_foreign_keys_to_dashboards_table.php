@@ -14,8 +14,17 @@ class AddForeignKeysToDashboardsTable extends Migration {
 	{
 		Schema::table('dashboards', function(Blueprint $table)
 		{
-			$table->foreign('pairingid', 'fk_dashboards_pairings1')->references('pairingid')->on('pairings')->onUpdate('NO ACTION')->onDelete('NO ACTION');
-			$table->foreign('currentphaseid', 'fk_dashboards_phases1')->references('phaseid')->on('phases')->onUpdate('NO ACTION')->onDelete('NO ACTION');
+			$table->foreign('pairingid', 'fk_dashboards_pairings1')
+				->references('pairingid')
+				->on('pairings')
+				->onUpdate('NO ACTION')
+				->onDelete('CASCADE');
+
+			/* $table->foreign('currentphaseid', 'fk_dashboards_phases1')
+				->references('phaseid')
+				->on('phases')
+				->onUpdate('NO ACTION')
+				->onDelete('CASCADE');*/
 		});
 	}
 
@@ -30,7 +39,7 @@ class AddForeignKeysToDashboardsTable extends Migration {
 		Schema::table('dashboards', function(Blueprint $table)
 		{
 			$table->dropForeign('fk_dashboards_pairings1');
-			$table->dropForeign('fk_dashboards_phases1');
+			/*$table->dropForeign('fk_dashboards_phases1');*/
 		});
 	}
 

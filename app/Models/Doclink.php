@@ -28,20 +28,15 @@ class Doclink extends Eloquent
 	public $timestamps = false;
 
 	protected $casts = [
-		'dashboardid' => 'int',
 		'moduleid' => 'int',
 	];
 
 	protected $fillable = [
 		'link',
-		'dashboardid',
 		'moduleid',
+		'name',
 	];
 
-	public function dashboard()
-	{
-		return $this->belongsTo(\App\Models\Dashboard::class, 'dashboardid');
-	}
 
 	public function module()
 	{

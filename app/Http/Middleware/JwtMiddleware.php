@@ -21,12 +21,6 @@ class JwtMiddleware extends BaseMiddleware
     {
         try {
             $user = JWTAuth::parseToken()->authenticate();
-
-            if ($user->permissions != env('ADMIN_PERMISSIONS')) {
-                return response()->json([
-                    'status' => 'insufficient_permissions'
-                ], 401);
-            }
         } 
         catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
             return response()->json([

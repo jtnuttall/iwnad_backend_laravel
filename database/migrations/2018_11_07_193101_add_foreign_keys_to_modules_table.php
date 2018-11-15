@@ -14,8 +14,17 @@ class AddForeignKeysToModulesTable extends Migration {
 	{
 		Schema::table('modules', function(Blueprint $table)
 		{
-			$table->foreign('dashboardid', 'fk_modules_dashboards1')->references('dashboardid')->on('dashboards')->onUpdate('NO ACTION')->onDelete('NO ACTION');
-			$table->foreign('phaseid', 'fk_modules_phases1')->references('phaseid')->on('phases')->onUpdate('NO ACTION')->onDelete('NO ACTION');
+			$table->foreign('dashboardid', 'fk_modules_dashboards1')
+				->references('dashboardid')
+				->on('dashboards')
+				->onUpdate('NO ACTION')
+				->onDelete('CASCADE');
+
+			$table->foreign('phaseid', 'fk_modules_phases1')
+				->references('phaseid')
+				->on('phases')
+				->onUpdate('NO ACTION')
+				->onDelete('CASCADE');
 		});
 	}
 
