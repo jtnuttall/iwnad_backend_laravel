@@ -41,4 +41,9 @@ class Phase extends Eloquent
 	{
 		return $this->hasMany(\App\Models\Doclink::class, 'phaseid');
 	}
+
+	public function resources()
+	{
+		return $this->hasMany(\App\Models\Resource::class, 'phaseid');
+	}
 }

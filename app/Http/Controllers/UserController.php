@@ -110,7 +110,6 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'string',
             'email' => 'string|email|max:255|unique:users',
-            'bio' => 'string|max:65535',
         ]);
         if ($validator->fails()) {
             return response()->json($validator->errors()->toArray(), 400);
@@ -156,28 +155,28 @@ class UserController extends Controller
         if (!is_null($phone)) {
             $user->phone = $phone;
         }
-        if (!is_null($bio)) {
+        if ($request->exists('bio')) {
             $user->bio = $bio;
         }
-        if (!is_null($instagram)) {
+        if ($request->exists('instagram')) {
             $user->instagram = $instagram;
         }
-        if (!is_null($linkedin)) {
+        if ($request->exists('linkedin')) {
             $user->linkedin = $linkedin;
         }
-        if (!is_null($facebook)) {
+        if ($request->exists('facebook')) {
             $user->facebook = $facebook;
         }
-        if (!is_null($twitter)) {
+        if ($request->exists('twitter')) {
             $user->twitter = $twitter;
         }
-        if (!is_null($skills)) {
+        if ($request->exists('skills')) {
             $user->skills = $skills;
         }
-        if (!is_null($availability)) {
+        if ($request->exists('availability')) {
             $user->availability = $availability;
         }
-        if (!is_null($interests)) {
+        if ($request->exists('interests')) {
             $user->interests = $interests;
         }
 
