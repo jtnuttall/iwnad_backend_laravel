@@ -39,7 +39,7 @@ class AddForeignKeysToDashboardsTable extends Migration {
 		Schema::table('dashboards', function(Blueprint $table)
 		{
 			$table->dropForeign('fk_dashboards_pairings1');
-			$table->dropForeign('fk_dashboards_phases1');
+			/*$table->dropForeign('fk_dashboards_phases1');*/
 		});
 	}
 
