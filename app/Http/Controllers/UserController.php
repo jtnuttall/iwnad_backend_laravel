@@ -128,6 +128,10 @@ class UserController extends Controller
         $facebook = $request->get('facebook');
         $instagram = $request->get('instagram');
         $twitter = $request->get('twitter');
+        $availability = $request->get('availability');
+        $skills = $request->get('skills');
+        $interests = $request->get('interests');
+
 
         if (!is_null($email)) {
             $this->notifyEmailChange($user, $email);
@@ -158,6 +162,9 @@ class UserController extends Controller
         $user->linkedin = $linkedin;
         $user->facebook = $facebook;
         $user->twitter = $twitter;
+        /*$user->skills = $skills;
+        $user->availability = $availability;
+        $user->interests = $interests;*/
 
         $user->save();
 

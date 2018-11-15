@@ -34,6 +34,9 @@ class CreateUsersTable extends Migration {
 			$table->string('facebook', 45)->nullable();
 			$table->string('instagram', 45)->nullable();
 			$table->string('twitter', 45)->nullable();
+			$table->text('availability', 65535)->nullable();
+			$table->text('skills', 65535)->nullable();
+			$table->text('interests', 65535)->nullable();
 		});
 	}
 
