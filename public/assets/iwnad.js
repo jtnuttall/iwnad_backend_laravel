@@ -1236,12 +1236,10 @@
         }
       },
       signup() {
-        if (this.role == undefined || this.organization == undefined || this.phone == undefined || this.password1 == undefined || this.password2 == undefined || this.role == '' || this.organization == '' || this.phone == '' || this.password1 == '' || this.password2 == ''
-        // ||(this.image == null)
-        ) {
-            this.set('errorMessage', '*All fields are required');
-            return;
-          }
+        if (this.role == undefined || this.organization == undefined || this.phone == undefined || this.password1 == undefined || this.password2 == undefined || this.role == '' || this.organization == '' || this.phone == '' || this.password1 == '' || this.password2 == '' || this.image == null) {
+          this.set('errorMessage', '*All fields are required');
+          return;
+        }
         if (this.password1.length < 6) {
           this.set('errorMessage', '*Password must be at least 6 characters long');
           return;
@@ -1266,8 +1264,8 @@
           occupation: this.role,
           organization: this.organization,
           phone: this.phone,
-          password: this.password1
-          //profilepic: this.image,
+          password: this.password1,
+          profilepic: this.image
         });
         // data.append('occupation', this.role);
         // data.append('organization', this.organization);

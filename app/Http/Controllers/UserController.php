@@ -118,7 +118,7 @@ class UserController extends Controller
         $email = $request->get('email');
         $password = $request->get('password');
         $name = $request->get('name');
-        $profilepic = $request->file('profilepic');
+        $profilepic = $request->get('profilepic');
         $occupation = $request->get('occupation');
         $organization = $request->get('organization');
         $phone = $request->get('phone');
@@ -144,7 +144,11 @@ class UserController extends Controller
             $user->password = Hash::make($password);
         }
         if (!is_null($profilepic)) {
-            $user->profilepic = $profilepic->store('profilepics');
+            $filename_path = md5(time().uniqid()).".jpg";
+            $profilepic = str_replace('data:image/png;base64,', '', $profilepic);
+            $profilepic = str_replace(' ', '+', $profilepic);
+            $decoded = base64_decode($$profilepic);
+            file_put_contents('profilepics/'.$profilepic, $decoded);
         }
         if (!is_null($occupation)) {
             $user->occupation = $occupation;
