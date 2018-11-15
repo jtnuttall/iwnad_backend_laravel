@@ -156,15 +156,30 @@ class UserController extends Controller
         if (!is_null($phone)) {
             $user->phone = $phone;
         }
-        
-        $user->bio = $bio;
-        $user->instagram = $instagram;
-        $user->linkedin = $linkedin;
-        $user->facebook = $facebook;
-        $user->twitter = $twitter;
-        /*$user->skills = $skills;
-        $user->availability = $availability;
-        $user->interests = $interests;*/
+        if (!is_null($bio)) {
+            $user->bio = $bio;
+        }
+        if (!is_null($instagram)) {
+            $user->instagram = $instagram;
+        }
+        if (!is_null($linkedin)) {
+            $user->linkedin = $linkedin;
+        }
+        if (!is_null($facebook)) {
+            $user->facebook = $facebook;
+        }
+        if (!is_null($twitter)) {
+            $user->twitter = $twitter;
+        }
+        if (!is_null($skills)) {
+            $user->skills = $skills;
+        }
+        if (!is_null($availability)) {
+            $user->availability = $availability;
+        }
+        if (!is_null($interests)) {
+            $user->interests = $interests;
+        }
 
         $user->save();
 
