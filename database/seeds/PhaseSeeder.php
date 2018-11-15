@@ -40,7 +40,7 @@ class PhaseSeeder extends Seeder
         $phase5->name = 'Reflect';
         $phase5->duedate = '1 week';
         $phase5->description = 'What are you learning?';
-        $phase1->save();
+        $phase5->save();
 
         $phase6 = new Phase();
         $phase6->name = 'Prototype';
@@ -63,7 +63,7 @@ class PhaseSeeder extends Seeder
         $phase9 = new Phase();
         $phase9->name = 'Looking Forward';
         $phase9->duedate = '1 week';
-        $phase9->description = "Given the investors advice, your own reflections, and your mentor's feedback, what's your next step?";
+        $phase9->description = "Given the investor's advice, your own reflections, and your mentor's feedback, what's your next step?";
         $phase9->save();
 
     }
