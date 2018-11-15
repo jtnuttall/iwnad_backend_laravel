@@ -20,11 +20,11 @@ class AddForeignKeysToDashboardsTable extends Migration {
 				->onUpdate('NO ACTION')
 				->onDelete('CASCADE');
 
-			// $table->foreign('currentphaseid', 'fk_dashboards_phases1')
+			/* $table->foreign('currentphaseid', 'fk_dashboards_phases1')
 				->references('phaseid')
 				->on('phases')
 				->onUpdate('NO ACTION')
-				->onDelete('CASCADE');
+				->onDelete('CASCADE');*/
 		});
 	}
 
