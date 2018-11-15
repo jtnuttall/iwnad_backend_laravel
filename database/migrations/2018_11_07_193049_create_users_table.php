@@ -30,6 +30,13 @@ class CreateUsersTable extends Migration {
 			$table->text('partnernote', 65535)->nullable();
 			$table->string('remember_token', 100)->nullable();
 			$table->timestamps();
+			$table->string('linkedin', 45)->nullable();
+			$table->string('facebook', 45)->nullable();
+			$table->string('instagram', 45)->nullable();
+			$table->string('twitter', 45)->nullable();
+			$table->text('availability', 65535)->nullable();
+			$table->text('skills', 65535)->nullable();
+			$table->text('interests', 65535)->nullable();
 		});
 	}
 

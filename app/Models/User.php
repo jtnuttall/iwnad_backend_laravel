@@ -65,7 +65,6 @@ class User extends Eloquent implements JWTSubject, AuthenticatableContract, CanR
 		'phone',
 		'bio',
 		'partnernote',
-		// TODO add migrations
 		'availability',
 		'skills',
 		'interests',

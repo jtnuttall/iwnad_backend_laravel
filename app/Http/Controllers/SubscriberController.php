@@ -52,7 +52,7 @@ class SubscriberController extends Controller
         	$count = 15;
         }
 
-        $result = Subscriber::paginate($count);
+        //$result = Subscriber::paginate($count);
         return response()->json(compact('result'));
     }
 }
