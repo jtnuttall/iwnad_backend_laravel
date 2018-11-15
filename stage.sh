@@ -18,10 +18,10 @@ git push
 cd $FRONTEND
 git add .
 git commit -a -m "Pre-publish commit"
-git checkout staging
+git checkout master
 rm -rvf dist
-git merge master
-ember build --environment staging
+# git merge master
+ember build --environment master
 cd -
 # copy the new Ember build into the Laravel application
 cp -Rvf $FRONTEND/dist/assets $BACKEND/public
