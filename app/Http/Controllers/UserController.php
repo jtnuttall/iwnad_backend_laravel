@@ -97,7 +97,7 @@ class UserController extends Controller
                 'organization' => 'string|required|max:45',
                 'phone' => 'string|required|max:20',
                 'password' => 'string|required|min:6',
-                'profilepic' => 'file',  
+                // 'profilepic' => 'file',  
             ]);
 
             if($validator->fails()){

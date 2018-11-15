@@ -15,11 +15,14 @@ git checkout staging
 # merge master into staging
 git merge master
 # build the Ember application
-cd $FRONTEND;
-rm -rvf dist;
-ember build --environment staging;
-git checkout staging;
-cd -;
+cd $FRONTEND
+git add .
+git commit -a -m "Pre-publish commit"
+git checkout staging
+rm -rvf dist
+git merge master
+ember build --environment staging
+cd -
 # copy the new Ember build into the Laravel application
 cp -Rvf $FRONTEND/dist/assets $BACKEND/public
 cp -Rvf $FRONTEND/dist/fonts $BACKEND/public

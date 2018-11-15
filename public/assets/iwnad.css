@@ -360,8 +360,6 @@ input {
 
 .greeting {
   width: 100%;
-  padding-right: 15px;
-  padding-left: 15px;
   padding-bottom: 25px;
 }
 
@@ -568,8 +566,10 @@ input {
 }
 
 .profile-info-header {
-  width: 70%;
+  width: 80%;
   margin: auto;
+  padding-left: 10%;
+  padding-right: 10%;
 }
 
 .profile-info {
@@ -581,7 +581,6 @@ input {
 }
 
 .profile-pic-box {
-  padding-left: 50px;
   padding-top: 50px;
   padding-bottom: 50px;
 }
