@@ -17,7 +17,7 @@ class CreateDashboardsTable extends Migration {
 			$table->integer('dashboardid', true);
 			$table->dateTime('meetingtime')->nullable();
 			$table->integer('pairingid')->index('fk_dashboards_pairings1_idx');
-			$table->integer('currentphaseid')->index('fk_dashboards_phases1_idx');
+			$table->integer('currentphaseid');
 			$table->integer('currentphasestatus');
 		});
 	}
