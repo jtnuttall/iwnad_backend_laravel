@@ -11,9 +11,9 @@ git add .
 git commit -a -m "Pre-publish commit"
 git push
 # switch to staging branch
-git checkout staging
+# git checkout staging
 # merge master into staging
-git merge master
+# git merge master
 # build the Ember application
 cd $FRONTEND
 git add .
